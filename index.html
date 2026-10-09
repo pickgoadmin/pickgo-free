@@ -214,9 +214,10 @@
 }
 .venue-icon{overflow:hidden}.pickgo-court-thumb{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}.venue-icon .iconlabel{z-index:1}.pickgo-db-status{display:inline-block;font-size:10px;color:#507358;margin-top:5px}.venue-dialog-photo{display:block;width:100%;max-height:290px;object-fit:cover;border-radius:14px;margin:13px 0}.venue-dialog-meta{display:grid;gap:7px;padding:12px;border-radius:12px;background:#f4f8ef;color:#3e5f48;font-size:13px}.venue-dialog-photo[hidden],.venue-dialog-meta[hidden],.pickgo-admin-link[hidden]{display:none!important}.pickgo-admin-link{display:block;padding:12px 15px;border-radius:12px;background:#e8f7d5;color:#215c39;font-weight:750;margin:12px 0;text-align:center}
 </style>
+<link rel="stylesheet" href="/matches.css">
 </head>
 <body>
-<header class="topbar"><div class="shell topin"><a class="brand" href="./" aria-label="PICKGO 홈"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="12" fill="#22382b"/><rect x="11" y="11" width="17" height="24" rx="8" fill="white"/><path d="M19 34v6" stroke="white" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="17" r="8" fill="#c8fb69"/></svg><span>PICK<strong>GO</strong></span></a><nav class="nav" aria-label="주요 메뉴"><a href="#explore">코트 찾기</a><a href="#labBooking">예약 체험</a><button type="button" id="topFavorites">♡ 즐겨찾기 <span id="favNum">0</span></button><button type="button" id="topAccount" class="account-top" aria-haspopup="dialog">로그인 / 회원가입</button></nav></div></header>
+<header class="topbar"><div class="shell topin"><a class="brand" href="./" aria-label="PICKGO 홈"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="12" fill="#22382b"/><rect x="11" y="11" width="17" height="24" rx="8" fill="white"/><path d="M19 34v6" stroke="white" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="17" r="8" fill="#c8fb69"/></svg><span>PICK<strong>GO</strong></span></a><nav class="nav" aria-label="주요 메뉴"><a href="#explore">코트 찾기</a><a href="#matches">경기 매칭</a><button type="button" id="topFavorites">♡ 즐겨찾기 <span id="favNum">0</span></button><button type="button" id="topAccount" class="account-top" aria-haspopup="dialog">로그인 / 회원가입</button></nav></div></header>
 <main>
 <section class="hero shell"><div class="hero-wrap"><div style="position:relative;z-index:1"><div class="eyebrow">YOUR NEXT PICKLEBALL COURT</div><h1>오늘 칠 코트,<br>한눈에 찾다.</h1></div><div class="court-art" aria-hidden="true"><div class="lines"></div><div class="ball"></div></div></div></section>
 
@@ -234,6 +235,20 @@
 
 </section>
 
+<section class="shell match-section" id="matches" aria-label="경기 매칭"><div class="match-panel">
+<div class="match-heading"><h2>함께 칠 사람 찾기</h2><button type="button" id="matchRefresh">새로고침</button></div>
+<p>구장을 예약했다면 함께할 멤버를 모집하세요. 예약은 시설의 공식 예약처에서 완료해 주세요.</p>
+<details id="matchComposer"><summary>+ 경기 모집하기</summary><form id="matchForm" class="match-form">
+<label class="wide">구장<select id="matchVenue" required></select></label>
+<label>날짜<input id="matchDay" type="date" required></label><label>총 인원 (본인 포함)<input id="matchCapacity" type="number" min="2" max="16" value="4" required></label>
+<label>시작<input id="matchStart" type="time" required></label><label>종료<input id="matchEnd" type="time" required></label>
+<label class="wide">실력<select id="matchSkill"><option>누구나</option><option>입문</option><option>초급</option><option>중급</option><option>상급</option></select></label>
+<label class="wide">모집 안내<textarea id="matchNote" maxlength="300" rows="3" placeholder="만날 장소, 준비물 등을 적어 주세요. 공개되는 글이므로 개인 연락처는 쓰지 마세요."></textarea></label>
+<label class="wide check"><input id="matchReserved" type="checkbox" required> 외부 예약처에서 해당 구장·시간 예약을 완료했습니다.</label>
+<button class="wide" id="matchSubmit" type="submit">모집 등록</button></form></details>
+<div class="match-filters"><label>지역 <select id="matchRegion"><option value="">전국</option></select></label><label><input type="checkbox" id="matchMine"> 내가 만든 / 참가한 경기</label></div>
+<p id="matchNotice" class="match-notice" role="status" aria-live="polite"></p><div id="matchList" class="match-grid"></div>
+</div></section>
 <section class="shell lab-section" id="labBooking" aria-label="테스트 예약 체험">
  <div class="lab-card">
   <div class="lab-heading"><div><span class="lab-badge">PICKGO LAB · v0.5.1</span><h2>코트 예약, 먼저 체험해 보세요.</h2><p>전국 실제 구장과는 별개인 <b>가상 테스트 코트</b>입니다.<br>예약·취소 흐름을 연습하고, 이후 제휴 구장 시스템으로 확장합니다.</p></div><div class="lab-info" id="labModeBadge">● 무료 시연 모드<br>현재 브라우저에만 예약 저장</div></div>
@@ -617,7 +632,7 @@ state.day=koToday();reload();setupCloud();
 <nav class="pwa-tabs" id="pwaTabs" aria-label="PICKGO 앱 하단 메뉴">
  <button type="button" class="pwa-tab active" data-tab="home" aria-label="홈" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span>홈</span></button>
  <button type="button" class="pwa-tab" data-tab="courts" aria-label="구장 찾기"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M12 5v14M3 12h18M7 5v7h10V5"/></svg><span>구장 찾기</span></button>
- <button type="button" class="pwa-tab" data-tab="favorites" aria-label="즐겨찾기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 8.3c0 5.1-8.5 11.5-8.5 11.5S3.5 13.4 3.5 8.3a4.5 4.5 0 0 1 8.5-2 4.5 4.5 0 0 1 8.5 2Z"/></svg><span>즐겨찾기</span></button>
+ <button type="button" class="pwa-tab" data-tab="matches" aria-label="경기 매칭"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 8.3c0 5.1-8.5 11.5-8.5 11.5S3.5 13.4 3.5 8.3a4.5 4.5 0 0 1 8.5-2 4.5 4.5 0 0 1 8.5 2Z"/></svg><span>경기 매칭</span></button>
  <button type="button" class="pwa-tab" data-tab="account" aria-label="마이페이지"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2c0-3.2 3-5 8-5s8 1.8 8 5v2"/></svg><span>마이페이지</span></button>
 </nav>
 <dialog class="pwa-install-dialog" id="pwaInstallDialog" aria-labelledby="installTitle">
@@ -643,6 +658,7 @@ function toast(s){const el=$('pwaToast');el.textContent=s;el.classList.add('show
 function setTab(active){tabs.forEach(b=>{const on=b.dataset.tab===active;b.classList.toggle('active',on);if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')})}
 function moveExplore(){document.getElementById('explore').scrollIntoView({behavior:'smooth',block:'start'})}
 function action(tab){
+ if(tab==='matches'){document.getElementById('matches').scrollIntoView({behavior:'smooth'});setTab(tab);return;}
  if(tab==='home'){if(typeof state!=='undefined'&&state.favoritesOnly){state.favoritesOnly=false;render()}window.scrollTo({top:0,behavior:'smooth'})}
  if(tab==='courts'){if(typeof state!=='undefined'&&state.favoritesOnly){state.favoritesOnly=false;render()}moveExplore()}
  if(tab==='favorites'){if(typeof state!=='undefined'){state.favoritesOnly=true;render()}moveExplore();if(typeof setMobileView==='function')setMobileView('list')}
@@ -671,7 +687,7 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;
 window.addEventListener('appinstalled',()=>{$('pwaPromo').hidden=true;toast('PICKGO가 설치되었습니다!')});
 // Initial app shortcut navigation on installed PWA or direct links.
 const requested=new URLSearchParams(location.search).get('tab');
-if(['courts','favorites','account'].includes(requested))setTimeout(()=>action(requested),280);
+if(['courts','favorites','account','matches'].includes(requested))setTimeout(()=>action(requested),280);
 const shareUrl=id=>new URL('/court.html?id='+encodeURIComponent(id),document.baseURI).href;
 const detail=$('venueDialog');
 const target=$('courtPageLink');
@@ -696,4 +712,5 @@ if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostn
 })();
 </script>
 <script src="/venues-db.js"></script>
+<script src="/matches.js"></script>
 </body></html>
