@@ -5,7 +5,7 @@
 @media(max-width:900px){.grid{grid-template-columns:1fr}.list{max-height:280px}.page{padding:13px}.panel{padding:16px}.intro h1{font-size:23px}}@media(max-width:530px){.formgrid{grid-template-columns:1fr}.head{padding:12px}.brand small{display:block;margin-left:0}.topactions{gap:5px}.intro{display:block}.intro .ghost{margin-top:10px}}
 </style></head>
 <body>
-<header><div class="head"><a class="brand" href="/">PICK<b>GO</b><small>v1.0 Venue Admin</small></a><div class="topactions"><a class="ghost" href="/">Home</a><button id="logout" class="ghost" type="button" hidden>Sign out</button></div></div></header>
+<header><div class="head"><a class="brand" href="/">PICK<b>GO</b><small>v1.0.1 Venue Admin</small></a><div class="topactions"><a class="ghost" href="/">Home</a><button id="logout" class="ghost" type="button" hidden>Sign out</button></div></div></header>
 <main class="page"><div class="intro"><div><h1>Court Management / &#xAD6C;&#xC7A5; &#xAD00;&#xB9AC;</h1><p>Manage court data stored in Supabase. Only approved PICKGO admins can make changes.</p></div><span id="account" class="muted"></span></div>
 <section id="authPanel" class="panel auth" hidden>
 <h2>Admin login / &#xB85C;&#xADF8;&#xC778;</h2><p class="muted">Sign in with the email or Google account already granted admin access in Supabase.</p>
@@ -41,5 +41,14 @@
  </div><div class="note">Do not publish unverified hours, prices or photos. This directory does not process real bookings or payments.</div>
  <div class="actions"><button type="submit" class="primary" id="save">Save / &#xC800;&#xC7A5;</button><button type="button" id="archive" class="ghost">Unpublish</button><button type="button" id="delete" class="danger">Permanently delete</button></div></form>
  <p id="formEmpty" class="empty">Select a court from the list or choose + Add.</p></div>
+</section>
+<section id="reviewPanel" class="panel" hidden style="margin-top:18px" aria-label="자동 수집 후보 검토">
+ <div class="formhead"><div><h2>구장 정보 자동 수집 · 검토</h2><p class="muted" style="margin:5px 0">공식 홈페이지의 일치하는 구조화 데이터만 제안합니다. 승인 전에는 공개되지 않습니다.</p></div><button type="button" class="ghost" id="reviewReload">후보 새로고침</button></div>
+ <p id="sourceSummary" class="note">공식 출처와 후보를 불러오는 중…</p>
+ <div class="toolbar" style="flex-wrap:wrap"><label class="ghost" for="candidateUpload" style="cursor:pointer">검토용 JSON 가져오기</label><input id="candidateUpload" type="file" accept=".json,application/json" style="display:none"><button type="button" id="downloadCandidates" class="ghost">CSV 양식 내려받기</button></div>
+ <div id="reviewItems" style="display:grid;gap:10px"></div>
+ <div class="actions"><button type="button" id="approveSelected" class="primary" disabled>선택한 변경 승인</button><button type="button" id="clearSelection" class="ghost">선택 해제</button></div>
+ <p id="reviewMessage" role="status" class="hint"></p>
+ <p class="muted">자동 수집은 GitHub Actions의 수동 실행 또는 주간 점검으로 수행합니다. 사진·요금은 출처 확인 없이 자동 적용하지 않습니다.</p>
 </section><p id="message" role="status" class="hint"></p></main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/admin.js"></script></body></html>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/admin.js"></script><script src="/review.js"></script></body></html>

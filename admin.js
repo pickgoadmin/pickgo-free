@@ -49,11 +49,11 @@
   const {data,error}=await client.from('pickgo_admins').select('user_id').eq('user_id',user.id).maybeSingle();
   if(error)throw error;return data?'admin':'denied'; }
  async function boot(){
-  show('loading',true);show('workspace',false);show('authPanel',false);show('denied',false);
+  show('loading',true);show('workspace',false);show('reviewPanel',false);show('authPanel',false);show('denied',false);
   try{const mode=await hasAdmin();show('loading',false);show('logout',mode!=='login');
    if(mode==='login'){show('authPanel',true);return}
    if(mode==='denied'){show('denied',true);return}
-   await list();show('workspace',true);show('venueForm',false);show('formEmpty',true);message('Admin access confirmed. Venue data loaded.');
+   await list();show('workspace',true);show('venueForm',false);show('formEmpty',true);message('Admin access confirmed. Venue data loaded.');window.dispatchEvent(new CustomEvent('pickgo:admin-ready',{detail:{client}}));show('reviewPanel',true);
   }catch(e){show('loading',false);show('denied',true);message(prettyErr(e),true)}
  }
  async function save(e){e.preventDefault();if(busy)return;setBusy(true);
