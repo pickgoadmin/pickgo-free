@@ -2,7 +2,7 @@
   "id": "/",
   "name": "PICKGO - 전국 피클볼 구장 찾기",
   "short_name": "PICKGO",
-  "description": "전국 41개 피클볼 구장 검색, 즐겨찾기와 공식 예약처 안내",
+  "description": "PICKGO nationwide pickleball court finder and venue information",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",

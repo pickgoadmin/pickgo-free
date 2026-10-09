@@ -1,6 +1,6 @@
 /* PICKGO PWA offline shell. Never cache Supabase/API traffic or third-party maps. */
-const CACHE = 'pickgo-pwa-v0.9.1';
-const CORE = ['/', '/index.html', '/court.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/maskable-icon.png'];
+const CACHE = 'pickgo-pwa-v1.0.0';
+const CORE = ['/', '/index.html', '/court.html', '/venues-db.js', '/court-db.js', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/maskable-icon.png'];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)));
  self.skipWaiting();
@@ -16,6 +16,7 @@ self.addEventListener('fetch',event=>{
  if(req.method!=='GET' || !req.url.startsWith(self.location.origin+'/'))return;
  const url=new URL(req.url);
  if(url.pathname.startsWith('/auth/')||url.pathname.startsWith('/api/'))return;
+ if(url.pathname==='/admin.html'){return;}
  if(req.mode==='navigate'){
   event.respondWith(fetch(req).then(res=>res).catch(async()=>{
    const cache=await caches.open(CACHE);
