@@ -131,6 +131,9 @@
 .link-buttons [hidden]{display:none!important}
 .link-message{font-size:11px;line-height:1.7;min-height:0;margin:9px 0 0;color:#47694c}
 .link-message.error{color:#b44730}
+
+/* v0.9.1: search field immediately after the venue-list scroll hint. */
+.leftcol > .search-panel{margin-top:12px}
 </style>
 <style>
 /* PICKGO v0.8.0: compact profile with optional verified login-method linking. */
@@ -221,10 +224,11 @@
  <div><strong>홈 화면에 PICKGO 추가</strong><p>구장을 더 빠르게 찾고, 앱처럼 전체 화면으로 이용하세요.</p></div>
  <button type="button" id="pwaInstall">설치 안내 <span aria-hidden="true">↗</span></button></div>
 </section>
-<section class="shell" id="explore"><form class="search-panel" id="searchForm" role="search"><label class="search-input" for="search"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.4"/><path d="m16.5 16.5 5 5"/></svg><input id="search" type="search" autocomplete="off" aria-label="구장명, 주소, 지역 검색" placeholder="지역, 구장 이름, 주소 검색"></label><button class="search-cta" type="submit">구장 찾기 →</button></form>
+<section class="shell" id="explore">
 <div class="quickrow" id="regionChips" aria-label="지역 선택"></div>
 <div class="discoverbar"><div class="discovercopy"><strong>공식 예약 경로 확인 <span id="verifiedCount">0</span>곳</strong><span>실시간 빈 코트는 외부 예약처에서 확인하세요.</span></div><button type="button" id="showVerified" class="discoverbutton">예약 링크 보기 ↗</button><button type="button" id="nearby" class="nearbybutton">◎ 내 주변 지역</button></div><div id="geoMessage" class="geonote" role="status" aria-live="polite"></div><div class="mobile-view" id="mobileView"><button type="button" data-view="list" class="on">☰ 구장 목록</button><button type="button" data-view="map">⌖ 지역 지도</button></div>
-<div class="workarea" id="workArea"><section class="leftcol" aria-label="구장 검색 결과"><div class="resulthead"><div><h2>전국 피클볼 코트 <span id="resultCount">0</span></h2><p id="resultSubtitle">구장 목록을 불러오는 중입니다.</p></div><button class="tinybtn" id="resetFilters" type="button">필터 초기화</button></div><div class="filters" id="filters"><button type="button" data-type="전체" class="filter-btn on">전체</button><button type="button" data-type="실내" class="filter-btn">실내</button><button type="button" data-type="야외" class="filter-btn">실외</button><span class="filter-sep"></span><button type="button" id="filterDirect" class="filter-btn">공식 예약만</button><button type="button" id="filterBooking" class="filter-btn">예약·문의 링크</button></div><div id="venueList" class="venue-list" aria-live="polite" tabindex="0" aria-label="구장 목록: 위아래로 스크롤해서 나머지 구장을 확인하세요"></div><p id="listScrollHint" class="list-scroll-hint" hidden>↕ 목록 안을 위아래로 스크롤하면 나머지 구장도 볼 수 있어요.</p></section>
+<div class="workarea" id="workArea"><section class="leftcol" aria-label="구장 검색 결과"><div class="resulthead"><div><h2>전국 피클볼 코트 <span id="resultCount">0</span></h2><p id="resultSubtitle">구장 목록을 불러오는 중입니다.</p></div><button class="tinybtn" id="resetFilters" type="button">필터 초기화</button></div><div class="filters" id="filters"><button type="button" data-type="전체" class="filter-btn on">전체</button><button type="button" data-type="실내" class="filter-btn">실내</button><button type="button" data-type="야외" class="filter-btn">실외</button><span class="filter-sep"></span><button type="button" id="filterDirect" class="filter-btn">공식 예약만</button><button type="button" id="filterBooking" class="filter-btn">예약·문의 링크</button></div><div id="venueList" class="venue-list" aria-live="polite" tabindex="0" aria-label="구장 목록: 위아래로 스크롤해서 나머지 구장을 확인하세요"></div><p id="listScrollHint" class="list-scroll-hint" hidden>↕ 목록 안을 위아래로 스크롤하면 나머지 구장도 볼 수 있어요.</p>
+<form class="search-panel" id="searchForm" role="search"><label class="search-input" for="search"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.4"/><path d="m16.5 16.5 5 5"/></svg><input id="search" type="search" autocomplete="off" aria-label="구장명, 주소, 지역 검색" placeholder="지역, 구장 이름, 주소 검색"></label><button class="search-cta" type="submit">구장 찾기 →</button></form></section>
 <section class="mapcard" aria-label="지역 분포 지도"><div class="maphead"><div><b>지도로 둘러보기</b><small>지역 표시를 누르면 해당 지역 구장만 검색</small></div><button id="mapAll" class="tinybtn" type="button">전국 보기</button></div><div class="mapsurface" id="map"><div class="fallback">무료 지도 불러오는 중…</div></div><div class="mapfoot"><b>● 원형 숫자 = 지역별 구장 수</b>이며 마커는 <b>지역 중심 위치</b>를 나타냅니다. 개별 시설의 정확한 입구 위치가 아닙니다. 개별 구장 카드의 <b>지도에서 찾기</b>로 실제 장소를 검색하세요. <br>지도 제공: OpenStreetMap & Leaflet. 위치는 시설별 확인이 필요합니다.</div></section></div>
 
 </section>
