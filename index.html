@@ -50,6 +50,22 @@
 @media(max-width:800px){.lab-grid{grid-template-columns:1fr}.lab-heading{align-items:flex-start}.lab-heading h2{font-size:22px}.lab-info{max-width:160px}}
 @media(max-width:490px){.lab-heading{padding:20px}.lab-grid{padding:12px;gap:12px}.lab-panel{padding:14px}.lab-info{display:none}.lab-slots{grid-template-columns:repeat(3,1fr)}.lab-emailrow{flex-direction:column}}
 
+
+/* PICKGO v0.4.1: keep the venue list aligned to the map card, without hiding results */
+.list-scroll-hint{flex:0 0 auto;margin:8px 0 0;padding:8px 11px;border:1px solid #dcead2;background:#f0f8e7;border-radius:10px;color:#436045;font-size:11px;font-weight:750;line-height:1.5;text-align:center}
+.list-scroll-hint[hidden]{display:none}
+@media(min-width:791px){
+  .workarea .leftcol{display:flex;flex-direction:column;min-height:0;max-height:var(--pickgo-map-height,650px)}
+  .workarea .leftcol .resulthead,.workarea .leftcol .filters{flex:0 0 auto}
+  .workarea .venue-list{min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-color:#b1c3b1 transparent;padding-right:7px;padding-bottom:4px}
+}
+@media(max-width:790px){
+  .workarea .leftcol{display:flex;flex-direction:column;min-height:0}
+  .workarea .venue-list{max-height:min(64vh,650px);min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-color:#b1c3b1 transparent;padding-right:6px;padding-bottom:4px}
+}
+.workarea .venue-list::-webkit-scrollbar{width:7px}
+.workarea .venue-list::-webkit-scrollbar-thumb{background:#b7ccb5;border-radius:20px}
+.workarea .venue-list::-webkit-scrollbar-track{background:transparent}
 </style>
 </head>
 <body>
@@ -60,7 +76,7 @@
 <div class="quickrow" id="regionChips" aria-label="지역 선택"></div>
 <div class="updateband"><span aria-hidden="true">ⓘ</span><span><b>베타 서비스 · 2026.10.09 정보 수집</b> — 실시간 예약 현황을 제공하지 않습니다. 공개 디렉터리·운영사 자료를 기반으로 하며, 이용 전 운영 여부·대관 가능 여부를 반드시 확인하세요.</span></div>
 <div class="discoverbar"><div class="discovercopy"><strong>공식 예약 경로 확인 <span id="verifiedCount">0</span>곳</strong><span>실시간 빈 코트는 외부 예약처에서 확인하세요.</span></div><button type="button" id="showVerified" class="discoverbutton">예약 링크 보기 ↗</button><button type="button" id="nearby" class="nearbybutton">◎ 내 주변 지역</button></div><div id="geoMessage" class="geonote" role="status" aria-live="polite"></div><div class="mobile-view" id="mobileView"><button type="button" data-view="list" class="on">☰ 구장 목록</button><button type="button" data-view="map">⌖ 지역 지도</button></div>
-<div class="workarea" id="workArea"><section class="leftcol" aria-label="구장 검색 결과"><div class="resulthead"><div><h2>전국 피클볼 코트 <span id="resultCount">0</span></h2><p id="resultSubtitle">구장 목록을 불러오는 중입니다.</p></div><button class="tinybtn" id="resetFilters" type="button">필터 초기화</button></div><div class="filters" id="filters"><button type="button" data-type="전체" class="filter-btn on">전체</button><button type="button" data-type="실내" class="filter-btn">실내</button><button type="button" data-type="야외" class="filter-btn">실외</button><span class="filter-sep"></span><button type="button" id="filterDirect" class="filter-btn">공식 예약만</button><button type="button" id="filterBooking" class="filter-btn">예약·문의 링크</button></div><div id="venueList" class="venue-list" aria-live="polite"></div></section>
+<div class="workarea" id="workArea"><section class="leftcol" aria-label="구장 검색 결과"><div class="resulthead"><div><h2>전국 피클볼 코트 <span id="resultCount">0</span></h2><p id="resultSubtitle">구장 목록을 불러오는 중입니다.</p></div><button class="tinybtn" id="resetFilters" type="button">필터 초기화</button></div><div class="filters" id="filters"><button type="button" data-type="전체" class="filter-btn on">전체</button><button type="button" data-type="실내" class="filter-btn">실내</button><button type="button" data-type="야외" class="filter-btn">실외</button><span class="filter-sep"></span><button type="button" id="filterDirect" class="filter-btn">공식 예약만</button><button type="button" id="filterBooking" class="filter-btn">예약·문의 링크</button></div><div id="venueList" class="venue-list" aria-live="polite" tabindex="0" aria-label="구장 목록: 위아래로 스크롤해서 나머지 구장을 확인하세요"></div><p id="listScrollHint" class="list-scroll-hint" hidden>↕ 목록 안을 위아래로 스크롤하면 나머지 구장도 볼 수 있어요.</p></section>
 <section class="mapcard" aria-label="지역 분포 지도"><div class="maphead"><div><b>지도로 둘러보기</b><small>지역 표시를 누르면 해당 지역 구장만 검색</small></div><button id="mapAll" class="tinybtn" type="button">전국 보기</button></div><div class="mapsurface" id="map"><div class="fallback">무료 지도 불러오는 중…</div></div><div class="mapfoot"><b>● 원형 숫자 = 지역별 구장 수</b>이며 마커는 <b>지역 중심 위치</b>를 나타냅니다. 개별 시설의 정확한 입구 위치가 아닙니다. 개별 구장 카드의 <b>지도에서 찾기</b>로 실제 장소를 검색하세요. <br>지도 제공: OpenStreetMap & Leaflet. 위치는 시설별 확인이 필요합니다.</div></section></div>
 
 <div class="banner" id="about"><div><strong>찾으시는 구장이 없나요?</strong><br><span>구장 운영자·이용자의 등록 제안은 GitHub 공개 이슈로 접수할 수 있습니다.</span></div><button type="button" id="suggestVenue">+ 구장 등록 제안</button></div></section>
@@ -192,4 +208,32 @@ state.day=koToday();reload();setupCloud();
 })();
 </script>
 
+
+<script>
+/* Match the list viewport to the full height of the map card (iPad/desktop).
+   The map may resize after Leaflet loads; observe the card, not its tiles. */
+(()=>{
+  const workarea=document.getElementById('workArea');
+  const mapcard=workarea.querySelector('.mapcard');
+  const list=document.getElementById('venueList');
+  const hint=document.getElementById('listScrollHint');
+  if(!workarea||!mapcard||!list||!hint)return;
+  let queued=false;
+  function sync(){
+    queued=false;
+    const desktop=window.matchMedia('(min-width:791px)').matches;
+    if(desktop){
+      workarea.style.setProperty('--pickgo-map-height',Math.ceil(mapcard.getBoundingClientRect().height)+'px');
+    }else{
+      workarea.style.removeProperty('--pickgo-map-height');
+    }
+    hint.hidden=!(list.clientHeight>0 && list.scrollHeight>list.clientHeight+5);
+  }
+  function schedule(){if(queued)return;queued=true;requestAnimationFrame(sync)}
+  new MutationObserver(()=>{list.scrollTop=0;schedule()}).observe(list,{childList:true});
+  if(window.ResizeObserver){new ResizeObserver(schedule).observe(mapcard);new ResizeObserver(schedule).observe(list)}
+  window.addEventListener('resize',schedule,{passive:true});
+  schedule();
+})();
+</script>
 </body></html>
