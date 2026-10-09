@@ -138,7 +138,7 @@
 </section>
 
 </main>
-<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v0.5.2 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>자료 참고: <a href="https://pickleballkorea.com/venues" target="_blank" rel="noopener noreferrer">피클볼코리아</a> · <a href="https://tokti.ai/pickleball/courts" target="_blank" rel="noopener noreferrer">톡티 피클볼</a> · 각 시설 공식 사이트</div></div></footer>
+<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v0.5.3 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>자료 참고: <a href="https://pickleballkorea.com/venues" target="_blank" rel="noopener noreferrer">피클볼코리아</a> · <a href="https://tokti.ai/pickleball/courts" target="_blank" rel="noopener noreferrer">톡티 피클볼</a> · 각 시설 공식 사이트</div></div></footer>
 
 <dialog id="authDialog" class="auth-dialog" aria-labelledby="authDialogTitle">
  <div class="auth-box">
@@ -275,7 +275,7 @@ state.day=koToday();reload();setupCloud();
 
 <script>
 /* PICKGO v0.5 membership UI; NEVER place OAuth client secrets or PG secrets here. */
-const PICKGO_SOCIAL_CONFIG = { googleEnabled: true, kakaoEnabled: false };
+const PICKGO_SOCIAL_CONFIG = { googleEnabled: true, kakaoEnabled: true };
 (() => {'use strict';
 const $=id=>document.getElementById(id);
 const bridge=()=>window.PICKGO_AUTH_BRIDGE;
