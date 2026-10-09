@@ -134,6 +134,11 @@
 
 /* v0.9.1: search field immediately after the venue-list scroll hint. */
 .leftcol > .search-panel{margin-top:12px}
+/* v1.1.1: exclusive Home / Matches views. */
+body:not([data-pickgo-view="matches"]) #matches{display:none!important}
+body[data-pickgo-view="matches"] main > :not(#matches),
+body[data-pickgo-view="matches"] > .footer{display:none!important}
+body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
 </style>
 <style>
 /* PICKGO v0.8.0: compact profile with optional verified login-method linking. */
@@ -169,7 +174,7 @@
 .pwa-tabs{display:none}.court-page-link{border:1px solid #dce8d9;background:#f6faf2;border-radius:9px;color:#245239;font-size:11px;font-weight:850;padding:9px 12px;display:inline-flex;align-items:center;justify-content:center;min-height:38px}.pwa-install-dialog{border:0;border-radius:23px;padding:0;width:min(420px,calc(100% - 28px));max-height:calc(100dvh - 32px);box-shadow:0 24px 80px #09251b66;color:#19342b}.pwa-install-dialog::backdrop{background:#0c261d9c;backdrop-filter:blur(5px)}.install-content{position:relative;background:white;padding:30px 25px;overflow-y:auto;max-height:calc(100dvh - 32px)}.install-content img{border-radius:15px}.install-kicker{color:#438a51;font-weight:900;letter-spacing:2px;font-size:10px;margin-top:15px}.install-content h2{font-size:23px;letter-spacing:-.8px;margin:9px 0}.install-content p{font-size:13px;line-height:1.8;color:#6b8173}.install-content ol{background:#f5faf1;border-radius:14px;padding:16px 18px 16px 38px;color:#365943;font-size:13px;line-height:2.2}.install-close{position:absolute;right:20px;top:16px;border:0;border-radius:50%;font-size:24px;background:#f3f7f1;height:36px;width:36px;color:#31443a}.install-done{width:100%;background:#c8fb69;border:0;border-radius:12px;padding:13px;font-weight:900;margin-top:8px}.pwa-toast{position:fixed;bottom:calc(85px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#19342b;color:white;z-index:3000;border-radius:16px;font-size:12px;padding:12px 18px;box-shadow:0 15px 50px #0003;pointer-events:none;opacity:0;transition:opacity .22s;max-width:85%;text-align:center}.pwa-toast.show{opacity:1}
 @media(max-width:1024px){
  body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
- .pwa-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:fixed;bottom:0;left:0;right:0;z-index:1800;background:#ffffffef;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);height:calc(65px + env(safe-area-inset-bottom,0px));padding:4px 12px calc(3px + env(safe-area-inset-bottom,0px));border-top:1px solid #dce6dd;box-shadow:0 -8px 32px #17342112}
+ .pwa-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));position:fixed;bottom:0;left:0;right:0;z-index:1800;background:#ffffffef;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);height:calc(65px + env(safe-area-inset-bottom,0px));padding:4px 12px calc(3px + env(safe-area-inset-bottom,0px));border-top:1px solid #dce6dd;box-shadow:0 -8px 32px #17342112}
  .pwa-tab{border:0;background:transparent;color:#809185;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:53px;border-radius:13px;font-weight:800;font-size:10.5px}.pwa-tab.active{color:#1d5438;background:#e6f7d6}.pwa-tab svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.8}
  .topbar{position:relative;z-index:5}
  .footer{padding-bottom:calc(38px + env(safe-area-inset-bottom,0px))}
@@ -216,7 +221,7 @@
 </style>
 <link rel="stylesheet" href="/matches.css">
 </head>
-<body>
+<body data-pickgo-view="home">
 <header class="topbar"><div class="shell topin"><a class="brand" href="./" aria-label="PICKGO 홈"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="12" fill="#22382b"/><rect x="11" y="11" width="17" height="24" rx="8" fill="white"/><path d="M19 34v6" stroke="white" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="17" r="8" fill="#c8fb69"/></svg><span>PICK<strong>GO</strong></span></a><nav class="nav" aria-label="주요 메뉴"><a href="#explore">코트 찾기</a><a href="#matches">경기 매칭</a><button type="button" id="topFavorites">♡ 즐겨찾기 <span id="favNum">0</span></button><button type="button" id="topAccount" class="account-top" aria-haspopup="dialog">로그인 / 회원가입</button></nav></div></header>
 <main>
 <section class="hero shell"><div class="hero-wrap"><div style="position:relative;z-index:1"><div class="eyebrow">YOUR NEXT PICKLEBALL COURT</div><h1>오늘 칠 코트,<br>한눈에 찾다.</h1></div><div class="court-art" aria-hidden="true"><div class="lines"></div><div class="ball"></div></div></div></section>
@@ -268,7 +273,7 @@
 </section>
 
 </main>
-<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v1.0.0 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>외부 링크: 구장 공식 홈페이지 우선 · 미확인 구장은 네이버 지도 한국어 검색</div></div></footer>
+<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v1.1.1 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>외부 링크: 구장 공식 홈페이지 우선 · 미확인 구장은 네이버 지도 한국어 검색</div></div></footer>
 
 <dialog id="authDialog" class="auth-dialog" aria-labelledby="authDialogTitle">
  <div class="auth-box">
@@ -631,7 +636,6 @@ state.day=koToday();reload();setupCloud();
 
 <nav class="pwa-tabs" id="pwaTabs" aria-label="PICKGO 앱 하단 메뉴">
  <button type="button" class="pwa-tab active" data-tab="home" aria-label="홈" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span>홈</span></button>
- <button type="button" class="pwa-tab" data-tab="courts" aria-label="구장 찾기"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M12 5v14M3 12h18M7 5v7h10V5"/></svg><span>구장 찾기</span></button>
  <button type="button" class="pwa-tab" data-tab="matches" aria-label="경기 매칭"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 8.3c0 5.1-8.5 11.5-8.5 11.5S3.5 13.4 3.5 8.3a4.5 4.5 0 0 1 8.5-2 4.5 4.5 0 0 1 8.5 2Z"/></svg><span>경기 매칭</span></button>
  <button type="button" class="pwa-tab" data-tab="account" aria-label="마이페이지"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2c0-3.2 3-5 8-5s8 1.8 8 5v2"/></svg><span>마이페이지</span></button>
 </nav>
@@ -656,17 +660,34 @@ const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent)|| (navigator.platform=
 let deferred=null,timeout;
 function toast(s){const el=$('pwaToast');el.textContent=s;el.classList.add('show');clearTimeout(timeout);timeout=setTimeout(()=>el.classList.remove('show'),2600)}
 function setTab(active){tabs.forEach(b=>{const on=b.dataset.tab===active;b.classList.toggle('active',on);if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')})}
-function moveExplore(){document.getElementById('explore').scrollIntoView({behavior:'smooth',block:'start'})}
+function showView(view){
+ document.body.dataset.pickgoView=view;
+ if(view==='home')setTimeout(()=>{if(typeof map!=='undefined')map?.invalidateSize?.()},0);
+}
+function moveExplore(){showView('home');setTab('home');$('explore').scrollIntoView({behavior:'smooth',block:'start'})}
 function action(tab){
- if(tab==='matches'){document.getElementById('matches').scrollIntoView({behavior:'smooth'});setTab(tab);return;}
- if(tab==='home'){if(typeof state!=='undefined'&&state.favoritesOnly){state.favoritesOnly=false;render()}window.scrollTo({top:0,behavior:'smooth'})}
- if(tab==='courts'){if(typeof state!=='undefined'&&state.favoritesOnly){state.favoritesOnly=false;render()}moveExplore()}
- if(tab==='favorites'){if(typeof state!=='undefined'){state.favoritesOnly=true;render()}moveExplore();if(typeof setMobileView==='function')setMobileView('list')}
- if(tab==='account'){$('topAccount')?.click()}
- setTab(tab);
+ if(tab==='matches'){showView('matches');setTab('matches');window.scrollTo({top:0,behavior:'instant'});return;}
+ showView('home');
+ if(tab==='home'||tab==='courts'){
+  if(typeof state!=='undefined'&&state.favoritesOnly){state.favoritesOnly=false;render()}
+  setTab('home');window.scrollTo({top:0,behavior:'instant'});return;
+ }
+ if(tab==='favorites'){
+  if(typeof state!=='undefined'){state.favoritesOnly=true;render()}
+  moveExplore();if(typeof setMobileView==='function')setMobileView('list');return;
+ }
+ if(tab==='account'){$('topAccount')?.click();setTab('account')}
 }
 tabs.forEach(b=>b.addEventListener('click',()=>action(b.dataset.tab)));
-$('topFavorites')?.addEventListener('click',()=>setTab(typeof state!=='undefined'&&state.favoritesOnly?'favorites':'courts'));
+$('topFavorites')?.addEventListener('click',()=>{showView('home');setTab('home');moveExplore()});
+$('topAccount')?.addEventListener('click',()=>{showView('home');setTab('account')});
+for(const dlg of [$('memberDialog'),$('authDialog')])dlg?.addEventListener('close',()=>{
+ if(!$('memberDialog')?.open&&!$('authDialog')?.open&&document.querySelector('#pwaTabs [aria-current="page"]')?.dataset.tab==='account')setTab('home');
+});
+$('memberGoBookings')?.addEventListener('click',()=>{showView('home');setTab('home');$('labBooking').scrollIntoView({behavior:'smooth'})});
+for(const link of document.querySelectorAll('.nav a[href="#matches"],.nav a[href="#explore"],.brand')){
+ link.addEventListener('click',e=>{e.preventDefault();action(link.getAttribute('href')==='#matches'?'matches':'home')});
+}
 function openInstall(){
  const dlg=$('pwaInstallDialog');
  if(!isIOS){
