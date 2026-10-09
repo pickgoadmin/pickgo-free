@@ -184,14 +184,14 @@
 </section>
 
 </main>
-<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v0.8.0 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>자료 참고: <a href="https://pickleballkorea.com/venues" target="_blank" rel="noopener noreferrer">피클볼코리아</a> · <a href="https://tokti.ai/pickleball/courts" target="_blank" rel="noopener noreferrer">톡티 피클볼</a> · 각 시설 공식 사이트</div></div></footer>
+<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v0.8.2 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>외부 링크: 구장 공식 홈페이지 우선 · 미확인 구장은 네이버 지도 한국어 검색</div></div></footer>
 
 <dialog id="authDialog" class="auth-dialog" aria-labelledby="authDialogTitle">
  <div class="auth-box">
   <div class="auth-heading"><div><div class="auth-eyebrow">WELCOME TO PICKGO</div><div class="auth-title" id="authDialogTitle">PICKGO 로그인</div><p class="auth-subtitle">한 번 가입하면 예약·결제 내역을 하나의 계정으로 관리할 수 있도록 준비하고 있습니다.</p></div><button type="button" class="auth-close" data-close-auth aria-label="닫기">×</button></div>
   <div class="auth-tabs" id="authTabs"><button type="button" class="on" data-auth-mode="login">로그인</button><button type="button" data-auth-mode="signup">회원가입</button></div>
-  <div class="auth-social"><button type="button" id="authGoogle"><span aria-hidden="true">G</span> Google로 계속하기</button><button type="button" id="authKakao" class="kakao"><span aria-hidden="true">●</span> 카카오로 계속하기</button></div>
-  <div class="auth-provider-hint" id="authProviderHint">Google·카카오 로그인은 OAuth 연결을 완료하면 활성화됩니다.</div>
+  <div class="auth-social"><button type="button" id="authGoogle"><span aria-hidden="true">G</span> Google 계정으로 계속하기</button></div>
+  <div class="auth-provider-hint" id="authProviderHint">이메일로 회원가입하거나 Google 계정으로 간편하게 로그인하세요.</div>
   <div class="auth-or">또는 이메일로 계속하기</div>
   <form id="authForm" novalidate>
    <div id="authNicknameRow" hidden><label class="auth-field" for="authNickname">닉네임 (선택)</label><input class="auth-input" id="authNickname" maxlength="24" autocomplete="nickname" placeholder="예: 피클볼러"></div>
@@ -203,7 +203,7 @@
   <div style="text-align:center"><button type="button" id="authForgot" class="auth-small-action">비밀번호를 잊으셨나요?</button></div>
   <form id="authRecoveryForm" hidden><label class="auth-field" for="authRecoveryPassword">새 비밀번호</label><input class="auth-input" id="authRecoveryPassword" type="password" autocomplete="new-password" minlength="8" placeholder="8자 이상"><button class="auth-submit" type="submit">새 비밀번호 저장</button></form>
   <div class="auth-message" id="authMessage" role="status" aria-live="polite"></div>
-  <p class="auth-disclaimer">현재 베타 서비스로 실제 예약·결제는 제공하지 않습니다. 이메일 확인 메일은 Supabase 무료 설정에 따라 프로젝트 팀원에게만 발송될 수 있습니다. 정식 회원 모집 전 개인정보처리방침·메일 발송 설정이 필요합니다.</p>
+  <p class="auth-disclaimer">무료 베타 서비스이며 실제 예약·결제는 제공하지 않습니다. 일반 이용자 이메일 가입을 공개하기 전에는 Supabase의 SMTP·이메일 인증 및 개인정보처리방침을 설정해야 합니다.</p>
  </div>
 </dialog>
 <dialog id="memberDialog" class="auth-dialog" aria-labelledby="memberTitle"><div class="auth-box"><div class="auth-heading"><div><div class="auth-eyebrow">PICKGO ACCOUNT</div><div class="auth-title" id="memberTitle">마이페이지</div></div><button type="button" class="auth-close" data-close-member aria-label="닫기">×</button></div>
@@ -216,49 +216,38 @@
     <div class="lab-mini" id="labDataHelp">테스트 예약 정보입니다. 실제 구장 예약은 아닙니다.</div>
  </section>
  <div class="profile-actions"><button type="button" id="memberGoBookings" class="primary">테스트 예약 화면으로 이동 ↗</button><button type="button" id="memberLogout">로그아웃</button></div>
- <details class="login-settings" id="loginSettings">
-  <summary>로그인 설정</summary>
-  <div class="login-settings-body">
-   <p class="login-settings-intro">처음 가입한 로그인 방식과 관계없이 PICKGO 회원정보를 관리합니다. 기존 계정에 아직 가입하지 않은 SNS를 추가하거나, 이미 따로 가입된 두 계정을 본인 확인 후 같은 PICKGO 회원번호로 연결할 수 있습니다.</p>
-   <section class="link-card" id="identityLinkSection" aria-label="로그인 수단 연결">
-    <div class="link-title">로그인 수단 추가</div>
-    <div class="link-status" id="identityLinkStatus" role="status">연결된 로그인 수단 확인 중…</div>
-    <div class="provider-connect-buttons">
-      <button type="button" id="connectGoogle">+ Google 연결</button>
-      <button type="button" id="connectKakao">+ 카카오 연결</button>
-    </div>
-    <p class="link-message" id="identityLinkMessage" role="status" aria-live="polite"></p>
-    <p class="provider-small">이미 별도 PICKGO 계정을 만든 SNS는 이 방법으로 직접 연결되지 않습니다. 그때는 아래 기존 계정 본인 확인을 이용하세요.</p>
-   </section>
-   <section class="link-card" id="accountLinkSection" aria-label="테스트 계정 관리">
-    <div class="link-title">기존에 따로 가입한 두 계정 확인 <span class="link-beta">본인 확인 필수</span></div>
-    <div class="link-status" id="accountLinkStatus" role="status">로그인 설정 확인 중…</div>
-    <div class="link-buttons" id="accountLinkButtons">
-     <button type="button" id="accountLinkStart">기존 두 계정 연결 시작</button>
-     <button type="button" id="accountLinkSwitch" hidden>다른 계정으로 로그인</button>
-     <button type="button" id="accountLinkConfirm" hidden>두 계정의 PICKGO 회원정보 연결 승인</button>
-     <button type="button" id="accountLinkReset" class="link-plain" hidden>확인 취소</button>
-     <button type="button" id="accountLinkUnlink" class="link-plain" hidden>기존 두 계정 연결 해제</button>
-    </div>
-    <p class="link-message" id="accountLinkMessage" role="status" aria-live="polite"></p>
-   </section>
-   <small class="login-settings-id" id="memberId"></small>
-  </div>
- </details>
- <p class="auth-disclaimer">현재는 무료 테스트 예약만 제공하며 실제 예약·결제는 불가능합니다. 기존에 따로 가입된 SNS는 PICKGO 회원번호를 공유하며, Supabase 인증 ID 자체는 삭제하거나 병합하지 않습니다.</p>
+ 
+ <p class="auth-disclaimer">현재는 무료 테스트 예약만 제공합니다. 실제 예약·결제는 불가능하며, 서로 다른 로그인 계정의 예약이 자동으로 병합되지 않습니다.</p>
  </div></dialog>
-<dialog id="venueDialog" aria-labelledby="dialogTitle"><div class="dialoginner"><button type="button" id="closeDialog" class="closemodal" aria-label="닫기">×</button><div class="pill" id="dialogRegion">지역</div><h2 id="dialogTitle"></h2><div class="modaladdr" id="dialogAddress"></div><div class="modalrow"><div><b>구장 유형</b> · <span id="dialogType"></span></div><div><b>이용 방법</b> · <span id="dialogBooking"></span></div><div style="margin-top:8px" id="dialogNote"></div></div><div class="modalactions"><a id="dialogMap" class="secondarybtn" href="#" target="_blank" rel="noopener noreferrer">↗ 지도에서 찾기</a><a id="dialogLink" class="primarybtn" href="#" target="_blank" rel="noopener noreferrer">↗ 확인하기</a></div><div id="scheduleLinks" class="schedulelinks"></div><div class="shareline"><button type="button" id="shareVenue" class="sharebutton">링크 공유 ↗</button><span id="shareNotice" role="status" aria-live="polite"></span></div><div class="modalnotice">해당 외부 사이트에서 직접 최신 예약 일정과 이용 약관을 확인하세요. PICKGO는 현재 예약 확정·결제를 처리하지 않습니다.<br><a id="dialogSource" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:underline">자료 출처 확인 ↗</a></div></div></dialog>
+<dialog id="venueDialog" aria-labelledby="dialogTitle"><div class="dialoginner"><button type="button" id="closeDialog" class="closemodal" aria-label="닫기">×</button><div class="pill" id="dialogRegion">지역</div><h2 id="dialogTitle"></h2><div class="modaladdr" id="dialogAddress"></div><div class="modalrow"><div><b>구장 유형</b> · <span id="dialogType"></span></div><div><b>이용 방법</b> · <span id="dialogBooking"></span></div><div style="margin-top:8px" id="dialogNote"></div></div><div class="modalactions"><a id="dialogMap" class="secondarybtn" href="#" target="_blank" rel="noopener noreferrer">↗ 지도에서 찾기</a><a id="dialogLink" class="primarybtn" href="#" target="_blank" rel="noopener noreferrer">↗ 확인하기</a></div><div id="scheduleLinks" class="schedulelinks"></div><div class="shareline"><button type="button" id="shareVenue" class="sharebutton">링크 공유 ↗</button><span id="shareNotice" role="status" aria-live="polite"></span></div><div class="modalnotice">공식 홈페이지가 확인된 구장은 해당 사이트로 연결하고, 확인되지 않은 구장은 네이버 지도에서 이름·주소를 검색합니다. 운영 시간과 예약은 시설에 직접 확인하세요. PICKGO는 현재 실제 예약·결제를 처리하지 않습니다.<br><a id="dialogSource" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:underline">구장 위치·정보 검색 ↗</a></div></div></dialog>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 "use strict";
-const APP = Object.freeze({brand:'PICKGO', plannedDomain:'pickgo.kr', stage:'beta', version:'0.7.0', lastReviewed:'2026-10-09'});
+const APP = Object.freeze({brand:'PICKGO', plannedDomain:'pickgo.kr', stage:'beta', version:'0.8.2', lastReviewed:'2026-10-09'});
 const COURTS = [{"name":"광나루한강공원 피클볼장","region":"서울","address":"서울특별시 강동구 선사로 83-106","type":"야외","bookingStatus":"공식예약","source":"https://hangang.seoul.go.kr/www/bbsPost/17/653/detail.do?mid=604","bookingUrl":"https://yeyak.seoul.go.kr/web/reservation/selectReservView.do?rsv_svc_id=S260512150509127677","note":"전용 14면. 서울시 예약사이트에서 접수일·요금·운영시간 확인.","id":"court-01","lat":37.552566,"lng":127.122736,"bookingUrlWeekend":"https://yeyak.seoul.go.kr/web/reservation/selectReservView.do?reSvc=Y&rsv_svc_id=S260512152144920078","priceInfo":"평일 4,000원 / 주말 5,200원 (1시간)","locationAccuracy":"approximate","locationSource":"https://hangang.seoul.go.kr/www/bbsPost/17/653/detail.do?mid=604"},{"name":"강동 피클볼 구장","region":"서울","address":"서울 강동구 상일동 479","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-02","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"다이나믹테니스 응암점 & 피클볼센터","region":"서울","address":"서울 은평구 응암로 301-1","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-03","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"듀폭스피클볼아카데미","region":"서울","address":"서울 강남구 논현로175길 40","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-04","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"PICKLEBOX 서울숲","region":"서울","address":"서울특별시 성동구 서울숲2길 32-14 지하1층 B102호","type":"실내","bookingStatus":"공식예약","source":"https://www.picklebox.co.kr/visit","bookingUrl":"https://naver.me/FCAfFuDm","note":"공식 홈페이지에 네이버 예약 안내가 있습니다. 24시간 무인 운영. 실제 빈 시간은 예약 페이지에서 확인하세요.","id":"court-05","lat":37.5456719244883,"lng":127.042909732192,"locationAccuracy":"building","locationSource":"https://findby.co.kr/details/04769-112004109318-st-652bf0a94e0223ae1805f40c"},{"name":"PICKLEZONE 피클존","region":"서울","address":"서울특별시 영등포구 도신로 73 지하1층","type":"실내","bookingStatus":"공식예약","source":"https://picklezone.co.kr/","bookingUrl":"https://picklezone.co.kr/","note":"공식 사이트에서 대관·오픈플레이·레슨 예약 확인.","id":"court-06","lat":37.506544116006,"lng":126.90062312908,"locationAccuracy":"building","locationSource":"https://jusoga.com/b/1156011800102510012025952/"},{"name":"SPOMOTIVE 반포","region":"서울","address":"서울특별시 서초구 고무래로 18-4","type":"실내","bookingStatus":"공식문의","source":"https://mohazi.net/magazine/bookable-pickleball-courts-in-korea/","bookingUrl":"https://www.spomotive.com/","note":"공식 사이트에서 상품과 예약·문의 경로 확인.","id":"court-07","lat":37.502881708814,"lng":127.01018254651,"locationAccuracy":"building","locationSource":"https://jusoga.com/b/1165010700100550002016453/"},{"name":"서울숲 배드민턴장2 피클볼 코트","region":"서울","address":"서울특별시 성동구 뚝섬로 273","type":"야외","bookingStatus":"공공예약검색","source":"https://mohazi.net/magazine/bookable-pickleball-courts-in-korea/","bookingUrl":"https://yeyak.seoul.go.kr/","note":"공공예약 사이트에서 해당 피클볼 종목 공고 확인.","id":"court-08"},{"name":"서대문구 다목적체육시설 피클볼","region":"서울","address":"서울특별시 서대문구 거북골로 34 명지대학교 MCC관 1층","type":"실내","bookingStatus":"공공예약검색","source":"https://yeyak.seoul.go.kr/web/reservation/selectReservView.do?rsv_svc_id=S260629150206374513","bookingUrl":"https://yeyak.seoul.go.kr/","note":"다목적 체육시설 공고가 과거에 등록되었으나 2026년 7월 공고는 종료됨. 새 접수 공고와 이용 조건을 재확인하세요.","id":"court-09","lat":37.5803770224,"lng":126.9213485309,"locationAccuracy":"campus","locationSource":"https://dst.purpleo.kr/article/925"},{"name":"410피클볼","region":"경기","address":"경기 남양주시 진건읍 진관로311번길 65","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-10","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"고양시피클볼협회 피클볼장","region":"경기","address":"경기 고양시 덕양구 행주내동 733-6","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-11","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"덤앤더머 피클볼아카데미","region":"경기","address":"경기 군포시 공단로140번길 22","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-12","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"루트피클볼","region":"경기","address":"경기 하남시 신우실로 83","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-13","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"어메이징 피클볼","region":"경기","address":"경기 양평군 용문면 용문로526번길 5","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-14","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"에이픽피클볼아카데미","region":"경기","address":"경기 용인시 수지구 달맞이로 40","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-15","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"제로제로투피클볼","region":"경기","address":"경기 화성시 봉담읍 신양2길 163-1","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","bookingUrl":"","id":"court-16","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"조이피클볼","region":"경기","address":"경기 성남시 분당구 정자로76번길 7","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-17","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"카이로스피클볼클럽","region":"경기","address":"경기 용인시 처인구 모현읍 오산로 45-43","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-18","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"파주피클볼리스트","region":"경기","address":"경기 파주시 탄현면 소리개길 74-110","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-19","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"피클볼하우스","region":"경기","address":"경기 하남시 감일중앙로 89","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-20","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"오크밸리리조트 피클볼파크","region":"강원","address":"강원특별자치도 원주시 지정면 월송리 1061-16","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","bookingUrl":"","id":"court-21","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"스포티업 피클볼 아레나","region":"경북","address":"경북 칠곡군 동명면 금암중앙길 134","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-22","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"탑테니스 & 피클볼","region":"대구","address":"대구 수성구 유니버시아드로 140","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-23","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"DPA 피클볼센터","region":"대전","address":"대전 유성구 월드컵대로 32","type":"미확인","bookingStatus":"문의","source":"https://daejeon.go.kr/drh/board/boardNormalView.do?boardId=normal_0167&menuSeq=&ntatcSeq=1521458899&pageIndex=1","bookingUrl":"","note":"대전시 행사 개최 사실 확인. 일반 개별 대관은 별도 문의.","id":"court-24"},{"name":"온피클볼","region":"세종","address":"세종특별자치시 금남면 안금로 351-48","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-25","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"데일리그라운드 테니스 & 피클볼 청라점","region":"인천","address":"인천광역시 청라 파랑로 224","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","bookingUrl":"","id":"court-26","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"스토너리 피클볼장","region":"인천","address":"인천 강화군 내가면 외포리 산84-1","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-27","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"김교운피클볼아카데미","region":"충북","address":"충북 청주시 흥덕구 백봉로 249","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-28","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"무심천 피클볼장","region":"충북","address":"충북 청주시 흥덕구 신봉동 1","type":"미확인","bookingStatus":"문의","source":"https://pickleballkorea.com/venues","id":"court-29","bookingUrl":"","note":"운영시간·요금·예약 가능 여부는 시설 운영자에게 확인하세요."},{"name":"영도실내체육관","region":"부산","address":"부산광역시 영도구 함지로79번길 8","type":"실내","bookingStatus":"동호회","source":"https://tokti.ai/pickleball/courts?region=%EB%B6%80%EC%82%B0","bookingUrl":"","note":"동호회 이용 정보에 근거한 시설. 개인 대관 가능 여부 확인.","id":"court-30"},{"name":"하이리페움","region":"부산","address":"부산광역시 기장군 일광읍 횡계리 301","type":"실내","bookingStatus":"동호회","source":"https://tokti.ai/pickleball/courts?region=%EB%B6%80%EC%82%B0","bookingUrl":"","note":"동호회 이용 기록. 피클볼 시간 및 출입 조건 별도 확인.","id":"court-31"},{"name":"첨단다목적체육센터","region":"광주","address":"광주광역시 광산구 첨단강변로 76","type":"실내","bookingStatus":"동호회","source":"https://tokti.ai/pickleball/courts?region=%EA%B4%91%EC%A3%BC","bookingUrl":"","note":"동호회 이용 장소로 등록됨. 개별 대관은 확인 필요.","id":"court-32"},{"name":"운암복합문화체육센터","region":"광주","address":"광주광역시 북구 북문대로98번길 20","type":"실내","bookingStatus":"동호회","source":"https://tokti.ai/pickleball/courts?region=%EA%B4%91%EC%A3%BC","bookingUrl":"","note":"일반 대관 여부 및 피클볼 운영시간 별도 확인.","id":"court-33"},{"name":"롯데호텔 제주 피클볼 코트","region":"제주","address":"제주특별자치도 서귀포시 중문관광로72번길 35","type":"야외","bookingStatus":"숙박문의","source":"https://tokti.ai/pickleball/courts?region=%EC%A0%9C%EC%A3%BC","bookingUrl":"","note":"호텔 시설. 숙박객 한정 여부와 요금은 호텔 확인.","id":"court-34"},{"name":"신산공원 야외구장","region":"제주","address":"제주특별자치도 제주시 일도이동 830","type":"야외","bookingStatus":"동호회","source":"https://tokti.ai/pickleball/courts?region=%EC%A0%9C%EC%A3%BC","bookingUrl":"","note":"공원 내 동호회 운동 장소. 대관·구획 사용 여부 확인.","id":"court-35"},{"name":"탕정실내체육관","region":"충남","address":"충청남도 아산시 탕정면 한내로 209","type":"실내","bookingStatus":"동호회","source":"https://tokti.ai/pickleball/courts?region=%EC%B6%A9%EB%82%A8","bookingUrl":"","note":"동호회 운동 장소로 등록. 이용 가능한 일정 확인.","id":"court-36"},{"name":"천안생활체육공원","region":"충남","address":"충청남도 천안시 동남구 천안대로 357","type":"야외","bookingStatus":"동호회","source":"https://tokti.ai/pickleball/courts?region=%EC%B6%A9%EB%82%A8","bookingUrl":"","note":"야외 동호회 운동 장소. 시설 운영·대관 가능 여부 확인.","id":"court-37"},{"name":"진주기계공업고등학교 체육관","region":"경남","address":"경상남도 진주시 공단로43번길 25","type":"실내","bookingStatus":"동호회","source":"https://tokti.ai/pickleball/courts?region=%EA%B2%BD%EB%82%A8","bookingUrl":"","note":"학교 체육관. 일반인 임의 출입 불가할 수 있으며 동호회 이용만 확인됨.","id":"court-38"},{"name":"창원중앙중학교","region":"경남","address":"경상남도 창원시 성산구 반지로3번길 14","type":"실내","bookingStatus":"동호회","source":"https://tokti.ai/pickleball/courts?region=%EA%B2%BD%EB%82%A8","bookingUrl":"","note":"학교 시설. 반드시 주최 동호회·학교에 이용 가능 여부 확인.","id":"court-39"},{"name":"한누리전당 산디관","region":"전북","address":"전북특별자치도 장수군 장수읍 한누리로 393","type":"실내","bookingStatus":"동호회","source":"https://tokti.ai/pickleball/courts?region=%EC%A0%84%EB%B6%81","bookingUrl":"","note":"공공 체육시설 동호회 장소 정보. 개인 대관은 확인 필요.","id":"court-40"},{"name":"월평초등학교","region":"울산","address":"울산광역시 남구 신남로95번길 15","type":"실내","bookingStatus":"동호회","source":"https://tokti.ai/pickleball/courts?region=%EC%9A%B8%EC%82%B0","bookingUrl":"","note":"학교 체육관 동호회 이용 장소. 개인 방문·대관 보장되지 않음.","id":"court-41"}];
 const CENTERS = {"서울":[37.5665,126.978],"경기":[37.4138,127.15],"인천":[37.4563,126.7052],"강원":[37.8228,128.1555],"대전":[36.3504,127.3845],"세종":[36.4801,127.289],"충북":[36.6357,127.491],"충남":[36.6588,126.6728],"광주":[35.1595,126.8526],"전북":[35.82,127.15],"대구":[35.8714,128.6014],"부산":[35.1796,129.0756],"울산":[35.5384,129.3114],"경북":[36.4919,128.8889],"경남":[35.2383,128.6924],"제주":[33.4996,126.5312]};
 const regionOrder=['전국','서울','경기','인천','강원','대전','세종','충북','충남','광주','전북','대구','부산','울산','경북','경남','제주'];
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const srcGoogle = v => 'https://map.naver.com/p/search/'+encodeURIComponent(v.name+' '+v.address);
+const venueMapSearch = v => 'https://map.naver.com/p/search/'+encodeURIComponent(v.name+' '+v.address);
+// Verified venue/operator/government pages only. Do not substitute an unrelated court directory.
+const VENUE_OFFICIAL = Object.freeze({
+ 'court-01':'https://hangang.seoul.go.kr/www/bbsPost/17/653/detail.do?mid=604',
+ 'court-05':'https://www.picklebox.co.kr/visit',
+ 'court-06':'https://picklezone.co.kr/',
+ 'court-07':'https://www.spomotive.com/',
+ 'court-09':'https://yeyak.seoul.go.kr/web/reservation/selectReservView.do?rsv_svc_id=S260629150206374513',
+ 'court-34':'https://www.lottehotel.com/jeju-hotel/ko.html'
+});
+function venueDestination(v){
+ const official=VENUE_OFFICIAL[v.id];
+ return official?{url:official,label:'공식 홈페이지 / 안내 열기',isOfficial:true}:
+   {url:venueMapSearch(v),label:'네이버 지도에서 시설 검색',isOfficial:false};
+}
+const venueSpecificBooking = v => v.bookingStatus==='공식예약'&&v.bookingUrl&&
+  !['https://yeyak.seoul.go.kr/','https://pickleballkorea.com/venues'].includes(v.bookingUrl);
+
 let favorites = new Set();
 try { favorites = new Set(JSON.parse(localStorage.getItem('pickgo:favorites:v1')||'[]')); } catch { favorites = new Set(); }
 let state={region:'전국',type:'전체',q:'',onlyBooking:false,onlyDirect:false, favoritesOnly:false,view:'list'};
@@ -267,13 +256,40 @@ const courtIcon=type=>'<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><
 function saveFavorites(){try{localStorage.setItem('pickgo:favorites:v1',JSON.stringify([...favorites]));}catch{} $('favNum').textContent=favorites.size;}
 function filtered(){const q=state.q.trim().toLocaleLowerCase('ko');return COURTS.filter(v=> (state.region==='전국'||v.region===state.region) && (state.type==='전체'||v.type===state.type) && (!q||(v.name+' '+v.address+' '+v.region).toLocaleLowerCase('ko').includes(q)) && (!state.onlyBooking||Boolean(v.bookingUrl)) && (!state.onlyDirect||v.bookingStatus==='공식예약') && (!state.favoritesOnly||favorites.has(v.id))).sort((a,b)=>(b.bookingStatus==='공식예약')-(a.bookingStatus==='공식예약'));}
 function statusTag(v){if(v.bookingStatus==='공식예약')return ['운영사 예약 연결','public'];if(v.bookingStatus==='공공예약검색')return ['공공 예약 검색','public'];if(v.bookingStatus==='공식문의')return ['예약·문의 안내','public'];if(v.bookingStatus==='동호회')return ['동호회 이용 확인','gray'];if(v.bookingStatus==='숙박문의')return ['숙박시설 문의','gray'];return ['이용 확인 필요','gray'];}
-function labelAction(v){return v.bookingStatus==='공식예약'?'공식 예약 열기':v.bookingUrl?'예약·문의 안내':'운영 정보 확인';}
-function cards(list){return list.map(v=>{const [status,clazz]=statusTag(v);const direct=v.bookingStatus==='공식예약'&&v.bookingUrl;const mapLabel=Number.isFinite(v.lat)?'<span class="locationtag">\u25cf \uac74\ubb3c\u00b7\uc2dc\uc124 \uc88c\ud45c</span>':'';const directBtn=direct?`<a href="${esc(v.bookingUrl)}" target="_blank" rel="noopener noreferrer" class="directlink" aria-label="${esc(v.name)} \uacf5\uc2dd \uc608\uc57d \uc0ac\uc774\ud2b8">\uc608\uc57d\ucc98 \uc5f4\uae30 \u2197</a>`:`<button class="textaction" data-details="${v.id}">\uc0c1\uc138 \ubcf4\uae30 \u2197</button>`;return `<article class="venue-card"><div class="venue-icon ${v.type==='\uc57c\uc678'?'outdoor':v.type==='\ubbf8\ud655\uc778'?'unknown':''}">${courtIcon(v.type)}<span class="iconlabel">${esc(v.type)}</span></div><div class="venue-body"><div class="venue-tags"><span class="pill">${esc(v.region)}</span><span class="pill ${direct?'directtag':clazz}">${esc(status)}</span>${mapLabel}</div><button class="venue-name" data-details="${v.id}">${esc(v.name)}</button><div class="venue-address">${esc(v.address)}</div>${v.priceInfo?`<div class="miniinfo">${esc(v.priceInfo)} \u00b7 \uc608\uc57d\ucc98\uc5d0\uc11c \uc7ac\ud655\uc778</div>`:''}<div class="venue-bottom"><span class="status">${direct?'\uc678\ubd80 \uc608\uc57d \uc0ac\uc774\ud2b8':'\ubc29\ubb38 \uc804 \ud655\uc778'}</span>${directBtn}</div></div><button type="button" class="fav ${favorites.has(v.id)?'on':''}" data-fav="${v.id}" aria-label="${esc(v.name)} \uc990\uaca8\ucc3e\uae30 ${favorites.has(v.id)?'\ud574\uc81c':'\ucd94\uac00'}" title="\uc990\uaca8\ucc3e\uae30">${favorites.has(v.id)?'\u2665':'\u2661'}</button></article>`}).join('');}
+function labelAction(v){return venueDestination(v).label;}
+function cards(list){return list.map(v=>{
+ const [status,clazz]=statusTag(v);
+ const official=venueDestination(v).isOfficial;
+ const mapLabel=Number.isFinite(v.lat)?'<span class="locationtag">● 건물·시설 좌표</span>':'';
+ return `<article class="venue-card"><div class="venue-icon ${v.type==='야외'?'outdoor':v.type==='미확인'?'unknown':''}">${courtIcon(v.type)}<span class="iconlabel">${esc(v.type)}</span></div><div class="venue-body"><div class="venue-tags"><span class="pill">${esc(v.region)}</span><span class="pill ${official?'directtag':clazz}">${esc(status)}</span>${mapLabel}</div><button class="venue-name" data-details="${v.id}">${esc(v.name)}</button><div class="venue-address">${esc(v.address)}</div>${v.priceInfo?`<div class="miniinfo">${esc(v.priceInfo)} · 예약처에서 재확인</div>`:''}<div class="venue-bottom"><span class="status">${official?'시설 공식 안내':'운영 정보 확인'}</span><button class="textaction" type="button" data-details="${v.id}">상세 보기 ↗</button></div></div><button type="button" class="fav ${favorites.has(v.id)?'on':''}" data-fav="${v.id}" aria-label="${esc(v.name)} 즐겨찾기 ${favorites.has(v.id)?'해제':'추가'}" title="즐겨찾기">${favorites.has(v.id)?'♥':'♡'}</button></article>`
+}).join('');}
 function render(){const result=filtered();$('resultCount').textContent=result.length;$('resultSubtitle').textContent=state.favoritesOnly?'저장한 구장만 표시합니다.':state.region==='전국'?'공개된 피클볼장 정보 · 이용 방식은 시설별 확인':'선택한 '+state.region+' 지역의 구장 정보';$('venueList').innerHTML=result.length?cards(result):'<div class="empty"><div style="font-size:32px">⌕</div><h3>검색 결과가 없습니다.</h3><p>지역이나 필터 조건을 바꿔보세요.</p><button class="tinybtn" id="emptyReset">모두 보기</button></div>';
  $('regionChips').innerHTML=regionOrder.map(region=>`<button type="button" class="regchip ${region===state.region?'on':''}" data-region="${region}">${region}${region==='전국'?'':' '+COURTS.filter(v=>v.region===region).length}</button>`).join('');
  document.querySelectorAll('[data-type]').forEach(btn=>btn.classList.toggle('on',btn.dataset.type===state.type));$('filterBooking').classList.toggle('on',state.onlyBooking);$('filterDirect').classList.toggle('on',state.onlyDirect);$('topFavorites').classList.toggle('on',state.favoritesOnly);saveFavorites();redrawMap(result);}
 function reset(){state={region:'전국',type:'전체',q:'',onlyBooking:false,onlyDirect:false,favoritesOnly:false,view:state.view};$('search').value='';render();}
-function openDetail(id){const v=COURTS.find(x=>x.id===id);if(!v)return;$('dialogRegion').textContent=v.region;$('dialogTitle').textContent=v.name;$('dialogAddress').textContent=v.address;$('dialogType').textContent=v.type==='미확인'?'시설에 확인 필요':v.type;$('dialogBooking').textContent=statusTag(v)[0];$('dialogNote').textContent=v.note||'이용 전 운영 조건과 예약 경로를 확인하세요.';$('dialogMap').href=srcGoogle(v);$('dialogLink').href=v.bookingUrl||v.source;$('dialogLink').textContent=labelAction(v)+' ↗';$('dialogSource').href=v.source;$('scheduleLinks').innerHTML=v.bookingUrlWeekend?`<a target="_blank" rel="noopener noreferrer" href="${esc(v.bookingUrl)}">평일 예약 ↗</a><a target="_blank" rel="noopener noreferrer" href="${esc(v.bookingUrlWeekend)}">주말·공휴일 예약 ↗</a>`:'';$('shareVenue').dataset.id=v.id;$('shareNotice').textContent='';if(location.protocol==='http:'||location.protocol==='https:')history.replaceState(null,'',location.pathname+location.search+'#venue='+encodeURIComponent(v.id));const dlg=$('venueDialog');if(typeof dlg.showModal==='function')dlg.showModal();else dlg.setAttribute('open','');}
+function openDetail(id){
+ const v=COURTS.find(x=>x.id===id);if(!v)return;
+ const dest=venueDestination(v);
+ $('dialogRegion').textContent=v.region;
+ $('dialogTitle').textContent=v.name;
+ $('dialogAddress').textContent=v.address;
+ $('dialogType').textContent=v.type==='미확인'?'시설에 확인 필요':v.type;
+ $('dialogBooking').textContent=statusTag(v)[0];
+ $('dialogNote').textContent=v.note||'이용 전 운영 조건과 예약 경로를 확인하세요.';
+ $('dialogMap').href=venueMapSearch(v);
+ $('dialogLink').href=dest.url;
+ $('dialogLink').textContent=dest.label+' ↗';
+ $('dialogLink').setAttribute('aria-label',v.name+' '+dest.label);
+ $('dialogSource').href=venueMapSearch(v);
+ $('dialogSource').textContent='네이버 지도에서 이름·주소 검색 ↗';
+ const urls=[];
+ if(venueSpecificBooking(v)&&v.bookingUrl!==dest.url)urls.push(`<a target="_blank" rel="noopener noreferrer" href="${esc(v.bookingUrl)}">공식 예약처 열기 ↗</a>`);
+ if(v.bookingUrlWeekend)urls.push(`<a target="_blank" rel="noopener noreferrer" href="${esc(v.bookingUrlWeekend)}">주말·공휴일 예약 ↗</a>`);
+ $('scheduleLinks').innerHTML=urls.join('');
+ $('shareVenue').dataset.id=v.id;$('shareNotice').textContent='';
+ if(location.protocol==='http:'||location.protocol==='https:')history.replaceState(null,'',location.pathname+location.search+'#venue='+encodeURIComponent(v.id));
+ const dlg=$('venueDialog');if(typeof dlg.showModal==='function')dlg.showModal();else dlg.setAttribute('open','');
+}
 function buildMap(){if(!window.L){$('map').innerHTML='<div class="fallback">지도를 불러오지 못했습니다.<br>구장 목록과 지도에서 찾기 기능은 계속 사용하실 수 있습니다.</div>';return;}map=L.map('map',{scrollWheelZoom:false,zoomControl:true}).setView([36.35,127.7],7);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap contributors</a>'}).addTo(map);group=L.layerGroup().addTo(map);const note=document.createElement('div');note.className='mapoverlay';note.innerHTML='<strong>숫자: 지역 대표 위치 · 연두색: 건물/시설 지점</strong><span class="mappinsummary" id="mapOverlayCount"></span>';$('map').appendChild(note);redrawMap(filtered());}
 function redrawMap(list){if(!map||!group)return;group.clearLayers();const counts={};list.forEach(v=>{counts[v.region]=(counts[v.region]||0)+1;});for(const [region,count] of Object.entries(counts)){const p=CENTERS[region];if(!p)continue;const ic=L.divIcon({className:'',html:'<div class="numberpin '+(state.region===region?'selected':'')+'">'+count+'</div>',iconSize:[39,39],iconAnchor:[20,20]});L.marker(p,{icon:ic,title:region+' '+count+'\uac1c (\uc9c0\uc5ed \ub300\ud45c \uc704\uce58)'}).addTo(group).bindTooltip(region+' \u00b7 '+count+'\uacf3 (\uc9c0\uc5ed \uc911\uc2ec)').on('click',()=>{state.region=region;state.view='list';render();setMobileView('list');document.getElementById('explore').scrollIntoView({behavior:'smooth'});});}
 let n=0;
@@ -359,211 +375,138 @@ state.day=koToday();reload();setupCloud();
 
 
 <script>
-/* PICKGO v0.5 membership UI; NEVER place OAuth client secrets or PG secrets here. */
-const PICKGO_SOCIAL_CONFIG = { googleEnabled: true, kakaoEnabled: true };
+/* PICKGO v0.8.2: email/password + Google only. No Kakao OAuth or identity linking UI.
+   Auth data and existing bookings in Supabase are not removed by this change. */
 (() => {'use strict';
-const $=id=>document.getElementById(id);
-const bridge=()=>window.PICKGO_AUTH_BRIDGE;
-const authDialog=$('authDialog'),memberDialog=$('memberDialog');
-let mode='login',busy=false;
-let profileUserId=null,sharedNickname='',profileLoadSerial=0,pickgoMemberId=null,identityCheckPending=false;
-const base=()=>location.origin+location.pathname;
-async function loadSharedProfile(id){
- const db=bridge()?.getClient();if(!id||!db)return;
- const ticket=++profileLoadSerial;
- try{
-  // Initializes or reads the canonical app-member ID, independent of the OAuth provider.
-  const member=await db.rpc('pickgo_member_self');
-  if(ticket!==profileLoadSerial||bridge()?.getUser()?.id!==id)return;
-  if(!member.error&&typeof member.data==='string')pickgoMemberId=member.data;
-  const {data,error}=await db.rpc('pickgo_lab_profile_name');
-  if(error||ticket!==profileLoadSerial||bridge()?.getUser()?.id!==id)return;
-  sharedNickname=typeof data==='string'?data.trim():'';
-  render(bridge().getUser(),true);
- }catch{/* SQL may not be installed yet; use this account's nickname. */}
-}
-
-function tell(s,isError=false){$('authMessage').textContent=s;$('authMessage').classList.toggle('error',isError)}
-function setMode(next){mode=next;$('authTabs').hidden=next==='recovery';$('authForm').hidden=next==='recovery';$('authRecoveryForm').hidden=next!=='recovery';$('authForgot').hidden=next!=='login';$('authNicknameRow').hidden=next!=='signup';$('authConfirmRow').hidden=next!=='signup';$('authPassword').autocomplete=next==='signup'?'new-password':'current-password';$('authDialogTitle').textContent=next==='signup'?'PICKGO 회원가입':next==='recovery'?'비밀번호 변경':'PICKGO 로그인';$('authSubmit').textContent=next==='signup'?'이메일로 회원가입':'이메일로 로그인';document.querySelectorAll('[data-auth-mode]').forEach(b=>b.classList.toggle('on',b.dataset.authMode===next));tell('')}
-function ready(){const b=bridge();if(!b?.isCloud()||!b.getClient()){tell('아직 Supabase 연결 설정이 완료되지 않았습니다. GitHub index.html의 PICKGO_LAB_CONFIG에 Project URL과 공개 Publishable Key를 먼저 입력해 주세요.',true);return null}return b.getClient()}
-function open(m='login'){setMode(m);if(!authDialog.open)authDialog.showModal();if(!bridge()?.isCloud())ready()}
-function render(user,cloud){
- const id=user?.id||null;
- if(profileUserId!==id){profileUserId=id;sharedNickname='';pickgoMemberId=null;profileLoadSerial++;if(id)Promise.resolve().then(()=>loadSharedProfile(id))}
- const nickname=sharedNickname||user?.user_metadata?.display_name||user?.user_metadata?.full_name||user?.user_metadata?.name||user?.email?.split('@')[0]||'PICKGO 회원';
- $('topAccount').textContent=user?nickname:'로그인 / 가입';
- $('topAccount').title=user?'마이페이지 열기':'로그인 / 회원가입';
- $('memberName').textContent=user?nickname:'PICKGO 회원';
- $('memberEmail').textContent=user?.email||'이메일 미제공 (SNS 로그인)';
- $('memberId').textContent=user?'PICKGO 회원번호 · '+(pickgoMemberId?pickgoMemberId.slice(0,8)+'…':'확인 중…'):'';
- const prov=user?[...new Set([...(user.identities||[]).map(i=>i.provider),...(user.app_metadata?.providers||[]),user.app_metadata?.provider].filter(Boolean))]:[];
- const labels={google:'Google',kakao:'카카오',email:'이메일',phone:'휴대전화'};
- $('memberProviders').replaceChildren();
- for(const p of prov){const tag=document.createElement('span');tag.className='profile-method';tag.textContent=labels[p]||p;$('memberProviders').appendChild(tag)}
- if(user&&!prov.length){const tag=document.createElement('span');tag.className='profile-method';tag.textContent='회원 로그인';$('memberProviders').appendChild(tag)}
- $('memberEmailHelp').textContent=user&&!user.email?'이 로그인에서는 이메일이 제공되지 않았습니다. 테스트 예약은 정상적으로 이용할 수 있습니다.':'';
- $('memberEmailHelp').classList.toggle('warn',!!user&&!user.email);$('memberEmailHelp').hidden=!user||!!user.email;
-  if(user&&readIdentityPending())setTimeout(()=>finishIdentityLinkReturn(),1400);
- if(user&&(!memberDialog.open||document.activeElement!==$('memberNicknameEdit'))) $('memberNicknameEdit').value=sharedNickname||user.user_metadata?.display_name||user.user_metadata?.full_name||user.user_metadata?.name||'';
- if(user&&authDialog.open&&mode!=='recovery')authDialog.close();
- if(user&&getPending()?.from!==user.id&&getPending()&&!memberDialog.open){$('loginSettings').open=true;memberDialog.showModal();setTimeout(()=>{refreshLinked();refreshIdentityLinks();$('loginSettings').scrollIntoView({block:'nearest'})},0)}
-}
-window.PICKGO_AUTH_UI={open,render,recovery:()=>open('recovery')};
-$('topAccount').addEventListener('click',()=>{const u=bridge()?.getUser();if(u){render(u,true);$('memberProfileMessage').textContent='';memberDialog.showModal();$('loginSettings').open=!!getPending();refreshLinked();refreshIdentityLinks();loadSharedProfile(u.id)}else open('login')});
-document.querySelectorAll('[data-close-auth]').forEach(b=>b.addEventListener('click',()=>authDialog.close()));
-document.querySelectorAll('[data-close-member]').forEach(b=>b.addEventListener('click',()=>memberDialog.close()));
-for(const dlg of [authDialog,memberDialog])dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
-authDialog.addEventListener('close',()=>{$('authPassword').value='';$('authConfirmPassword').value='';$('authRecoveryPassword').value='';});
-document.querySelectorAll('[data-auth-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.authMode)));
-$('authGoogle').disabled=!PICKGO_SOCIAL_CONFIG.googleEnabled;
-$('authKakao').disabled=!PICKGO_SOCIAL_CONFIG.kakaoEnabled;
-$('authProviderHint').textContent=PICKGO_SOCIAL_CONFIG.googleEnabled&&!PICKGO_SOCIAL_CONFIG.kakaoEnabled?'Google 간편 로그인 사용 가능 · 카카오 로그인은 준비 중입니다.':(PICKGO_SOCIAL_CONFIG.googleEnabled||PICKGO_SOCIAL_CONFIG.kakaoEnabled)?'간편 로그인은 연결된 제공업체를 통해 안전하게 진행됩니다.':'Google·카카오 개발자 설정을 완료하면 버튼을 활성화할 수 있습니다.';
-async function social(provider){const db=ready();if(!db)return;try{const {error}=await db.auth.signInWithOAuth({provider,options:{redirectTo:base()}});if(error)throw error;tell('로그인 화면으로 이동 중입니다.')}catch(e){tell(provider+' 로그인 실패: '+e.message,true)}}
-$('authGoogle').addEventListener('click',()=>social('google'));
-$('authKakao').addEventListener('click',()=>social('kakao'));
-function setBusy(v){busy=v;$('authSubmit').disabled=v;$('authSubmit').textContent=v?'처리 중…':mode==='signup'?'이메일로 회원가입':'이메일로 로그인'}
-$('authForm').addEventListener('submit',async e=>{e.preventDefault();if(busy)return;const db=ready();if(!db)return;const email=$('authEmail').value.trim(),password=$('authPassword').value,nick=$('authNickname').value.trim().slice(0,24);if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){tell('올바른 이메일 주소를 입력해 주세요.',true);return}if(password.length<8){tell('비밀번호는 8자 이상 입력해 주세요.',true);return}if(mode==='signup'&&password!==$('authConfirmPassword').value){tell('비밀번호 확인이 일치하지 않습니다.',true);return}setBusy(true);try{if(mode==='signup'){const {data,error}=await db.auth.signUp({email,password,options:{emailRedirectTo:base(),data:{display_name:nick||email.split('@')[0]}}});if(error)throw error;if(data.session){tell('회원가입 및 로그인이 완료됐습니다.');await bridge().refresh()}else{tell('가입 요청을 접수했습니다. 받은편지함에서 확인 메일을 확인해 주세요. 현재 기본 무료 메일은 Supabase 팀원 이메일만 사용할 수 있습니다.')}}else{const {error}=await db.auth.signInWithPassword({email,password});if(error)throw error;await bridge().refresh();tell('로그인 완료');authDialog.close()}}catch(err){tell('인증 실패: '+(err.message||'설정을 확인해 주세요.'),true)}finally{setBusy(false)}});
-$('authForgot').addEventListener('click',async()=>{const db=ready();if(!db)return;const email=$('authEmail').value.trim();if(!email.includes('@')){tell('비밀번호를 재설정할 이메일 주소를 먼저 입력해 주세요.',true);return}try{const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:base()});if(error)throw error;tell('비밀번호 재설정 메일을 요청했습니다. 메일이 도착하면 링크를 열어 주세요.')}catch(e){tell('메일 발송 실패: '+e.message,true)}});
-$('authRecoveryForm').addEventListener('submit',async e=>{e.preventDefault();const db=ready();if(!db)return;const password=$('authRecoveryPassword').value;if(password.length<8){tell('새 비밀번호는 8자 이상 입력해 주세요.',true);return}const {error}=await db.auth.updateUser({password});if(error){tell('비밀번호 변경 실패: '+error.message,true);return}tell('비밀번호를 변경했습니다.');setMode('login');authDialog.close();await bridge()?.refresh()});
-$('memberProfileForm').addEventListener('submit',async event=>{
- event.preventDefault();
- const user=bridge()?.getUser(),db=bridge()?.getClient();
- const input=$('memberNicknameEdit'),notice=$('memberProfileMessage'),save=$('memberSaveProfile');
- const nickname=input.value.trim();
- notice.classList.remove('error');
- if(!user||!db){notice.textContent='로그인 후 다시 시도해 주세요.';notice.classList.add('error');return}
- if(!nickname||nickname.length>24){notice.textContent='닉네임은 1~24자로 입력해 주세요.';notice.classList.add('error');return}
- save.disabled=true;save.textContent='저장 중…';
- try{
-   // Save to canonical PICKGO membership, including single-provider members.
-  const member=await db.rpc('pickgo_member_self');
-   if(member.error)throw member.error;
-   const saved=await db.rpc('pickgo_lab_profile_set',{p_name:nickname});
-   if(saved.error)throw saved.error;
-   sharedNickname=typeof saved.data==='string'?saved.data:nickname;
-   pickgoMemberId=String(member.data);
-  const {error}=await db.auth.updateUser({data:{display_name:nickname}});
-   if(error)throw error;
-  await bridge()?.refresh();
-   await loadSharedProfile(user.id);
-  notice.textContent='PICKGO 회원 닉네임이 저장되었습니다.';
- }catch(e){notice.textContent='저장 실패: '+(e.message||'다시 시도해 주세요.');notice.classList.add('error')}
- finally{save.disabled=false;save.textContent='저장'}
-});
-// v0.8: Native Supabase identity linking keeps ONE auth.users.id if the provider identity is unused.
-// Never put a service-role key, OAuth client secret or privileged token in this static page.
-const IDENTITY_PENDING_KEY='pickgo_native_identity_pending_v080';
-const identityStatus=$('identityLinkStatus'),identityMessage=$('identityLinkMessage');
-function identityNotice(msg,bad=false){identityMessage.textContent=msg;identityMessage.classList.toggle('error',bad)}
-function readIdentityPending(){try{const p=JSON.parse(sessionStorage.getItem(IDENTITY_PENDING_KEY)||'null');if(p&&Date.now()-p.at<15*60*1000&&['google','kakao'].includes(p.provider))return p;sessionStorage.removeItem(IDENTITY_PENDING_KEY)}catch{}return null}
-async function refreshIdentityLinks(){
- const db=bridge()?.getClient(),u=bridge()?.getUser();
- const btnG=$('connectGoogle'),btnK=$('connectKakao');
- if(!db||!u){identityStatus.textContent='로그인이 필요합니다.';btnG.disabled=btnK.disabled=true;return}
- try{
-  const {data,error}=await db.auth.getUserIdentities();if(error)throw error;
-  if(bridge()?.getUser()?.id!==u.id)return;
-  const ps=new Set((data.identities||[]).map(i=>i.provider));
-  identityStatus.textContent='이 계정의 인증 방식: '+([...ps].map(x=>x==='google'?'Google':x==='kakao'?'카카오':x==='email'?'이메일':x).join(' · ')||'확인 중');
-  btnG.disabled=ps.has('google');btnK.disabled=ps.has('kakao');
-  btnG.textContent=ps.has('google')?'✓ Google 연결됨':'+ Google 연결';
-  btnK.textContent=ps.has('kakao')?'✓ 카카오 연결됨':'+ 카카오 연결';
- }catch(e){identityStatus.textContent='로그인 수단 정보를 불러오지 못했습니다. '+(e.message||'')}
-}
-async function connectNewIdentity(provider){
- const db=bridge()?.getClient(),u=bridge()?.getUser();if(!db||!u){identityNotice('로그인 후 진행해 주세요.',true);return}
- if(!confirm((provider==='google'?'Google':'카카오')+' 로그인 수단을 현재 PICKGO 회원에 연결하시겠습니까? 이미 다른 PICKGO 회원에 가입된 SNS는 연결할 수 없습니다.'))return;
- identityNotice('SNS 인증 화면으로 이동하고 있습니다…');
- try{
-  // Session-only, non-sensitive state guards against confusing a sign-in with successful linking.
-  sessionStorage.setItem(IDENTITY_PENDING_KEY,JSON.stringify({uid:u.id,provider,at:Date.now()}));
-  const {data,error}=await db.auth.linkIdentity({provider,options:{redirectTo:base()}});
-  if(error)throw error;
-  // supabase-js normally navigates automatically; honor the URL if skipBrowserRedirect is active.
-  if(data?.url&&document.visibilityState==='visible')location.assign(data.url);
- }catch(e){sessionStorage.removeItem(IDENTITY_PENDING_KEY);identityNotice('연결 실패: '+(e.message||'인증 설정을 확인해 주세요.')+' 이미 다른 회원에 가입했다면 아래 본인 확인 기능을 사용하세요.',true)}
-}
-$('connectGoogle').addEventListener('click',()=>connectNewIdentity('google'));
-$('connectKakao').addEventListener('click',()=>connectNewIdentity('kakao'));
-async function finishIdentityLinkReturn(){
- if(identityCheckPending)return;
- const pending=readIdentityPending(),db=bridge()?.getClient(),u=bridge()?.getUser();
- if(!pending||!db||!u)return;
- identityCheckPending=true;
- try{
-  if(pending.uid!==u.id)throw Error('로그인한 회원 ID가 달라 연결을 확인할 수 없습니다. 기존 회원정보는 변경되지 않았습니다.');
-  const {data,error}=await db.auth.getUserIdentities();if(error)throw error;
-  if(!(data.identities||[]).some(i=>i.provider===pending.provider))throw Error('새 로그인 수단 연결이 완료되지 않았습니다. 이미 가입된 계정일 수 있습니다.');
-  identityNotice((pending.provider==='google'?'Google':'카카오')+' 연결 완료! 기존 PICKGO 회원번호와 예약이 유지됩니다.');
-  sessionStorage.removeItem(IDENTITY_PENDING_KEY);
-  await loadSharedProfile(u.id);
- }catch(e){identityNotice('연결 확인 실패: '+e.message+' 두 계정의 본인 확인을 진행하거나 Supabase에서 Manual Linking을 활성화해 주세요.',true);sessionStorage.removeItem(IDENTITY_PENDING_KEY)}
- finally{identityCheckPending=false;await refreshIdentityLinks();if(!memberDialog.open){$('loginSettings').open=true;memberDialog.showModal()}}
-}
-// When OAuth returns to this page the session restoration happens asynchronously.
-setTimeout(()=>finishIdentityLinkReturn(),1200);
-
-// v0.7 test-only cross-account link: two authenticated sign-ins + one-time 10-minute challenge.
-const LINK_STORAGE='pickgo_lab_link_pending_v070';
-const linkStatusEl=$('accountLinkStatus'),linkMessageEl=$('accountLinkMessage');
-function getPending(){try{const v=JSON.parse(localStorage.getItem(LINK_STORAGE)||'null');if(v&&typeof v.token==='string'&&typeof v.from==='string'&&Date.now()-v.at<10*60*1000)return v;localStorage.removeItem(LINK_STORAGE)}catch{}return null}
-function linkNotice(message,error=false){linkMessageEl.textContent=message;linkMessageEl.classList.toggle('error',error)}
-function linkButtonState(start,switcher,confirmBtn,reset,unlink=false){$('accountLinkStart').hidden=!start;$('accountLinkSwitch').hidden=!switcher;$('accountLinkConfirm').hidden=!confirmBtn;$('accountLinkReset').hidden=!reset;$('accountLinkUnlink').hidden=!unlink}
-async function refreshLinked(){
- const u=bridge()?.getUser(),db=bridge()?.getClient();
- if(!u||!db){linkStatusEl.textContent='로그인이 필요합니다.';linkButtonState(false,false,false,false);return}
- const current=u.id;
- const pending=getPending();
- let count=1;
- try{const r=await db.rpc('pickgo_lab_link_status');if(r.error)throw r.error;count=Number(r.data)||1;if(count>1)await loadSharedProfile(current);linkStatusEl.textContent=count>1?'같은 PICKGO 회원번호로 연결된 로그인 계정 '+count+'개':'현재 회원 계정 1개 · 연결 전'}
- catch(e){linkStatusEl.textContent='연결 기능 사용 전 Supabase에 v0.7 SQL을 실행해야 합니다.'}
- if(bridge()?.getUser()?.id!==current)return;
- if(pending){
-  if(pending.from===current){linkButtonState(false,true,false,true);linkNotice('다른 계정으로 로그인해 본인 확인을 진행하세요. 연결 요청은 10분 후 만료됩니다.')}
-  else{linkButtonState(false,false,true,true);linkNotice('두 번째 계정으로 로그인했습니다. 두 계정의 테스트 예약 공유를 승인하세요.')}
- }else{linkButtonState(count<=1,false,false,false,count>1);linkNotice(count>1?'기존 별도 계정 연결을 해제할 수 있습니다. 각 Supabase 인증 ID와 예약 원본은 유지됩니다.':'이미 두 SNS로 각각 가입했다면 아래에서 두 계정을 직접 인증하세요. 계정을 삭제하지 마세요.')}
-}
-$('accountLinkStart').addEventListener('click',async()=>{
- const u=bridge()?.getUser(),db=bridge()?.getClient();if(!u||!db){linkNotice('로그인이 필요합니다.',true);return}
- $('accountLinkStart').disabled=true;
- try{const {data,error}=await db.rpc('pickgo_lab_link_begin');if(error)throw error;
-  localStorage.setItem(LINK_STORAGE,JSON.stringify({token:String(data),from:u.id,at:Date.now()}));
-  linkNotice('10분 이내에 다른 로그인 방식으로 소유권을 확인하세요.');await refreshLinked()
- }catch(e){linkNotice('연결 요청을 만들지 못했습니다. 먼저 Supabase SQL 설정을 확인하세요. '+(e.message||''),true)}
- finally{$('accountLinkStart').disabled=false}
-});
-$('accountLinkSwitch').addEventListener('click',async()=>{
- const u=bridge()?.getUser(),db=bridge()?.getClient(),p=getPending();if(!u||!db||!p||p.from!==u.id){linkNotice('연결 요청을 다시 시작하세요.',true);return}
- const prov=new Set((u.identities||[]).map(i=>i.provider));
- const target=prov.has('kakao')?'google':'kakao';
- if(!confirm('현재 계정에서 다른 로그인 방식('+ (target==='google'?'Google':'카카오') +')으로 이동합니다. 두 번째 계정의 비밀번호나 인증 정보를 PICKGO가 수집하지 않습니다. 진행할까요?'))return;
- try{const {error}=await db.auth.signInWithOAuth({provider:target,options:{redirectTo:base()}});if(error)throw error}
- catch(e){linkNotice('두 번째 로그인 실패: '+e.message,true)}
-});
-$('accountLinkConfirm').addEventListener('click',async()=>{
- const p=getPending(),u=bridge()?.getUser(),db=bridge()?.getClient();
- if(!p||!u||!db||p.from===u.id){linkNotice('서로 다른 두 계정으로 다시 로그인해야 합니다.',true);return}
- if(!confirm('두 로그인 계정을 하나의 PICKGO 회원번호에 연결하시겠습니까? 닉네임·테스트 예약을 통합 표시하지만 기존 Supabase 인증 ID는 유지됩니다.'))return;
- $('accountLinkConfirm').disabled=true;
- try{const {data,error}=await db.rpc('pickgo_lab_link_finish',{p_token:p.token});if(error)throw error;
-  localStorage.removeItem(LINK_STORAGE);linkNotice('본인 확인 완료! '+data+'개 로그인 계정이 같은 PICKGO 회원번호와 테스트 예약을 사용합니다.');
-  await bridge()?.refresh();await refreshLinked();await loadSharedProfile(u.id);await refreshIdentityLinks();$('memberProfileMessage').textContent='PICKGO 회원정보 연결 완료';$('loginSettings').open=false
- }catch(e){linkNotice('연결 실패: '+(e.message||'다시 시도해 주세요.'),true)}
- finally{$('accountLinkConfirm').disabled=false}
-});
-$('accountLinkReset').addEventListener('click',()=>{localStorage.removeItem(LINK_STORAGE);linkNotice('연결 요청을 취소했습니다. 계정과 예약은 변경되지 않았습니다.');refreshLinked()});
-$('accountLinkUnlink').addEventListener('click',async()=>{
- const db=bridge()?.getClient(),u=bridge()?.getUser();if(!db||!u)return;
- if(!confirm('이 계정과 다른 로그인 계정 사이의 TEST 예약 공유를 해제할까요? 기존 회원과 예약은 삭제되지 않습니다.'))return;
- $('accountLinkUnlink').disabled=true;
- try{const {data,error}=await db.rpc('pickgo_lab_unlink_self');if(error)throw error;linkNotice(data?'기존 별도 로그인 연결을 해제했습니다. 각 계정은 독립적으로 유지됩니다.':'연결된 계정이 없습니다.');sharedNickname='';await bridge()?.refresh();await refreshLinked();render(bridge()?.getUser(),true)}
- catch(e){linkNotice('연결 해제 실패: '+(e.message||'다시 시도해 주세요.'),true)}
- finally{$('accountLinkUnlink').disabled=false}
-});
-$('memberGoBookings').addEventListener('click',()=>{memberDialog.close();$('labBooking').scrollIntoView({behavior:'smooth'})});
-$('memberLogout').addEventListener('click',async()=>{const db=bridge()?.getClient();if(!db)return;const {error}=await db.auth.signOut();if(error){alert('로그아웃 실패: '+error.message);return}memberDialog.close();await bridge().refresh()});
-// Password recovery opens a new password form on the verified recovery callback.
-render(bridge()?.getUser(),bridge()?.isCloud());
+ const $=id=>document.getElementById(id);
+ const bridge=()=>window.PICKGO_AUTH_BRIDGE;
+ const authDialog=$('authDialog'),memberDialog=$('memberDialog');
+ let mode='login',busy=false;
+ const base=()=>location.origin+location.pathname;
+ function tell(message,isError=false){const el=$('authMessage');el.textContent=message;el.classList.toggle('error',isError)}
+ function setMode(next){
+   mode=next;
+   $('authTabs').hidden=next==='recovery';
+   $('authForm').hidden=next==='recovery';
+   $('authRecoveryForm').hidden=next!=='recovery';
+   $('authForgot').hidden=next!=='login';
+   $('authNicknameRow').hidden=next!=='signup';
+   $('authConfirmRow').hidden=next!=='signup';
+   $('authPassword').autocomplete=next==='signup'?'new-password':'current-password';
+   $('authDialogTitle').textContent=next==='signup'?'PICKGO 회원가입':next==='recovery'?'비밀번호 변경':'PICKGO 로그인';
+   $('authSubmit').textContent=next==='signup'?'이메일로 회원가입':'이메일로 로그인';
+   document.querySelectorAll('[data-auth-mode]').forEach(b=>b.classList.toggle('on',b.dataset.authMode===next));
+   tell('');
+ }
+ function ready(){
+   const b=bridge();
+   if(!b?.isCloud()||!b.getClient()){
+     tell('Supabase 설정을 확인해 주세요. 이메일·Google 로그인에는 기존 Project URL과 공개 Publishable Key가 필요합니다.',true);
+     return null;
+   }
+   return b.getClient();
+ }
+ function open(next='login'){setMode(next);if(!authDialog.open)authDialog.showModal();if(!bridge()?.isCloud())ready()}
+ function nicknameFor(user){
+   return user?.user_metadata?.display_name||user?.user_metadata?.full_name||user?.user_metadata?.name||user?.email?.split('@')[0]||'PICKGO 회원';
+ }
+ function render(user){
+   const nickname=nicknameFor(user);
+   $('topAccount').textContent=user?nickname:'로그인 / 가입';
+   $('topAccount').title=user?'마이페이지 열기':'로그인 / 회원가입';
+   $('memberName').textContent=user?nickname:'PICKGO 회원';
+   $('memberEmail').textContent=user?.email||'등록된 이메일 정보 없음';
+   const providers=user?[...new Set([...(user.identities||[]).map(i=>i.provider),...(user.app_metadata?.providers||[]),user.app_metadata?.provider].filter(Boolean))]:[];
+   $('memberProviders').replaceChildren();
+   for(const p of providers){
+     const chip=document.createElement('span');chip.className='profile-method';
+     chip.textContent=({google:'Google',email:'이메일',kakao:'카카오 (기존 세션)'})[p]||'로그인 계정';
+     $('memberProviders').appendChild(chip);
+   }
+   $('memberEmailHelp').hidden=!user||!!user.email;
+   $('memberEmailHelp').classList.toggle('warn',!!user&&!user.email);
+   $('memberEmailHelp').textContent=user&&!user.email?'이 계정은 이메일 정보가 제공되지 않았습니다. 이메일 또는 Google 로그인을 새로 이용할 수 있습니다.':'';
+   if(user&&(!memberDialog.open||document.activeElement!==$('memberNicknameEdit')))$('memberNicknameEdit').value=user.user_metadata?.display_name||user.user_metadata?.full_name||user.user_metadata?.name||'';
+   if(user&&authDialog.open&&mode!=='recovery')authDialog.close();
+ }
+ window.PICKGO_AUTH_UI={open,render,recovery:()=>open('recovery')};
+ $('topAccount').addEventListener('click',()=>{
+   const user=bridge()?.getUser();
+   if(!user){open('login');return}
+   render(user);
+   $('memberProfileMessage').textContent='';
+   if(!memberDialog.open)memberDialog.showModal();
+ });
+ document.querySelectorAll('[data-close-auth]').forEach(b=>b.addEventListener('click',()=>authDialog.close()));
+ document.querySelectorAll('[data-close-member]').forEach(b=>b.addEventListener('click',()=>memberDialog.close()));
+ for(const dlg of [authDialog,memberDialog])dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+ authDialog.addEventListener('close',()=>{$('authPassword').value='';$('authConfirmPassword').value='';$('authRecoveryPassword').value=''});
+ document.querySelectorAll('[data-auth-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.authMode)));
+ $('authProviderHint').textContent='Google 간편 로그인 또는 이메일·비밀번호로 이용할 수 있습니다.';
+ $('authGoogle').addEventListener('click',async()=>{
+   const db=ready();if(!db)return;
+   try{
+     const {error}=await db.auth.signInWithOAuth({provider:'google',options:{redirectTo:base()}});
+     if(error)throw error;
+     tell('Google 로그인 화면으로 이동합니다.');
+   }catch(e){tell('Google 로그인 실패: '+(e.message||'설정을 확인해 주세요.'),true)}
+ });
+ function setBusy(v){busy=v;$('authSubmit').disabled=v;$('authSubmit').textContent=v?'처리 중…':mode==='signup'?'이메일로 회원가입':'이메일로 로그인'}
+ $('authForm').addEventListener('submit',async e=>{
+   e.preventDefault();if(busy)return;
+   const db=ready();if(!db)return;
+   const email=$('authEmail').value.trim(),password=$('authPassword').value,nick=$('authNickname').value.trim().slice(0,24);
+   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){tell('올바른 이메일 주소를 입력해 주세요.',true);return}
+   if(password.length<8){tell('비밀번호는 8자 이상 입력해 주세요.',true);return}
+   if(mode==='signup'&&password!==$('authConfirmPassword').value){tell('비밀번호 확인이 일치하지 않습니다.',true);return}
+   setBusy(true);
+   try{
+     if(mode==='signup'){
+       const {data,error}=await db.auth.signUp({email,password,options:{emailRedirectTo:base(),data:{display_name:nick||email.split('@')[0]}}});
+       if(error)throw error;
+       if(data.session){await bridge()?.refresh();tell('회원가입과 로그인이 완료됐습니다.')}
+       else tell('가입 요청을 접수했습니다. 이메일 확인이 필요할 수 있습니다. 확인 메일이 오지 않으면 관리자에게 문의해 주세요.');
+     }else{
+       const {error}=await db.auth.signInWithPassword({email,password});
+       if(error)throw error;
+       await bridge()?.refresh();tell('로그인 완료');authDialog.close();
+     }
+   }catch(err){tell('인증 실패: '+(err.message||'다시 시도해 주세요.'),true)}
+   finally{setBusy(false)}
+ });
+ $('authForgot').addEventListener('click',async()=>{
+   const db=ready();if(!db)return;const email=$('authEmail').value.trim();
+   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){tell('비밀번호 재설정 이메일 주소를 먼저 입력해 주세요.',true);return}
+   try{const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:base()});if(error)throw error;tell('비밀번호 재설정 메일을 요청했습니다. 메일을 확인해 주세요.')}
+   catch(e){tell('재설정 메일 요청 실패: '+(e.message||'확인해 주세요.'),true)}
+ });
+ $('authRecoveryForm').addEventListener('submit',async e=>{
+   e.preventDefault();const db=ready();if(!db)return;const password=$('authRecoveryPassword').value;
+   if(password.length<8){tell('새 비밀번호는 8자 이상 입력해 주세요.',true);return}
+   const {error}=await db.auth.updateUser({password});
+   if(error){tell('비밀번호 변경 실패: '+error.message,true);return}
+   tell('비밀번호를 변경했습니다.');setMode('login');authDialog.close();await bridge()?.refresh();
+ });
+ $('memberProfileForm').addEventListener('submit',async e=>{
+   e.preventDefault();const user=bridge()?.getUser(),db=bridge()?.getClient();
+   const input=$('memberNicknameEdit'),notice=$('memberProfileMessage'),save=$('memberSaveProfile');
+   const nickname=input.value.trim();notice.classList.remove('error');
+   if(!user||!db){notice.textContent='로그인 후 다시 시도해 주세요.';notice.classList.add('error');return}
+   if(!nickname||nickname.length>24){notice.textContent='닉네임은 1~24자로 입력해 주세요.';notice.classList.add('error');return}
+   save.disabled=true;save.textContent='저장 중…';
+   try{
+     const {error}=await db.auth.updateUser({data:{display_name:nickname}});if(error)throw error;
+     await bridge()?.refresh();notice.textContent='닉네임이 저장되었습니다.';
+   }catch(err){notice.textContent='저장 실패: '+(err.message||'다시 시도해 주세요.');notice.classList.add('error')}
+   finally{save.disabled=false;save.textContent='저장'}
+ });
+ $('memberGoBookings').addEventListener('click',()=>{memberDialog.close();$('labBooking').scrollIntoView({behavior:'smooth'})});
+ $('memberLogout').addEventListener('click',async()=>{
+   const db=bridge()?.getClient();if(!db)return;
+   const {error}=await db.auth.signOut();if(error){alert('로그아웃 실패: '+error.message);return}
+   memberDialog.close();await bridge()?.refresh();
+ });
+ render(bridge()?.getUser());
 })();
 </script>
 
