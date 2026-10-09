@@ -118,7 +118,7 @@
 .profile-msg.error{color:#b44730}
 .profile-note{background:#f5f8f1;border:1px solid #e1eada;border-radius:12px;padding:12px;font-size:11px;line-height:1.7;color:#4b6651;margin:12px 0 16px}
 .profile-note.warn{background:#fff9ed;border-color:#f1e5cc;color:#795a2d}
-/* PICKGO v0.7.0: two-login ownership verification for shared TEST bookings. */
+/* PICKGO v0.7.1: two-login ownership verification for shared TEST bookings and nickname. */
 .link-card{background:#f7faf4;border:1px solid #dce9d9;border-radius:14px;padding:15px;margin:16px 0}
 .link-title{font-size:14px;font-weight:900;color:#203e2d;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .link-beta{font-size:10px;background:#e9f8d4;color:#40633d;border-radius:20px;padding:4px 8px}
@@ -131,6 +131,19 @@
 .link-buttons [hidden]{display:none!important}
 .link-message{font-size:11px;line-height:1.7;min-height:0;margin:9px 0 0;color:#47694c}
 .link-message.error{color:#b44730}
+</style>
+<style>
+/* PICKGO v0.7.1: compact profile; account controls stay under optional settings. */
+.login-settings{margin:18px 0 0;border-top:1px solid #e3eae1;padding-top:12px}
+.login-settings summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer;list-style:none;padding:12px 4px;font-weight:800;color:#587262;font-size:12px}
+.login-settings summary::-webkit-details-marker{display:none}
+.login-settings summary::after{content:'⌄';font-size:17px;transition:transform .15s}
+.login-settings[open] summary::after{transform:rotate(180deg)}
+.login-settings-body{padding:4px 0 10px}
+.login-settings .link-card{margin:4px 0 10px;border:1px solid #e0e8df;background:#fafcf9}
+.login-settings-intro{font-size:12px;color:#708373;line-height:1.7;margin:4px 4px 14px}
+.login-settings-id{display:block;padding:8px 4px;font-size:10px;color:#829288}
+.profile-note:empty{display:none}
 </style>
 </head>
 <body>
@@ -165,7 +178,7 @@
 </section>
 
 </main>
-<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v0.7.0 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>자료 참고: <a href="https://pickleballkorea.com/venues" target="_blank" rel="noopener noreferrer">피클볼코리아</a> · <a href="https://tokti.ai/pickleball/courts" target="_blank" rel="noopener noreferrer">톡티 피클볼</a> · 각 시설 공식 사이트</div></div></footer>
+<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v0.7.1 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>자료 참고: <a href="https://pickleballkorea.com/venues" target="_blank" rel="noopener noreferrer">피클볼코리아</a> · <a href="https://tokti.ai/pickleball/courts" target="_blank" rel="noopener noreferrer">톡티 피클볼</a> · 각 시설 공식 사이트</div></div></footer>
 
 <dialog id="authDialog" class="auth-dialog" aria-labelledby="authDialogTitle">
  <div class="auth-box">
@@ -188,30 +201,35 @@
  </div>
 </dialog>
 <dialog id="memberDialog" class="auth-dialog" aria-labelledby="memberTitle"><div class="auth-box"><div class="auth-heading"><div><div class="auth-eyebrow">PICKGO ACCOUNT</div><div class="auth-title" id="memberTitle">마이페이지</div></div><button type="button" class="auth-close" data-close-member aria-label="닫기">×</button></div>
- <div class="profile-card"><span class="auth-tag">PICKGO 회원</span><strong id="memberName" style="margin-top:10px">회원</strong><small id="memberEmail"></small><br><small id="memberId"></small></div>
- <div class="profile-meta" id="memberProviders" aria-label="로그인 방식"></div>
- <form class="profile-form" id="memberProfileForm"><label for="memberNicknameEdit">닉네임 수정</label><div class="profile-form-row"><input id="memberNicknameEdit" type="text" maxlength="24" autocomplete="nickname" placeholder="사용할 닉네임 (최대 24자)" required><button type="submit" id="memberSaveProfile">저장</button></div><div class="profile-msg" id="memberProfileMessage" role="status" aria-live="polite"></div></form>
+ <div class="profile-card"><span class="auth-tag">PICKGO 회원</span><strong id="memberName" style="margin-top:10px">회원</strong><small id="memberEmail"></small></div>
+ <div class="profile-meta" id="memberProviders" aria-label="현재 로그인 방식"></div>
+ <form class="profile-form" id="memberProfileForm"><label for="memberNicknameEdit">닉네임</label><div class="profile-form-row"><input id="memberNicknameEdit" type="text" maxlength="24" autocomplete="nickname" placeholder="닉네임 (최대 24자)" required><button type="submit" id="memberSaveProfile">저장</button></div><div class="profile-msg" id="memberProfileMessage" role="status" aria-live="polite"></div></form>
  <div id="memberEmailHelp" class="profile-note" role="note"></div>
- <div class="profile-note warn" id="accountSeparationWarning">Google·카카오에서 서로 다른 회원 ID로 가입한 경우 예약도 각각 저장됩니다. 같은 이메일을 입력하는 것만으로 계정이 합쳐지지 않습니다. 기존 계정이나 테스트 예약을 삭제하지 마세요.</div>
- <section class="link-card" id="accountLinkSection" aria-label="테스트 계정 연결">
-   <div class="link-title">계정 연결 <span class="link-beta">테스트 예약 전용</span></div>
-   <p class="link-explain">Google·카카오 계정이 각각 생성되었더라도, 두 계정으로 직접 로그인하여 소유권을 확인하면 <strong>테스트 예약 내역을 함께 볼 수 있습니다.</strong> 로그인 회원 ID는 그대로 유지되며 실제 구장 예약·결제와 연결되지 않습니다.</p>
-   <div class="link-status" id="accountLinkStatus" role="status">계정 연결 상태를 확인하는 중…</div>
-   <div class="link-buttons" id="accountLinkButtons">
-     <button type="button" id="accountLinkStart">계정 연결 시작</button>
-     <button type="button" id="accountLinkSwitch" hidden>다른 계정으로 로그인해 확인</button>
-     <button type="button" id="accountLinkConfirm" hidden>두 계정의 예약 공유 승인</button>
-     <button type="button" id="accountLinkReset" class="link-plain" hidden>연결 요청 취소</button>
-     <button type="button" id="accountLinkUnlink" class="link-plain" hidden>테스트 예약 공유 연결 해제</button>
-   </div>
-   <p class="link-message" id="accountLinkMessage" role="status" aria-live="polite"></p>
+ <section class="member-reservations" aria-label="내 테스트 예약"><h3>내 테스트 예약</h3>
+    <div id="labMine" aria-live="polite"><div class="lab-empty">예약 내역이 없습니다.<br>날짜와 시간을 선택해 보세요.</div></div>
+    <div class="lab-mini" id="labDataHelp">테스트 예약 정보입니다. 실제 구장 예약은 아닙니다.</div>
  </section>
  <div class="profile-actions"><button type="button" id="memberGoBookings" class="primary">테스트 예약 화면으로 이동 ↗</button><button type="button" id="memberLogout">로그아웃</button></div>
- <section class="member-reservations" aria-label="내 테스트 예약"><h3>내 테스트 예약</h3>
-    <div id="labMine" aria-live="polite"><div class="lab-empty">예약 내역이 없습니다.<br>왼쪽에서 날짜와 시간을 선택해 보세요.</div></div>
-    <div class="lab-mini" id="labDataHelp">이 기기의 브라우저에만 기록됩니다. 다른 사람·기기와 동기화되지 않으며, 브라우저 데이터 삭제 시 사라질 수 있습니다.</div>
-</section>
- <p class="auth-disclaimer">향후 정식 제휴 구장 예약·결제 시에도 같은 회원 ID를 사용하도록 설계했습니다. 결제 내역 및 카드 등록 기능은 아직 제공되지 않습니다.</p>
+ <details class="login-settings" id="loginSettings">
+  <summary>로그인 설정</summary>
+  <div class="login-settings-body">
+   <p class="login-settings-intro">Google 또는 카카오로 각각 가입한 기존 계정은 자동으로 하나가 되지 않습니다. 두 계정 모두 소유하고 있다면 최초 한 번 인증하여 <b>테스트 예약과 표시 닉네임을 공유</b>할 수 있습니다. 로그인 회원 ID 자체는 통합되지 않습니다.</p>
+   <section class="link-card" id="accountLinkSection" aria-label="테스트 계정 관리">
+    <div class="link-title">다른 로그인으로 만든 기존 계정 확인 <span class="link-beta">테스트 전용</span></div>
+    <div class="link-status" id="accountLinkStatus" role="status">로그인 설정 확인 중…</div>
+    <div class="link-buttons" id="accountLinkButtons">
+     <button type="button" id="accountLinkStart">다른 로그인 방식 확인하기</button>
+     <button type="button" id="accountLinkSwitch" hidden>다른 계정으로 로그인</button>
+     <button type="button" id="accountLinkConfirm" hidden>두 계정의 정보 공유 승인</button>
+     <button type="button" id="accountLinkReset" class="link-plain" hidden>확인 취소</button>
+     <button type="button" id="accountLinkUnlink" class="link-plain" hidden>테스트 정보 공유 해제</button>
+    </div>
+    <p class="link-message" id="accountLinkMessage" role="status" aria-live="polite"></p>
+   </section>
+   <small class="login-settings-id" id="memberId"></small>
+  </div>
+ </details>
+ <p class="auth-disclaimer">현재는 무료 테스트 예약만 제공합니다. 실제 시설 예약·결제 및 정식 회원 계정 병합은 제공되지 않습니다.</p>
  </div></dialog>
 <dialog id="venueDialog" aria-labelledby="dialogTitle"><div class="dialoginner"><button type="button" id="closeDialog" class="closemodal" aria-label="닫기">×</button><div class="pill" id="dialogRegion">지역</div><h2 id="dialogTitle"></h2><div class="modaladdr" id="dialogAddress"></div><div class="modalrow"><div><b>구장 유형</b> · <span id="dialogType"></span></div><div><b>이용 방법</b> · <span id="dialogBooking"></span></div><div style="margin-top:8px" id="dialogNote"></div></div><div class="modalactions"><a id="dialogMap" class="secondarybtn" href="#" target="_blank" rel="noopener noreferrer">↗ 지도에서 찾기</a><a id="dialogLink" class="primarybtn" href="#" target="_blank" rel="noopener noreferrer">↗ 확인하기</a></div><div id="scheduleLinks" class="schedulelinks"></div><div class="shareline"><button type="button" id="shareVenue" class="sharebutton">링크 공유 ↗</button><span id="shareNotice" role="status" aria-live="polite"></span></div><div class="modalnotice">해당 외부 사이트에서 직접 최신 예약 일정과 이용 약관을 확인하세요. PICKGO는 현재 예약 확정·결제를 처리하지 않습니다.<br><a id="dialogSource" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:underline">자료 출처 확인 ↗</a></div></div></dialog>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -332,31 +350,45 @@ const $=id=>document.getElementById(id);
 const bridge=()=>window.PICKGO_AUTH_BRIDGE;
 const authDialog=$('authDialog'),memberDialog=$('memberDialog');
 let mode='login',busy=false;
+let profileUserId=null,sharedNickname='',profileLoadSerial=0;
 const base=()=>location.origin+location.pathname;
+async function loadSharedProfile(id){
+ const db=bridge()?.getClient();if(!id||!db)return;
+ const ticket=++profileLoadSerial;
+ try{
+  const {data,error}=await db.rpc('pickgo_lab_profile_name');
+  if(error||ticket!==profileLoadSerial||bridge()?.getUser()?.id!==id)return;
+  sharedNickname=typeof data==='string'?data.trim():'';
+  render(bridge().getUser(),true);
+ }catch{/* SQL may not be installed yet; use this account's nickname. */}
+}
+
 function tell(s,isError=false){$('authMessage').textContent=s;$('authMessage').classList.toggle('error',isError)}
 function setMode(next){mode=next;$('authTabs').hidden=next==='recovery';$('authForm').hidden=next==='recovery';$('authRecoveryForm').hidden=next!=='recovery';$('authForgot').hidden=next!=='login';$('authNicknameRow').hidden=next!=='signup';$('authConfirmRow').hidden=next!=='signup';$('authPassword').autocomplete=next==='signup'?'new-password':'current-password';$('authDialogTitle').textContent=next==='signup'?'PICKGO 회원가입':next==='recovery'?'비밀번호 변경':'PICKGO 로그인';$('authSubmit').textContent=next==='signup'?'이메일로 회원가입':'이메일로 로그인';document.querySelectorAll('[data-auth-mode]').forEach(b=>b.classList.toggle('on',b.dataset.authMode===next));tell('')}
 function ready(){const b=bridge();if(!b?.isCloud()||!b.getClient()){tell('아직 Supabase 연결 설정이 완료되지 않았습니다. GitHub index.html의 PICKGO_LAB_CONFIG에 Project URL과 공개 Publishable Key를 먼저 입력해 주세요.',true);return null}return b.getClient()}
 function open(m='login'){setMode(m);if(!authDialog.open)authDialog.showModal();if(!bridge()?.isCloud())ready()}
 function render(user,cloud){
- const nickname=user?.user_metadata?.display_name||user?.user_metadata?.full_name||user?.user_metadata?.name||user?.email?.split('@')[0]||'PICKGO 회원';
+ const id=user?.id||null;
+ if(profileUserId!==id){profileUserId=id;sharedNickname='';profileLoadSerial++;if(id)Promise.resolve().then(()=>loadSharedProfile(id))}
+ const nickname=sharedNickname||user?.user_metadata?.display_name||user?.user_metadata?.full_name||user?.user_metadata?.name||user?.email?.split('@')[0]||'PICKGO 회원';
  $('topAccount').textContent=user?nickname:'로그인 / 가입';
  $('topAccount').title=user?'마이페이지 열기':'로그인 / 회원가입';
  $('memberName').textContent=user?nickname:'PICKGO 회원';
  $('memberEmail').textContent=user?.email||'이메일 미제공 (SNS 로그인)';
- $('memberId').textContent=user?'회원 ID · '+user.id.slice(0,8)+'…':'';
+ $('memberId').textContent=user?'현재 인증 계정 ID · '+user.id.slice(0,8)+'…':'';
  const prov=user?[...new Set([...(user.identities||[]).map(i=>i.provider),...(user.app_metadata?.providers||[]),user.app_metadata?.provider].filter(Boolean))]:[];
  const labels={google:'Google',kakao:'카카오',email:'이메일',phone:'휴대전화'};
  $('memberProviders').replaceChildren();
  for(const p of prov){const tag=document.createElement('span');tag.className='profile-method';tag.textContent=labels[p]||p;$('memberProviders').appendChild(tag)}
  if(user&&!prov.length){const tag=document.createElement('span');tag.className='profile-method';tag.textContent='회원 로그인';$('memberProviders').appendChild(tag)}
- $('memberEmailHelp').textContent=user?.email?'예약 안내용 계정 이메일이 등록되어 있습니다. 현재 실제 구장 예약·결제 서비스는 제공하지 않습니다.':'현재 로그인 제공업체에서 이메일이 전달되지 않았습니다. 테스트 예약은 회원 ID로 관리되므로 이용할 수 있지만, 향후 예약 안내 이메일 등록·인증 기능은 별도로 제공할 예정입니다.';
- $('memberEmailHelp').classList.toggle('warn',!!user&&!user.email);
- if(user&&(!memberDialog.open||document.activeElement!==$('memberNicknameEdit'))) $('memberNicknameEdit').value=user.user_metadata?.display_name||user.user_metadata?.full_name||user.user_metadata?.name||'';
+ $('memberEmailHelp').textContent=user&&!user.email?'이 로그인에서는 이메일이 제공되지 않았습니다. 테스트 예약은 정상적으로 이용할 수 있습니다.':'';
+ $('memberEmailHelp').classList.toggle('warn',!!user&&!user.email);$('memberEmailHelp').hidden=!user||!!user.email;
+ if(user&&(!memberDialog.open||document.activeElement!==$('memberNicknameEdit'))) $('memberNicknameEdit').value=sharedNickname||user.user_metadata?.display_name||user.user_metadata?.full_name||user.user_metadata?.name||'';
  if(user&&authDialog.open&&mode!=='recovery')authDialog.close();
- if(user&&getPending()?.from!==user.id&&getPending()&&!memberDialog.open){memberDialog.showModal();setTimeout(refreshLinked,0)}
+ if(user&&getPending()?.from!==user.id&&getPending()&&!memberDialog.open){$('loginSettings').open=true;memberDialog.showModal();setTimeout(()=>{refreshLinked();$('loginSettings').scrollIntoView({block:'nearest'})},0)}
 }
 window.PICKGO_AUTH_UI={open,render,recovery:()=>open('recovery')};
-$('topAccount').addEventListener('click',()=>{const u=bridge()?.getUser();if(u){render(u,true);$('memberProfileMessage').textContent='';memberDialog.showModal();refreshLinked()}else open('login')});
+$('topAccount').addEventListener('click',()=>{const u=bridge()?.getUser();if(u){render(u,true);$('memberProfileMessage').textContent='';memberDialog.showModal();$('loginSettings').open=!!getPending();refreshLinked();loadSharedProfile(u.id)}else open('login')});
 document.querySelectorAll('[data-close-auth]').forEach(b=>b.addEventListener('click',()=>authDialog.close()));
 document.querySelectorAll('[data-close-member]').forEach(b=>b.addEventListener('click',()=>memberDialog.close()));
 for(const dlg of [authDialog,memberDialog])dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
@@ -382,10 +414,18 @@ $('memberProfileForm').addEventListener('submit',async event=>{
  if(!nickname||nickname.length>24){notice.textContent='닉네임은 1~24자로 입력해 주세요.';notice.classList.add('error');return}
  save.disabled=true;save.textContent='저장 중…';
  try{
+  const status=await db.rpc('pickgo_lab_link_status');
+  const linked=!status.error&&Number(status.data)>1;
+  if(linked){
+   const saved=await db.rpc('pickgo_lab_profile_set',{p_name:nickname});
+   if(saved.error)throw saved.error;
+   sharedNickname=typeof saved.data==='string'?saved.data:nickname;
+  }
   const {error}=await db.auth.updateUser({data:{display_name:nickname}});
-  if(error) throw error;
+  if(error&&!linked)throw error;
   await bridge()?.refresh();
-  notice.textContent='닉네임이 저장되었습니다.';
+  if(linked)await loadSharedProfile(user.id);
+  notice.textContent=linked?'닉네임이 확인된 두 테스트 계정에 함께 적용되었습니다.':'닉네임이 저장되었습니다.';
  }catch(e){notice.textContent='저장 실패: '+(e.message||'다시 시도해 주세요.');notice.classList.add('error')}
  finally{save.disabled=false;save.textContent='저장'}
 });
@@ -401,7 +441,7 @@ async function refreshLinked(){
  const current=u.id;
  const pending=getPending();
  let count=1;
- try{const r=await db.rpc('pickgo_lab_link_status');if(r.error)throw r.error;count=Number(r.data)||1;$('accountSeparationWarning').hidden=count>1;linkStatusEl.textContent=count>1?'연결 완료 · 테스트 예약을 공유하는 회원 '+count+'개':'현재 회원 계정 1개 · 연결 전'}
+ try{const r=await db.rpc('pickgo_lab_link_status');if(r.error)throw r.error;count=Number(r.data)||1;if(count>1)await loadSharedProfile(current);linkStatusEl.textContent=count>1?'연결 완료 · 테스트 예약을 공유하는 회원 '+count+'개':'현재 회원 계정 1개 · 연결 전'}
  catch(e){linkStatusEl.textContent='연결 기능 사용 전 Supabase에 v0.7 SQL을 실행해야 합니다.'}
  if(bridge()?.getUser()?.id!==current)return;
  if(pending){
@@ -429,11 +469,11 @@ $('accountLinkSwitch').addEventListener('click',async()=>{
 $('accountLinkConfirm').addEventListener('click',async()=>{
  const p=getPending(),u=bridge()?.getUser(),db=bridge()?.getClient();
  if(!p||!u||!db||p.from===u.id){linkNotice('서로 다른 두 계정으로 다시 로그인해야 합니다.',true);return}
- if(!confirm('첫 번째 계정과 현재 로그인한 계정의 TEST 예약 조회 및 취소 권한을 공유하시겠습니까? 이 작업은 로그인 계정이나 회원 ID를 합치지 않습니다.'))return;
+ if(!confirm('두 로그인 계정의 테스트 예약과 표시 닉네임을 공유하시겠습니까? 두 계정의 인증 ID는 그대로 유지됩니다.'))return;
  $('accountLinkConfirm').disabled=true;
  try{const {data,error}=await db.rpc('pickgo_lab_link_finish',{p_token:p.token});if(error)throw error;
-  localStorage.removeItem(LINK_STORAGE);linkNotice('연결 완료! '+data+'개 계정의 테스트 예약을 함께 표시합니다.');
-  await bridge()?.refresh();await refreshLinked()
+  localStorage.removeItem(LINK_STORAGE);linkNotice('본인 확인이 완료되었습니다. '+data+'개 로그인 계정이 테스트 정보를 공유합니다.');
+  await bridge()?.refresh();await refreshLinked();await loadSharedProfile(u.id);$('memberProfileMessage').textContent='테스트 예약과 닉네임 공유 설정 완료';$('loginSettings').open=false
  }catch(e){linkNotice('연결 실패: '+(e.message||'다시 시도해 주세요.'),true)}
  finally{$('accountLinkConfirm').disabled=false}
 });
@@ -442,7 +482,7 @@ $('accountLinkUnlink').addEventListener('click',async()=>{
  const db=bridge()?.getClient(),u=bridge()?.getUser();if(!db||!u)return;
  if(!confirm('이 계정과 다른 로그인 계정 사이의 TEST 예약 공유를 해제할까요? 기존 회원과 예약은 삭제되지 않습니다.'))return;
  $('accountLinkUnlink').disabled=true;
- try{const {data,error}=await db.rpc('pickgo_lab_unlink_self');if(error)throw error;linkNotice(data?'테스트 예약 공유를 해제했습니다. 원래 계정의 예약만 표시됩니다.':'연결된 계정이 없습니다.');await bridge()?.refresh();await refreshLinked()}
+ try{const {data,error}=await db.rpc('pickgo_lab_unlink_self');if(error)throw error;linkNotice(data?'테스트 정보 공유를 해제했습니다. 각 계정은 독립적으로 유지됩니다.':'연결된 계정이 없습니다.');sharedNickname='';await bridge()?.refresh();await refreshLinked();render(bridge()?.getUser(),true)}
  catch(e){linkNotice('연결 해제 실패: '+(e.message||'다시 시도해 주세요.'),true)}
  finally{$('accountLinkUnlink').disabled=false}
 });
