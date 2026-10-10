@@ -11,6 +11,8 @@
   if(!window.supabase?.createClient)return;
   try{
    const client=window.supabase.createClient(url,key);
+   await window.PICKGO_PUBLIC_SCOPE.refresh(client);
+   if(!window.PICKGO_PUBLIC_SCOPE.allows(id)){$('detailCard').hidden=true;$('notFound').hidden=false;document.title='PICKGO | Not found';return}
    const {data,error}=await client.from('pickgo_venues').select('*').eq('id',id).eq('is_published',true).maybeSingle();
    if(error)throw error;
    if(!data){$('detailCard').hidden=true;$('notFound').hidden=false;document.title='PICKGO | Not found';return}

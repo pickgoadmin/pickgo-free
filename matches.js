@@ -81,7 +81,7 @@ function login(){if(bridge()?.getUser())return true;if($('matchComposer').open)$
 function errorMessage(e){if(['PGRST202','42883','42P01'].includes(e?.code))return '서비스에 연결할 수 없습니다. 잠시 후 다시 시도하세요.';return e?.message||'연결을 확인하고 다시 시도하세요.'}
 async function load(){const seq=++sequence,db=bridge()?.getClient(),me=bridge()?.getUser()?.id;
  if(!db){loadError=true;notice('서버에 연결하지 못했습니다. 새로고침하세요.');render();return}
- listLoading=true;loadError=false;render();try{const result=await db.rpc('pickgo_match_list');if(seq!==sequence||me!==bridge()?.getUser()?.id)return;if(result.error)throw result.error;rows=result.data||[];notice('경기 시간은 한국시간입니다. 참가 신청은 구장 예약이 아닙니다.');listLoading=false;render();if(selectedId)void loadMembers();
+ listLoading=true;loadError=false;render();try{const result=await db.rpc('pickgo_match_list');if(seq!==sequence||me!==bridge()?.getUser()?.id)return;if(result.error)throw result.error;rows=(result.data||[]).filter(row=>window.PICKGO_PUBLIC_SCOPE?.allows(row.venue_id));notice('경기 시간은 한국시간입니다. 참가 신청은 구장 예약이 아닙니다.');listLoading=false;render();if(selectedId)void loadMembers();
  if(!deepLinkHandled&&validId(requestedMatch)){deepLinkHandled=true;await resolveDetail(requestedMatch)}
  }catch(e){if(seq!==sequence)return;void window.PICKGO_DIAGNOSTICS?.report('match_list',e,me);rows=[];loadError=true;notice(errorMessage(e))}finally{if(seq===sequence){listLoading=false;render()}}
 }

@@ -26,7 +26,7 @@
    const next=Math.max(41,...ids)+1;
    $('id').value='court-'+String(next).padStart(2,'0');$('id').readOnly=false;
    $('sort_order').value=String(next);$('court_type').value=TYPES[0];$('booking_status').value=STATUSES[0];
-   $('is_published').checked=true;$('formTitle').textContent='New court / '+$('id').value;
+   $('is_published').checked=false;$('formTitle').textContent='New court / '+$('id').value;
    show('preview',false);show('delete',false);show('archive',false);pic();}
  function fillForm(row){selected=row.id;creating=false;show('formEmpty',false);show('venueForm',true);
   for(const field of FIELDS){let el=$(field);if(el)el.value=row[field]??''}
@@ -42,7 +42,7 @@
    if(!row.is_published){const tag=document.createElement('span');tag.className='badge off';tag.textContent='Hidden';name.append(tag)}
    const desc=document.createElement('small');desc.textContent=row.id+' | '+row.region+' | '+row.address;
    btn.append(name,desc);btn.addEventListener('click',()=>fillForm(row));root.append(btn)} }
- async function list(){const {data,error}=await client.from('pickgo_venues').select('*').order('sort_order',{ascending:true}).order('id',{ascending:true}).limit(500);
+ async function list(){await window.PICKGO_PUBLIC_SCOPE.refresh(client);const {data,error}=await client.from('pickgo_venues').select('*').order('sort_order',{ascending:true}).order('id',{ascending:true}).limit(500);
    if(error)throw error;venues=data||[];renderList();}
  async function hasAdmin(){const {data:{user},error:authErr}=await client.auth.getUser();if(authErr||!user){loggedIn=null;return 'login'}
   loggedIn=user;$('account').textContent=user.email||user.id;
@@ -65,6 +65,7 @@
    row.longitude=row.longitude===null?null:Number(row.longitude);
    row.sort_order=Number(row.sort_order)||1000;
    row.is_published=$('is_published').checked;
+   if(row.is_published&&!window.PICKGO_PUBLIC_SCOPE.allows(row.id))throw Error('API 연동을 확인한 공공시설만 공개할 수 있습니다. 미확인 시설과 민간 시설은 비공개로 저장하세요.');
    for(const key of URL_FIELDS){if(!row[key])continue;const u=new URL(row[key]);if(u.protocol!=='https:')throw Error('Only HTTPS URLs are allowed: '+key)}
    if(!row.name||!row.address)throw Error('Name and address are required.');
    let res=creating?await client.from('pickgo_venues').insert(row).select('id').single():await client.from('pickgo_venues').update(row).eq('id',selected).select('id').single();

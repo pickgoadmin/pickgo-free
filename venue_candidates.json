@@ -1,25 +1,4 @@
 {
   "schema_version": 1,
-  "candidates": [
-    {
-      "id": "court-05",
-      "name": "PICKLEBOX 서울숲",
-      "field": "operating_hours",
-      "value": "24시간 무인 운영 (레슨·상담 별도 안내)",
-      "source_url": "https://www.picklebox.co.kr/visit",
-      "collected_at": "2026-10-10T00:00:00+00:00",
-      "basis": "manual_verified_official_webpage",
-      "status": "needs_human_review"
-    },
-    {
-      "id": "court-06",
-      "name": "PICKLEZONE 피클존",
-      "field": "contact_phone",
-      "value": "0505-1341-3465",
-      "source_url": "https://picklezone.co.kr/",
-      "collected_at": "2026-10-10T00:00:00+00:00",
-      "basis": "manual_verified_official_webpage",
-      "status": "needs_human_review"
-    }
-  ]
+  "candidates": []
 }
