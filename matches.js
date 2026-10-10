@@ -55,9 +55,12 @@ const time=t=>new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',month:'nume
 function venueOptions(){const select=$('matchVenue'),old=select.value;select.replaceChildren(element('option','구장을 선택하세요'));select.firstChild.value='';for(const v of COURTS){const o=element('option',v.region+' · '+v.name);o.value=v.id;select.append(o)}select.value=old;}
 const filterValue=id=>$(id)?.value||'';
 const isChecked=id=>!!$(id)?.checked;
-function clearFilters(resetMine=true){for(const id of ['matchRegion','matchFilterDay','matchFilterSkill'])if($(id))$(id).value='';if($('matchOpenOnly'))$('matchOpenOnly').checked=false;if(resetMine)$('matchMine').checked=false;render()}
+function clearFilters(resetMine=true){for(const id of ['matchRegion','matchFilterDay','matchFilterSkill','matchSearch'])if($(id))$(id).value='';if($('matchSort'))$('matchSort').value='time';if($('matchOpenOnly'))$('matchOpenOnly').checked=false;if(resetMine)$('matchMine').checked=false;render()}
+const searchText=value=>String(value||'').normalize('NFKC').toLocaleLowerCase('ko-KR').replace(/\s+/g,' ').trim();
+const availableSeats=r=>r.status==='open'&&new Date(r.starts_at)>new Date()?Math.max(0,r.capacity-r.attendees):0;
 function render(){const box=$('matchList');box.replaceChildren();box.setAttribute?.('aria-busy',String(listLoading));
-const filtered=rows.filter(r=>(!filterValue('matchRegion')||r.region===filterValue('matchRegion'))&&(!isChecked('matchMine')||r.is_host||r.is_joined)&&(!filterValue('matchFilterDay')||new Date(new Date(r.starts_at).getTime()+9*3600000).toISOString().slice(0,10)===filterValue('matchFilterDay'))&&(!filterValue('matchFilterSkill')||r.skill===filterValue('matchFilterSkill'))&&(!isChecked('matchOpenOnly')||(r.status==='open'&&r.attendees<r.capacity)));
+const query=searchText(filterValue('matchSearch'));
+const filtered=rows.filter(r=>(!query||query.split(' ').every(term=>searchText([r.venue_name,r.region,r.note].join(' ')).includes(term)))&&(!filterValue('matchRegion')||r.region===filterValue('matchRegion'))&&(!isChecked('matchMine')||r.is_host||r.is_joined)&&(!filterValue('matchFilterDay')||new Date(new Date(r.starts_at).getTime()+9*3600000).toISOString().slice(0,10)===filterValue('matchFilterDay'))&&(!filterValue('matchFilterSkill')||r.skill===filterValue('matchFilterSkill'))&&(!isChecked('matchOpenOnly')||(availableSeats(r)>0))).sort((a,b)=>(filterValue('matchSort')==='seats'?availableSeats(b)-availableSeats(a):0)||new Date(a.starts_at)-new Date(b.starts_at)||String(a.id).localeCompare(String(b.id)));
 if($('matchResultCount'))$('matchResultCount').textContent=listLoading?'불러오는 중…':filtered.length+'개의 경기';
 if(!filtered.length)box.append(element('p',listLoading?'경기 모집을 불러오는 중입니다.':loadError?'경기를 불러오지 못했습니다. 새로고침으로 다시 시도하세요.':isChecked('matchMine')&&!bridge()?.getUser()?'로그인하면 내가 만든 경기와 참가한 경기를 확인할 수 있어요.':'조건에 맞는 경기가 없습니다. 필터를 바꾸거나 새 경기를 모집해 보세요.','match-empty'));
 for(const r of filtered){const card=element('article','','match-card');const closed=r.status==='cancelled'||r.attendees>=r.capacity||new Date(r.starts_at)<=new Date();card.append(element('span',r.status==='cancelled'?'취소됨':new Date(r.starts_at)<=new Date()?'지난 경기':r.is_host?'내가 만든 경기':r.is_joined?'참가 중':closed?'모집 마감':(r.capacity-r.attendees)+'자리 남음','match-status-pill'+(closed?' closed':'')),element('strong',r.venue_name),element('p',time(r.starts_at)+' ~ '+new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(r.ends_at))),element('p',r.skill+' · '+r.attendees+'/'+r.capacity+'명 (주최자 포함)'));
@@ -96,7 +99,8 @@ busy=true;render();try{
  resetEditor();$('matchComposer').open=false;await load();window.PICKGO_INBOX?.refresh();notice(editingId?'모집을 수정했습니다. 참가자에게 앱 내 알림이 생성됩니다.':'경기 모집이 등록되었습니다. 주최자가 첫 참가자로 포함됩니다.');
 }catch(err){notice(errorMessage(err))}finally{busy=false;render()}});
 
-for(const id of ['matchFilterDay','matchFilterSkill','matchOpenOnly'])$(id)?.addEventListener('change',render);
+for(const id of ['matchFilterDay','matchFilterSkill','matchOpenOnly','matchSort'])$(id)?.addEventListener('change',render);
+$('matchSearch')?.addEventListener('input',render);
 $('matchClearFilters')?.addEventListener('click',()=>clearFilters());
 $('matchComposeOpen')?.addEventListener('click',()=>{if(!login())return;$('matchComposer').open=true;$('matchComposer').scrollIntoView({behavior:'smooth',block:'start'})});
 $('matchRegion').addEventListener('change',render);$('matchMine').addEventListener('change',render);$('matchRefresh').addEventListener('click',load);

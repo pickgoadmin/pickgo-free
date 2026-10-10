@@ -13,3 +13,10 @@ body[data-pickgo-view=account] main,body[data-pickgo-view=account]>.footer{displ
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 
 .app-connectivity{margin:0;padding:12px 20px;background:#fff1d7;color:#705423;font-size:12px;line-height:1.6;text-align:center}.service-links{display:flex;flex-wrap:wrap;gap:15px;font-size:13px;margin-top:20px;color:#245239}#serviceInfoDialog p{font-size:14px;line-height:1.8;color:#587160}
+.hero-wrap>div:first-child{min-width:0;width:100%}
+.hero .hero-note{max-width:none;white-space:nowrap;font-size:clamp(8px,2.5vw,13px)!important;letter-spacing:-.2px}
+.match-search-tools{display:flex;align-items:end;gap:12px;margin:16px 0 12px}
+.match-search-tools label{display:grid;gap:7px;font-size:12px;color:#587160;font-weight:700}
+.match-search-tools .match-search-label{flex:1;min-width:0}
+.match-search-tools input,.match-search-tools select{width:100%;min-height:46px;border:1px solid #d8e4d9;border-radius:12px;background:white;padding:11px 13px;color:#193729;font:inherit;font-size:14px}
+@media(max-width:540px){.match-search-tools{flex-direction:column;align-items:stretch}.match-search-tools input,.match-search-tools select{font-size:16px}}
