@@ -223,7 +223,7 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
 .venue-icon{overflow:hidden}.pickgo-court-thumb{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}.venue-icon .iconlabel{z-index:1}.pickgo-db-status{display:inline-block;font-size:10px;color:#507358;margin-top:5px}.venue-dialog-photo{display:block;width:100%;max-height:290px;object-fit:cover;border-radius:14px;margin:13px 0}.venue-dialog-meta{display:grid;gap:7px;padding:12px;border-radius:12px;background:#f4f8ef;color:#3e5f48;font-size:13px}.venue-dialog-photo[hidden],.venue-dialog-meta[hidden],.pickgo-admin-link[hidden]{display:none!important}.pickgo-admin-link{display:block;padding:12px 15px;border-radius:12px;background:#e8f7d5;color:#215c39;font-weight:750;margin:12px 0;text-align:center}
 </style>
 <link rel="stylesheet" href="/matches.css"><link rel="stylesheet" href="/features.css">
-<link rel="stylesheet" href="/availability.css"></head>
+<link rel="stylesheet" href="/availability-v234.css"></head>
 <body data-pickgo-view="home">
 <header class="topbar"><div class="shell topin"><a class="brand" href="./" aria-label="PICKGO 홈"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="12" fill="#22382b"/><rect x="11" y="11" width="17" height="24" rx="8" fill="white"/><path d="M19 34v6" stroke="white" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="17" r="8" fill="#c8fb69"/></svg><span>PICK<strong>GO</strong></span></a><nav class="nav" aria-label="주요 메뉴"><a href="#explore">코트 찾기</a><a href="#matches">경기 매칭</a><button type="button" id="topSupport" aria-haspopup="dialog">고객센터</button><button type="button" id="topAccount" class="account-top" aria-haspopup="dialog">로그인 / 회원가입</button><button type="button" id="topNotifications" aria-label="알림" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg><span id="notificationBadge" class="notification-badge" hidden>0</span></button></nav></div></header>
 <p id="appConnectivity" class="app-connectivity" role="status" hidden></p><main>
@@ -711,14 +711,13 @@ if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostn
 </script>
 <dialog id="availabilityDialog" class="availability-dialog" aria-labelledby="availabilityTitle"><div class="availability-content">
 <div class="availability-heading"><div><small>FIND YOUR NEXT COURT</small><h2 id="availabilityTitle">빈 코트 찾기</h2></div><button type="button" id="availabilityClose" aria-label="빈 코트 찾기 닫기">×</button></div>
-<p>날짜와 시작 시간, 이용 시간을 선택하세요. 빈 시간 정보가 연결되지 않은 시설은 공식 예약처에서 확인할 수 있어요.</p>
+<p>날짜와 시작·종료 시간을 선택하세요. 빈 시간 정보가 연결되지 않은 시설은 공식 예약처에서 확인할 수 있어요.</p>
 <form id="availabilitySearch" class="availability-fields">
 <label>지역<select id="availabilityRegion"><option value="">전체 지역</option></select></label>
 <label>날짜<input id="availabilityDay" type="date" required></label>
+<label>시작 시간<input id="availabilityStart" type="time" value="09:00" required></label>
+<label>종료 시간<input id="availabilityEnd" type="time" value="10:00" required></label>
 <div id="availabilityQuickDays" class="availability-quick-days" role="group" aria-label="날짜 빠르게 선택"></div>
-<label>시작 시간<select id="availabilityStart" required></select></label>
-<label>이용 시간<select id="availabilityDuration"><option value="1">1시간</option><option value="2">2시간</option><option value="3">3시간</option><option value="4">4시간</option></select></label>
-<input id="availabilityEnd" type="hidden">
 <p id="availabilitySelection" class="availability-selection" aria-live="polite"></p>
 <button type="submit" id="availabilitySearchButton">선택한 시간 확인하기</button></form>
 <p id="availabilityStatus" class="availability-status" role="status" aria-live="polite"></p>
@@ -727,5 +726,5 @@ if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostn
 <details id="bookingSyncPublic" class="availability-source-details"><summary>예약 정보 업데이트 확인</summary><p id="bookingSyncPublicStatus" role="status"></p><button type="button" id="bookingSyncPublicRefresh" class="tinybtn">정보 새로고침</button><div id="bookingSyncPublicList"></div></details>
 <p class="availability-footnote">한국시간 기준 · PICKGO의 검색은 예약 접수가 아닙니다.</p></div></dialog>
 <script src="/venues-db.js"></script>
-<script src="/diagnostics.js"></script><script src="/matches.js"></script><script src="/inbox.js"></script><script src="/site-config.js"></script><script src="/app.js"></script><script src="/account.js"></script><script src="/support.js"></script><script src="/my-games.js"></script><script src="/availability.js"></script><script src="/booking-sync.js"></script>
+<script src="/diagnostics.js"></script><script src="/matches.js"></script><script src="/inbox.js"></script><script src="/site-config.js"></script><script src="/app.js"></script><script src="/account.js"></script><script src="/support.js"></script><script src="/my-games.js"></script><script src="/availability-v234.js"></script><script src="/booking-sync.js"></script>
 </body></html>
