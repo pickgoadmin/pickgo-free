@@ -1,0 +1,30 @@
+name: PICKGO Booking Data Sync
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '3,13,23,33,43,53 * * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pickgo-booking-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SEOUL_OPEN_DATA_KEY: ${{ secrets.SEOUL_OPEN_DATA_KEY }}
+      PICKGO_AUTHORIZED_FEEDS_JSON: ${{ secrets.PICKGO_AUTHORIZED_FEEDS_JSON }}
+      PICKGO_FEED_TOKEN_PRIMARY: ${{ secrets.PICKGO_FEED_TOKEN_PRIMARY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/booking_sync.py
