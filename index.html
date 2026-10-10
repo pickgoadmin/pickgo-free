@@ -253,18 +253,18 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
 <label class="wide">실력<select id="matchSkill"><option>누구나</option><option>입문</option><option>초급</option><option>중급</option><option>상급</option></select></label>
 <label class="wide">모집 안내<textarea id="matchNote" maxlength="300" rows="3" placeholder="만날 장소, 준비물 등을 적어 주세요. 공개되는 글이므로 개인 연락처는 쓰지 마세요."></textarea></label>
 <label class="wide check"><input id="matchReserved" type="checkbox" required> 외부 예약처에서 해당 구장·시간 예약을 완료했습니다.</label>
-<button class="wide" id="matchSubmit" type="submit">모집 등록</button></form></details>
+<p id="matchEditHint" class="wide" hidden>날짜·시간·구장을 변경하면 참가자에게 직접 알려 주세요. 자동 알림은 제공되지 않습니다.</p><button class="wide" type="button" id="matchEditCancel" hidden>수정 취소</button><button class="wide" id="matchSubmit" type="submit">모집 등록</button></form></details>
 <div class="match-filters"><label>지역 <select id="matchRegion"><option value="">전국</option></select></label><label><input type="checkbox" id="matchMine"> 내가 만든 / 참가한 경기</label></div>
 <p id="matchNotice" class="match-notice" role="status" aria-live="polite"></p><div id="matchList" class="match-grid"></div>
 </div></section>
 </main>
-<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v1.2.0 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>외부 링크: 구장 공식 홈페이지 우선 · 미확인 구장은 네이버 지도 한국어 검색</div></div></footer>
+<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v1.3.0 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>외부 링크: 구장 공식 홈페이지 우선 · 미확인 구장은 네이버 지도 한국어 검색</div></div></footer>
 
 <dialog id="matchDetailDialog" class="auth-dialog" aria-labelledby="matchDetailTitle"><div class="auth-box">
 <div class="auth-heading"><div><div class="auth-eyebrow">PICKGO MATCH</div><h2 class="auth-title" id="matchDetailTitle"></h2></div><button type="button" class="auth-close" id="matchDetailClose" aria-label="경기 상세 닫기">×</button></div>
 <p id="matchDetailState" class="match-detail-state"></p><p id="matchDetailTime"></p><p id="matchDetailMeta"></p><p id="matchDetailNote" class="match-detail-note"></p>
 <a id="matchDetailVenue" class="court-page-link" href="/court.html">구장 정보 보기 ↗</a>
-<div class="profile-actions" style="margin-top:18px"><button type="button" id="matchDetailAction" class="primary">참가하기</button><button type="button" id="matchDetailShare">모집 링크 공유 ↗</button></div>
+<div class="profile-actions" style="margin-top:18px"><button type="button" id="matchDetailAction" class="primary">참가하기</button><button type="button" id="matchDetailEdit" hidden>모집 수정</button><button type="button" id="matchDetailShare">모집 링크 공유 ↗</button></div>
 <p id="matchDetailNotice" role="status" aria-live="polite"></p><p class="auth-disclaimer">참가 신청은 구장 예약이나 결제 확정이 아닙니다. 시간은 한국시간으로 표시됩니다.</p>
 </div></dialog>
 <dialog id="authDialog" class="auth-dialog" aria-labelledby="authDialogTitle">
