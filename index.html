@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f6f8f4">
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="PICKGO에서 전국 피클볼 구장을 검색하고 공식 예약 경로, 위치를 확인하세요. 실제 잔여 시간은 예약처에서 확인하세요.">
-<meta property="og:type" content="website"><meta property="og:site_name" content="PICKGO"><meta property="og:title" content="PICKGO — 피클볼 코트, 한눈에"><meta property="og:description" content="전국 피클볼 코트 찾기 · 공식 예약 사이트 연결 · 베타 서비스">
+<meta property="og:type" content="website"><meta property="og:site_name" content="PICKGO"><meta property="og:title" content="PICKGO — 빈 코트 찾고, 함께 플레이!"><meta property="og:description" content="전국 피클볼 코트 찾기 · 공식 예약 사이트 연결 · 베타 서비스">
 <title>PICKGO | 전국 피클볼 구장 찾기</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231b2924'/%3E%3Ccircle cx='41' cy='19' r='10' fill='%23c8fa61'/%3E%3Cpath d='M15 16h20v24a10 10 0 0 1-20 0z' fill='%23fff'/%3E%3Cpath d='M25 48v7' stroke='%23fff' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
@@ -223,11 +223,11 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
 .venue-icon{overflow:hidden}.pickgo-court-thumb{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}.venue-icon .iconlabel{z-index:1}.pickgo-db-status{display:inline-block;font-size:10px;color:#507358;margin-top:5px}.venue-dialog-photo{display:block;width:100%;max-height:290px;object-fit:cover;border-radius:14px;margin:13px 0}.venue-dialog-meta{display:grid;gap:7px;padding:12px;border-radius:12px;background:#f4f8ef;color:#3e5f48;font-size:13px}.venue-dialog-photo[hidden],.venue-dialog-meta[hidden],.pickgo-admin-link[hidden]{display:none!important}.pickgo-admin-link{display:block;padding:12px 15px;border-radius:12px;background:#e8f7d5;color:#215c39;font-weight:750;margin:12px 0;text-align:center}
 </style>
 <link rel="stylesheet" href="/matches.css"><link rel="stylesheet" href="/features.css">
-</head>
+<link rel="stylesheet" href="/availability.css"></head>
 <body data-pickgo-view="home">
 <header class="topbar"><div class="shell topin"><a class="brand" href="./" aria-label="PICKGO 홈"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="12" fill="#22382b"/><rect x="11" y="11" width="17" height="24" rx="8" fill="white"/><path d="M19 34v6" stroke="white" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="17" r="8" fill="#c8fb69"/></svg><span>PICK<strong>GO</strong></span></a><nav class="nav" aria-label="주요 메뉴"><a href="#explore">코트 찾기</a><a href="#matches">경기 매칭</a><button type="button" id="topSupport" aria-haspopup="dialog">고객센터</button><button type="button" id="topAccount" class="account-top" aria-haspopup="dialog">로그인 / 회원가입</button><button type="button" id="topNotifications" aria-label="알림" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg><span id="notificationBadge" class="notification-badge" hidden>0</span></button></nav></div></header>
 <p id="appConnectivity" class="app-connectivity" role="status" hidden></p><main>
-<section class="hero shell"><div class="hero-wrap"><div style="position:relative;z-index:1"><div class="eyebrow">YOUR NEXT PICKLEBALL COURT</div><h1>피클볼 코트, 한눈에 찾다.</h1><p class="hero-note">전국의 피클볼 구장과 공식 예약처를 빠르게 찾아보세요.</p></div><div class="court-art" aria-hidden="true"><div class="lines"></div><div class="ball"></div></div></div></section>
+<section class="hero shell"><div class="hero-wrap"><div style="position:relative;z-index:1"><div class="eyebrow">YOUR NEXT PICKLEBALL COURT</div> <button type="button" id="availabilityOpen" class="availability-open" aria-haspopup="dialog">빈 코트 찾기 ↗</button><h1>빈 코트 찾고, 함께 플레이!</h1><p class="hero-note">전국의 피클볼 구장과 공식 예약처를 빠르게 찾아보세요.</p></div><div class="court-art" aria-hidden="true"><div class="lines"></div><div class="ball"></div></div></div></section>
 
 <section class="pwa-promo shell" id="pwaPromo" hidden aria-label="홈 화면에 앱 설치">
  <div class="pwa-promo-inner"><img src="/icon-192.png" alt="PICKGO 앱 아이콘" width="42" height="42">
@@ -715,6 +715,7 @@ if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostn
 }
 })();
 </script>
+<dialog id="availabilityDialog" class="availability-dialog" aria-labelledby="availabilityTitle"><div class="availability-content"><div class="availability-heading"><div><small>FIND YOUR NEXT COURT</small><h2 id="availabilityTitle">빈 코트 찾기</h2></div><button type="button" id="availabilityClose" aria-label="빈 코트 찾기 닫기">×</button></div><p>운영자가 확인한 빈 시간대를 찾아보세요. 최종 예약 가능 여부와 예약 완료는 예약처에서 확인해주세요.</p><form id="availabilitySearch" class="availability-fields"><label>지역<select id="availabilityRegion"><option value="">전국</option></select></label><label>날짜<input id="availabilityDay" type="date" required></label><label>시작<input id="availabilityStart" type="time" required></label><label>종료<input id="availabilityEnd" type="time" required></label><button type="submit" id="availabilitySearchButton">빈 시간대 찾기</button></form><p id="availabilityStatus" role="status" aria-live="polite"></p><div id="availabilityResults"></div><p class="availability-footnote">한국시간 기준 · 등록되지 않은 구장은 기존 구장 목록의 공식 예약처에서 확인할 수 있습니다.</p></div></dialog>
 <script src="/venues-db.js"></script>
-<script src="/matches.js"></script><script src="/inbox.js"></script><script src="/site-config.js"></script><script src="/app.js"></script><script src="/account.js"></script><script src="/support.js"></script><script src="/my-games.js"></script>
+<script src="/diagnostics.js"></script><script src="/matches.js"></script><script src="/inbox.js"></script><script src="/site-config.js"></script><script src="/app.js"></script><script src="/account.js"></script><script src="/support.js"></script><script src="/my-games.js"></script><script src="/availability.js"></script>
 </body></html>
