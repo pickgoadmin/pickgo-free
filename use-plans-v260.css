@@ -1,0 +1,8 @@
+#usePlanDialog .use-plan-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#usePlanDialog label{display:grid;gap:6px;font-size:13px;font-weight:700}
+#usePlanDialog label:first-child,#usePlanDialog label:nth-of-type(5),#usePlanDialog .account-subnote,#usePlanSave{grid-column:1/-1}
+#usePlanDialog input,#usePlanDialog select{min-width:0;width:100%;padding:12px;border:1px solid #dce6d9;border-radius:10px;background:#fff;color:#223b2a;font:inherit}
+#usePlanDialog .use-plan-card{border:1px solid #e1e9de;border-radius:14px;padding:16px;margin-top:12px;display:grid;gap:8px}
+#usePlanDialog .use-plan-card p{margin:0;color:#607364;font-size:13px}
+#usePlanDialog .use-plan-card button{border:1px solid #dce6d9;border-radius:9px;padding:10px;background:#ecf8dc;color:#26482c;font-weight:700}
+#matchPlanHint{margin:0;font-size:13px}#matchUseState{padding:12px;border-radius:10px;background:#f2f7ec}
