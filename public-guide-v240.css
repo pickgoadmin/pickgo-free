@@ -1,0 +1,8 @@
+/* Detail-only refinements; original home geometry remains unchanged. */
+#venueDialog .dialoginner{padding:28px;max-width:100%;overflow-wrap:anywhere}
+#venueDialog .modalrow{padding:18px;margin:18px 0}
+#venueDialog .modalactions{gap:10px}
+#venueDialog .modalnotice{font-size:12px;margin:16px 0 0}
+#venueDialog .shareline{margin-top:12px}
+#venueDialog [hidden]{display:none!important}
+@media(max-width:520px){#venueDialog .dialoginner{padding:22px}#venueDialog .modalactions{grid-template-columns:1fr}#venueDialog h2{font-size:24px}}
