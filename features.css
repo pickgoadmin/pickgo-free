@@ -10,3 +10,12 @@
 @media(max-width:540px){.match-search-tools{flex-direction:column;align-items:stretch}.match-search-tools input,.match-search-tools select{font-size:16px}}
 
 .match-roster [hidden],.notification-badge[hidden]{display:none!important}
+
+/* v2.1.1: requested banner containment; other home layout stays unchanged. */
+section.hero[class~="shell"]{width:100%;padding-left:28px;padding-right:28px;box-sizing:border-box}
+section.hero[class~="shell"]>div{width:100%;max-width:100%;min-width:0;container-type:inline-size}
+section.hero[class~="shell"]>div>div:first-child{min-width:0;max-width:100%}
+section.hero[class~="shell"] h1{font-size:clamp(12px,6.5cqi,42px);white-space:nowrap}
+section.hero[class~="shell"] .hero-note{font-size:clamp(7px,2.6cqi,13px)}
+@media(max-width:790px){section.hero[class~="shell"]{padding-left:16px;padding-right:16px}}
+@media(max-width:540px){section.hero[class~="shell"]{padding-left:14px;padding-right:14px}}
