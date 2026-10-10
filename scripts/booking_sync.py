@@ -90,7 +90,7 @@ def slot_feed(payload,now):
   if b>now:result.append({'external_id':sid,'court_label':court,'starts_at':a.isoformat(),'ends_at':b.isoformat(),'available':state=='available' and remaining>0})
  return {'schema_version':1,'complete':True,'generated_at':generated.isoformat(),'window_start':begin.isoformat(),'window_end':end.isoformat(),'slots':result}
 
-SERVICE_STATES={'ì ìì¤','ì ìë§ê°','ìë´ì¤','ìì½ë§ê°','ìì½ë¶ê°','ìë¹ì¤ì¢ë£'}
+SERVICE_STATES={'\uc811\uc218\uc911','\uc811\uc218\ub9c8\uac10','\uc548\ub0b4\uc911','\uc608\uc57d\ub9c8\uac10','\uc608\uc57d\ubd88\uac00','\uc11c\ube44\uc2a4\uc885\ub8cc'}
 
 def seoul_catalog(payload):
  data=payload.get('ListPublicReservationSport') if isinstance(payload,dict) else None
@@ -101,7 +101,7 @@ def seoul_catalog(payload):
   if not isinstance(row,dict):raise SyncError('invalid_catalog')
   sid=row.get('SVCID');url=row.get('SVCURL','')
   if not isinstance(sid,str) or not re.fullmatch(r'S\d{18}',sid):continue
-  state=row.get('SVCSTATNM','');found[sid]={'state':state if state in SERVICE_STATES else 'ìíë¯¸íì¸','url':url}
+  state=row.get('SVCSTATNM','');found[sid]={'state':state if state in SERVICE_STATES else '\uc0c1\ud0dc\ubbf8\ud655\uc778','url':url}
  return found
 
 class PageInfo(HTMLParser):
@@ -119,9 +119,9 @@ def seoul_page(raw):
  parser=PageInfo()
  try:parser.feed(raw.decode('utf-8'))
  except UnicodeError:raise SyncError('invalid_page') from None
- if not any('í¼í´ë³¼' in text for text in parser.heading_text):raise SyncError('page_identity_unverified')
+ if not any('\ud53c\ud074\ubcfc' in text for text in parser.heading_text):raise SyncError('page_identity_unverified')
  states=[state for state in SERVICE_STATES if any(text.endswith(state) for text in parser.heading_text)]
- return {'state':'protected' if parser.blocked else 'catalog_only','service_status':states[0] if len(states)==1 else 'ìíë¯¸íì¸'}
+ return {'state':'protected' if parser.blocked else 'catalog_only','service_status':states[0] if len(states)==1 else '\uc0c1\ud0dc\ubbf8\ud655\uc778'}
 
 def source_key(provider,identity):return hashlib.sha256((provider+':'+identity).encode()).hexdigest()
 
@@ -192,7 +192,7 @@ def run():
    raw,_=request('http://openapi.seoul.go.kr:8088/'+quote(api_key,safe='')+'/json/ListPublicReservationSport/1/1000/',seoul_http=True);catalog=seoul_catalog(decode(raw))
   except SyncError:catalog=None
  for source in sources:
-  state='failed';service='ìíë¯¸íì¸'
+  state='failed';service='\uc0c1\ud0dc\ubbf8\ud655\uc778'
   try:
    if source['provider']=='seoul_page':
     if catalog is not None and source['identity'] in catalog:
@@ -208,7 +208,7 @@ def run():
    rpc(base,secret,'pickgo_publish_booking_sync',{'p_venue':source['venue_id'],'p_key':source['key'],'p_provider':source['provider'],'p_url':source['url'],'p_state':state,'p_service_status':service,'p_observed_at':now.isoformat(),'p_snapshot':None});published+=1
   except SyncError:failed+=1
  # Optional authorized feeds. URLs are configured once, not per time slot.
- try:feeds=json.loads(os.environ.get('PICKGO_AUTHORIZED_FEEDS_JSON','[]'))
+ try:feeds=json.loads(os.environ.get('PICKGO_AUTHORIZED_FEEDS_JSON','').strip() or '[]')
  except ValueError:raise SyncError('invalid_feed_configuration') from None
  if not isinstance(feeds,list) or len(feeds)>20:raise SyncError('invalid_feed_configuration')
  known={v['id'] for v in venues}
@@ -224,7 +224,7 @@ def run():
     headers={'Authorization':'Bearer '+os.environ[token_name]}
    raw,_=request(feed['url'],headers=headers);snapshot=slot_feed(decode(raw),observed);state='slots_ok'
   except SyncError:failed+=1
-  args={'p_venue':feed['venue_id'],'p_key':key,'p_provider':'partner_feed','p_url':feed['booking_url'],'p_state':state,'p_service_status':'ìíë¯¸íì¸','p_observed_at':observed.isoformat(),'p_snapshot':snapshot}
+  args={'p_venue':feed['venue_id'],'p_key':key,'p_provider':'partner_feed','p_url':feed['booking_url'],'p_state':state,'p_service_status':'\uc0c1\ud0dc\ubbf8\ud655\uc778','p_observed_at':observed.isoformat(),'p_snapshot':snapshot}
   try:
    rpc(base,secret,'pickgo_publish_booking_sync',args);published+=1
   except SyncError:
