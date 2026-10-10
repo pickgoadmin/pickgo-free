@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "PICKGO - 구장 찾기와 경기 매칭",
+  "name": "PICKGO - 전국 피클볼 구장 찾기",
   "short_name": "PICKGO",
-  "description": "전국 피클볼 구장 찾기, 경기 모집과 참가",
+  "description": "PICKGO nationwide pickleball court finder and venue information",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
@@ -40,9 +40,9 @@
   ],
   "shortcuts": [
     {
-      "name": "홈",
-      "short_name": "홈",
-      "url": "/",
+      "name": "구장 찾기",
+      "short_name": "구장",
+      "url": "/?tab=courts",
       "icons": [
         {
           "src": "/icon-192.png",
@@ -51,20 +51,9 @@
       ]
     },
     {
-      "name": "경기매칭",
-      "short_name": "경기매칭",
-      "url": "/?tab=matches",
-      "icons": [
-        {
-          "src": "/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "마이페이지",
-      "short_name": "마이페이지",
-      "url": "/?tab=account",
+      "name": "즐겨찾기",
+      "short_name": "즐겨찾기",
+      "url": "/?tab=favorites",
       "icons": [
         {
           "src": "/icon-192.png",

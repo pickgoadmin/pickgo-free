@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#f6f8f4">
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="PICKGO에서 전국 피클볼 구장을 검색하고 공식 예약 경로, 위치를 확인하세요. 실제 잔여 시간은 예약처에서 확인하세요.">
-<meta property="og:type" content="website"><meta property="og:site_name" content="PICKGO"><meta property="og:title" content="PICKGO — 오늘 칠 코트, 한눈에"><meta property="og:description" content="전국 피클볼 구장 찾기 · 공식 예약처 연결 · 경기 모집과 참가">
-<title>PICKGO | 구장 찾기와 경기 매칭</title>
+<meta property="og:type" content="website"><meta property="og:site_name" content="PICKGO"><meta property="og:title" content="PICKGO — 오늘 칠 코트, 한눈에"><meta property="og:description" content="전국 피클볼 코트 찾기 · 공식 예약 사이트 연결 · 베타 서비스">
+<title>PICKGO | 전국 피클볼 구장 찾기</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231b2924'/%3E%3Ccircle cx='41' cy='19' r='10' fill='%23c8fa61'/%3E%3Cpath d='M15 16h20v24a10 10 0 0 1-20 0z' fill='%23fff'/%3E%3Cpath d='M25 48v7' stroke='%23fff' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
 <style>
@@ -222,12 +222,12 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
 }
 .venue-icon{overflow:hidden}.pickgo-court-thumb{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}.venue-icon .iconlabel{z-index:1}.pickgo-db-status{display:inline-block;font-size:10px;color:#507358;margin-top:5px}.venue-dialog-photo{display:block;width:100%;max-height:290px;object-fit:cover;border-radius:14px;margin:13px 0}.venue-dialog-meta{display:grid;gap:7px;padding:12px;border-radius:12px;background:#f4f8ef;color:#3e5f48;font-size:13px}.venue-dialog-photo[hidden],.venue-dialog-meta[hidden],.pickgo-admin-link[hidden]{display:none!important}.pickgo-admin-link{display:block;padding:12px 15px;border-radius:12px;background:#e8f7d5;color:#215c39;font-weight:750;margin:12px 0;text-align:center}
 </style>
-<link rel="stylesheet" href="/matches.css"><link rel="stylesheet" href="/app.css">
+<link rel="stylesheet" href="/matches.css">
 </head>
 <body data-pickgo-view="home">
 <header class="topbar"><div class="shell topin"><a class="brand" href="./" aria-label="PICKGO 홈"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="12" fill="#22382b"/><rect x="11" y="11" width="17" height="24" rx="8" fill="white"/><path d="M19 34v6" stroke="white" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="17" r="8" fill="#c8fb69"/></svg><span>PICK<strong>GO</strong></span></a><nav class="nav" aria-label="주요 메뉴"><a href="#explore">코트 찾기</a><a href="#matches">경기 매칭</a><button type="button" id="topFavorites">♡ 즐겨찾기 <span id="favNum">0</span></button><button type="button" id="topAccount" class="account-top" aria-haspopup="dialog">로그인 / 회원가입</button></nav></div></header>
-<p id="appConnectivity" class="app-connectivity" role="status" hidden></p><main>
-<section class="hero shell"><div class="hero-wrap"><div style="position:relative;z-index:1"><div class="eyebrow">YOUR NEXT PICKLEBALL COURT</div><h1>오늘 칠 코트, 한눈에 찾다.</h1><p class="hero-note">전국의 피클볼 구장과 공식 예약처를 빠르게 찾아보세요.</p></div><div class="court-art" aria-hidden="true"><div class="lines"></div><div class="ball"></div></div></div></section>
+<main>
+<section class="hero shell"><div class="hero-wrap"><div style="position:relative;z-index:1"><div class="eyebrow">YOUR NEXT PICKLEBALL COURT</div><h1>오늘 칠 코트, 한눈에 찾다.</h1></div><div class="court-art" aria-hidden="true"><div class="lines"></div><div class="ball"></div></div></div></section>
 
 <section class="pwa-promo shell" id="pwaPromo" hidden aria-label="홈 화면에 앱 설치">
  <div class="pwa-promo-inner"><img src="/icon-192.png" alt="PICKGO 앱 아이콘" width="42" height="42">
@@ -237,14 +237,14 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
 <section class="shell" id="explore">
 <div class="quickrow" id="regionChips" aria-label="지역 선택"></div>
 <div class="discoverbar"><div class="discovercopy"><strong>공식 예약 경로 확인 <span id="verifiedCount">0</span>곳</strong><span>실시간 빈 코트는 외부 예약처에서 확인하세요.</span></div><button type="button" id="showVerified" class="discoverbutton">예약 링크 보기 ↗</button><button type="button" id="nearby" class="nearbybutton">◎ 내 주변 지역</button></div><div id="geoMessage" class="geonote" role="status" aria-live="polite"></div><div class="mobile-view" id="mobileView"><button type="button" data-view="list" class="on">☰ 구장 목록</button><button type="button" data-view="map">⌖ 지역 지도</button></div>
-<div class="workarea" id="workArea"><section class="leftcol" aria-label="구장 검색 결과"><form class="search-panel" id="searchForm" role="search"><label class="search-input" for="search"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.4"/><path d="m16.5 16.5 5 5"/></svg><input id="search" type="search" autocomplete="off" aria-label="구장명, 주소, 지역 검색" placeholder="지역, 구장 이름, 주소 검색"></label><button class="search-cta" type="submit">구장 찾기 →</button></form><div class="resulthead"><div><h2>전국 피클볼 코트 <span id="resultCount">0</span></h2><p id="resultSubtitle">구장 목록을 불러오는 중입니다.</p></div><button class="tinybtn" id="resetFilters" type="button">필터 초기화</button></div><div class="filters" id="filters"><button type="button" data-type="전체" class="filter-btn on">전체</button><button type="button" data-type="실내" class="filter-btn">실내</button><button type="button" data-type="야외" class="filter-btn">실외</button><span class="filter-sep"></span><button type="button" id="filterDirect" class="filter-btn">공식 예약만</button><button type="button" id="filterBooking" class="filter-btn">예약·문의 링크</button></div><div id="venueList" class="venue-list" aria-live="polite" tabindex="0" aria-label="구장 목록: 위아래로 스크롤해서 나머지 구장을 확인하세요"></div><p id="listScrollHint" class="list-scroll-hint" hidden>↕ 목록 안을 위아래로 스크롤하면 나머지 구장도 볼 수 있어요.</p>
-</section>
+<div class="workarea" id="workArea"><section class="leftcol" aria-label="구장 검색 결과"><div class="resulthead"><div><h2>전국 피클볼 코트 <span id="resultCount">0</span></h2><p id="resultSubtitle">구장 목록을 불러오는 중입니다.</p></div><button class="tinybtn" id="resetFilters" type="button">필터 초기화</button></div><div class="filters" id="filters"><button type="button" data-type="전체" class="filter-btn on">전체</button><button type="button" data-type="실내" class="filter-btn">실내</button><button type="button" data-type="야외" class="filter-btn">실외</button><span class="filter-sep"></span><button type="button" id="filterDirect" class="filter-btn">공식 예약만</button><button type="button" id="filterBooking" class="filter-btn">예약·문의 링크</button></div><div id="venueList" class="venue-list" aria-live="polite" tabindex="0" aria-label="구장 목록: 위아래로 스크롤해서 나머지 구장을 확인하세요"></div><p id="listScrollHint" class="list-scroll-hint" hidden>↕ 목록 안을 위아래로 스크롤하면 나머지 구장도 볼 수 있어요.</p>
+<form class="search-panel" id="searchForm" role="search"><label class="search-input" for="search"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.4"/><path d="m16.5 16.5 5 5"/></svg><input id="search" type="search" autocomplete="off" aria-label="구장명, 주소, 지역 검색" placeholder="지역, 구장 이름, 주소 검색"></label><button class="search-cta" type="submit">구장 찾기 →</button></form></section>
 <section class="mapcard" aria-label="지역 분포 지도"><div class="maphead"><div><b>지도로 둘러보기</b><small>지역 표시를 누르면 해당 지역 구장만 검색</small></div><button id="mapAll" class="tinybtn" type="button">전국 보기</button></div><div class="mapsurface" id="map"><div class="fallback">무료 지도 불러오는 중…</div></div><div class="mapfoot"><b>● 원형 숫자 = 지역별 구장 수</b>이며 마커는 <b>지역 중심 위치</b>를 나타냅니다. 개별 시설의 정확한 입구 위치가 아닙니다. 개별 구장 카드의 <b>지도에서 찾기</b>로 실제 장소를 검색하세요. <br>지도 제공: OpenStreetMap & Leaflet. 위치는 시설별 확인이 필요합니다.</div></section></div>
 
 </section>
 
 <section class="shell match-section" id="matches" aria-label="경기 매칭"><div class="match-panel">
-<div class="match-heading"><div><div class="auth-eyebrow">PLAY TOGETHER</div><h2>함께 칠 사람 찾기</h2></div><div class="match-header-actions"><button type="button" id="matchComposeOpen">+ 모집하기</button><button type="button" id="matchRefresh">새로고침</button></div></div>
+<div class="match-heading"><h2>함께 칠 사람 찾기</h2><button type="button" id="matchRefresh">새로고침</button></div>
 <p>구장을 예약했다면 함께할 멤버를 모집하세요. 예약은 시설의 공식 예약처에서 완료해 주세요.</p>
 <details id="matchComposer"><summary>+ 경기 모집하기</summary><form id="matchForm" class="match-form">
 <label class="wide">구장<select id="matchVenue" required></select></label>
@@ -253,21 +253,19 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
 <label class="wide">실력<select id="matchSkill"><option>누구나</option><option>입문</option><option>초급</option><option>중급</option><option>상급</option></select></label>
 <label class="wide">모집 안내<textarea id="matchNote" maxlength="300" rows="3" placeholder="만날 장소, 준비물 등을 적어 주세요. 공개되는 글이므로 개인 연락처는 쓰지 마세요."></textarea></label>
 <label class="wide check"><input id="matchReserved" type="checkbox" required> 외부 예약처에서 해당 구장·시간 예약을 완료했습니다.</label>
-<p id="matchEditHint" class="wide" hidden>변경 내용은 참가자에게 앱 내 알림으로 안내됩니다. 기기 푸시 알림은 지원하지 않습니다.</p><button class="wide" type="button" id="matchEditCancel" hidden>수정 취소</button><button class="wide" id="matchSubmit" type="submit">모집 등록</button></form></details>
-<div class="match-search-tools"><label class="match-search-label">경기 검색<input id="matchSearch" type="search" maxlength="100" placeholder="구장명, 지역, 모집 안내로 검색" autocomplete="off"></label><label>정렬<select id="matchSort"><option value="time">가까운 경기 시간순</option><option value="seats">남은 자리 많은순</option></select></label></div>
-<div class="match-filters"><label>지역 <select id="matchRegion"><option value="">전국</option></select></label><label>날짜<input id="matchFilterDay" type="date"></label><label>실력<select id="matchFilterSkill"><option value="">모든 실력</option><option>누구나</option><option>입문</option><option>초급</option><option>중급</option><option>상급</option></select></label><label class="check"><input id="matchOpenOnly" type="checkbox"> 모집 중만</label><label class="check"><input type="checkbox" id="matchMine"> 내 경기</label><button type="button" id="matchClearFilters">초기화</button></div>
-<p class="match-count" id="matchResultCount"></p><p id="matchNotice" class="match-notice" role="status" aria-live="polite"></p><div id="matchList" class="match-grid"></div>
+<p id="matchEditHint" class="wide" hidden>날짜·시간·구장을 변경하면 참가자에게 직접 알려 주세요. 자동 알림은 제공되지 않습니다.</p><button class="wide" type="button" id="matchEditCancel" hidden>수정 취소</button><button class="wide" id="matchSubmit" type="submit">모집 등록</button></form></details>
+<div class="match-filters"><label>지역 <select id="matchRegion"><option value="">전국</option></select></label><label><input type="checkbox" id="matchMine"> 내가 만든 / 참가한 경기</label></div>
+<p id="matchNotice" class="match-notice" role="status" aria-live="polite"></p><div id="matchList" class="match-grid"></div>
 </div></section>
 </main>
-<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 찾기 · 예약과 결제는 시설의 공식 예약처에서 진행합니다.<br>© 2026 PICKGO · 구장 찾기 · 경기 매칭</div><div>외부 링크: 구장 공식 홈페이지 우선 · 미확인 구장은 네이버 지도 한국어 검색</div></div></footer>
+<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v1.3.0 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>외부 링크: 구장 공식 홈페이지 우선 · 미확인 구장은 네이버 지도 한국어 검색</div></div></footer>
 
-<dialog id="serviceInfoDialog" class="auth-dialog" aria-labelledby="serviceInfoTitle"><div class="auth-box"><div class="auth-heading"><h2 id="serviceInfoTitle" class="auth-title">PICKGO 이용 안내</h2><button type="button" id="serviceInfoClose" class="auth-close" aria-label="이용 안내 닫기">×</button></div><p>구장은 홈에서 찾고, 예약은 각 시설의 공식 예약처에서 진행합니다. 잔여 시간과 예약 확정 여부는 예약처에서 확인하세요.</p><p>예약한 경기의 동료를 모집하거나 다른 회원의 경기 모집에 참가할 수 있습니다. 참가하면 해당 경기의 회원에게 닉네임이 표시됩니다.</p><p>경기 변경·취소와 참가 현황은 앱 내 알림으로 확인합니다. 기기 푸시·문자 알림은 제공되지 않습니다.</p><p>모집에 문제가 있으면 경기 상세의 신고 기능을 이용하세요. 안내글과 신고 내용에는 개인 연락처를 적지 마세요.</p><div class="service-links"><a id="privacyLink" hidden target="_blank" rel="noopener noreferrer">개인정보처리방침 ↗</a><a id="termsLink" hidden target="_blank" rel="noopener noreferrer">이용약관 ↗</a><a id="supportLink" hidden>운영 문의 ↗</a></div></div></dialog>
 <dialog id="matchDetailDialog" class="auth-dialog" aria-labelledby="matchDetailTitle"><div class="auth-box">
 <div class="auth-heading"><div><div class="auth-eyebrow">PICKGO MATCH</div><h2 class="auth-title" id="matchDetailTitle"></h2></div><button type="button" class="auth-close" id="matchDetailClose" aria-label="경기 상세 닫기">×</button></div>
-<p class="auth-disclaimer">참가하면 이 경기의 주최자와 참가자에게 내 닉네임이 표시됩니다.</p><p id="matchDetailState" class="match-detail-state"></p><p id="matchDetailTime"></p><p id="matchDetailMeta"></p><p id="matchDetailNote" class="match-detail-note"></p>
-<section class="match-roster"><h3>참가자</h3><p id="matchMembersNotice" role="status" aria-live="polite">참가 후 닉네임 명단을 확인할 수 있습니다.</p><ul id="matchMembersList"></ul><button type="button" id="matchMembersRefresh" class="court-page-link" hidden>명단 새로고침</button></section><a id="matchDetailVenue" class="court-page-link" href="/court.html">구장 정보 보기 ↗</a>
+<p id="matchDetailState" class="match-detail-state"></p><p id="matchDetailTime"></p><p id="matchDetailMeta"></p><p id="matchDetailNote" class="match-detail-note"></p>
+<a id="matchDetailVenue" class="court-page-link" href="/court.html">구장 정보 보기 ↗</a>
 <div class="profile-actions" style="margin-top:18px"><button type="button" id="matchDetailAction" class="primary">참가하기</button><button type="button" id="matchDetailEdit" hidden>모집 수정</button><button type="button" id="matchDetailShare">모집 링크 공유 ↗</button></div>
-<details class="report-details"><summary>문제가 있는 모집인가요? 신고하기</summary><form id="matchReportForm" class="report-form"><label>사유<select id="matchReportReason"><option>허위 모집</option><option>부적절한 내용</option><option>예약 관련 문제</option><option>기타</option></select></label><label>내용<textarea id="matchReportText" minlength="5" maxlength="500" rows="3" required placeholder="문제 상황을 5자 이상 작성하세요. 개인 연락처는 적지 마세요."></textarea></label><button type="submit" id="matchReportSubmit">운영자에게 신고 접수</button><p id="matchReportNotice" class="app-status" role="status"></p></form></details><p id="matchDetailNotice" role="status" aria-live="polite"></p><p class="auth-disclaimer">참가 신청은 구장 예약이나 결제 확정이 아닙니다. 시간은 한국시간으로 표시됩니다.</p>
+<p id="matchDetailNotice" role="status" aria-live="polite"></p><p class="auth-disclaimer">참가 신청은 구장 예약이나 결제 확정이 아닙니다. 시간은 한국시간으로 표시됩니다.</p>
 </div></dialog>
 <dialog id="authDialog" class="auth-dialog" aria-labelledby="authDialogTitle">
  <div class="auth-box">
@@ -286,17 +284,17 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
   <div style="text-align:center"><button type="button" id="authForgot" class="auth-small-action">비밀번호를 잊으셨나요?</button></div>
   <form id="authRecoveryForm" hidden><label class="auth-field" for="authRecoveryPassword">새 비밀번호</label><input class="auth-input" id="authRecoveryPassword" type="password" autocomplete="new-password" minlength="8" placeholder="8자 이상"><button class="auth-submit" type="submit">새 비밀번호 저장</button></form>
   <div class="auth-message" id="authMessage" role="status" aria-live="polite"></div>
-  <p class="auth-disclaimer">이메일 또는 Google로 로그인할 수 있습니다. 구장 예약과 결제는 시설의 공식 예약처에서 진행하세요.</p>
+  <p class="auth-disclaimer">무료 베타 서비스이며 실제 예약·결제는 제공하지 않습니다. 일반 이용자 이메일 가입을 공개하기 전에는 Supabase의 SMTP·이메일 인증 및 개인정보처리방침을 설정해야 합니다.</p>
  </div>
 </dialog>
 <dialog id="memberDialog" class="auth-dialog" aria-labelledby="memberTitle"><div class="auth-box"><div class="auth-heading"><div><div class="auth-eyebrow">PICKGO ACCOUNT</div><div class="auth-title" id="memberTitle">마이페이지</div></div><button type="button" class="auth-close" data-close-member aria-label="닫기">×</button></div>
- <div id="accountGuest" class="account-guest" hidden><h3>다음 경기를 함께 준비하세요.</h3><p>로그인하고 경기 모집·참가와<br>변경 알림을 한 곳에서 확인하세요.</p><button type="button" id="accountLogin" class="account-login">로그인 / 회원가입</button></div><div id="accountPrivate"><div class="account-columns"><div class="account-column"><h3>내 프로필</h3><div class="profile-card"><span class="auth-tag">PICKGO 회원</span><strong id="memberName" style="margin-top:10px">회원</strong><small id="memberEmail"></small></div>
+ <div class="profile-card"><span class="auth-tag">PICKGO 회원</span><strong id="memberName" style="margin-top:10px">회원</strong><small id="memberEmail"></small></div>
  <div class="profile-meta" id="memberProviders" aria-label="현재 로그인 방식"></div>
  <form class="profile-form" id="memberProfileForm"><label for="memberNicknameEdit">닉네임</label><div class="profile-form-row"><input id="memberNicknameEdit" type="text" maxlength="24" autocomplete="nickname" placeholder="닉네임 (최대 24자)" required><button type="submit" id="memberSaveProfile">저장</button></div><div class="profile-msg" id="memberProfileMessage" role="status" aria-live="polite"></div></form>
  <div id="memberEmailHelp" class="profile-note" role="note"></div>
 <a href="/admin.html" id="adminPanelLink" class="pickgo-admin-link" hidden>Admin: &#44396;&#51109;&#32;&#44288;&#47532; &#8599;</a><div class="profile-actions"><button type="button" id="memberGoMatches" class="primary">내가 만든 / 참가한 경기 ↗</button><button type="button" id="memberLogout">로그아웃</button></div>
  
- </div><div class="account-column"><h3>내 활동</h3><button id="accountFavorites" type="button" class="court-page-link">즐겨찾는 구장 ↗</button><h3 style="margin-top:25px">알림</h3><button type="button" id="notificationsRefresh" class="court-page-link">새로고침</button><p class="account-subnote">경기 변경·취소와 참가 현황을 앱에서 확인하세요.</p><p id="notificationsStatus" class="app-status" role="status"></p><div id="notificationList" class="notification-list"></div></div></div></div><button type="button" class="court-page-link" data-service-info>서비스 이용 안내</button><p class="auth-disclaimer">구장 예약은 각 시설의 공식 예약처에서 진행하세요. PICKGO에서는 경기 모집과 참가를 관리할 수 있습니다.</p>
+ <p class="auth-disclaimer">구장 예약은 각 시설의 공식 예약처에서 진행하세요. PICKGO에서는 경기 모집과 참가를 관리할 수 있습니다.</p>
  </div></dialog>
 <dialog id="venueDialog" aria-labelledby="dialogTitle"><div class="dialoginner"><button type="button" id="closeDialog" class="closemodal" aria-label="닫기">×</button><div class="pill" id="dialogRegion">지역</div><h2 id="dialogTitle"></h2><div class="modaladdr" id="dialogAddress"></div><img id="dialogPhoto" class="venue-dialog-photo" alt="" hidden><div class="venue-dialog-meta" id="dialogMeta" hidden></div><div class="modalrow"><div><b>구장 유형</b> · <span id="dialogType"></span></div><div><b>이용 방법</b> · <span id="dialogBooking"></span></div><div style="margin-top:8px" id="dialogNote"></div></div><div class="modalactions"><a id="dialogMap" class="secondarybtn" href="#" target="_blank" rel="noopener noreferrer">↗ 지도에서 찾기</a><a id="dialogLink" class="primarybtn" href="#" target="_blank" rel="noopener noreferrer">↗ 확인하기</a></div><div id="scheduleLinks" class="schedulelinks"></div><p id="seoulLangHint" class="modalnotice" hidden>서울시 예약페이지가 영어로 표시된다면 해당 사이트의 언어 메뉴에서 <b>KOR</b>를 선택해주세요. PICKGO는 한국어 주소로 연결합니다.</p><div class="shareline"><a class="court-page-link" id="courtPageLink" href="/court.html" aria-label="구장 상세 페이지 열기">상세 페이지 ↗</a><button type="button" id="shareVenue" class="sharebutton">링크 공유 ↗</button><span id="shareNotice" role="status" aria-live="polite"></span></div><div class="modalnotice">공식 홈페이지가 확인된 구장은 해당 사이트로 연결하고, 확인되지 않은 구장은 네이버 지도에서 이름·주소를 검색합니다. 운영 시간과 예약은 시설에 직접 확인하세요. PICKGO는 현재 실제 예약·결제를 처리하지 않습니다.<br><a id="dialogSource" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:underline">구장 위치·정보 검색 ↗</a></div></div></dialog>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -358,7 +356,7 @@ function openDetail(id){
  $('dialogNote').textContent=v.note||'이용 전 운영 조건과 예약 경로를 확인하세요.';
  const photo=secureUrl(v.imageUrl),photoEl=$('dialogPhoto');
  photoEl.hidden=!photo;if(photo){photoEl.src=photo;photoEl.alt=v.name;photoEl.onerror=()=>{photoEl.hidden=true}}else photoEl.removeAttribute('src');
- const metadata=[v.priceInfo?('이용 요금: '+v.priceInfo):null,v.operatingHours?('운영 시간: '+v.operatingHours):null,v.contactPhone?('연락처: '+v.contactPhone):null].filter(Boolean);
+ const metadata=[v.priceInfo?('Price: '+v.priceInfo):null,v.operatingHours?('Hours: '+v.operatingHours):null,v.contactPhone?('Phone: '+v.contactPhone):null].filter(Boolean);
  const metaEl=$('dialogMeta');metaEl.replaceChildren();metaEl.hidden=!metadata.length;
  for(const txt of metadata){const row=document.createElement('div');row.textContent=txt;metaEl.appendChild(row)}
 
@@ -440,7 +438,7 @@ const PICKGO_CONFIG = {
  const bridge=()=>window.PICKGO_AUTH_BRIDGE;
  const authDialog=$('authDialog'),memberDialog=$('memberDialog');
  let mode='login',busy=false;
- const base=()=>{const u=new URL(location.pathname,location.origin),q=new URLSearchParams(location.search);if(['home','matches','account'].includes(q.get('tab')))u.searchParams.set('tab',q.get('tab'));if(/^[0-9a-f-]{36}$/i.test(q.get('match')||'')){u.searchParams.set('tab','matches');u.searchParams.set('match',q.get('match'))}return u.href};
+ const base=()=>location.origin+location.pathname;
  function tell(message,isError=false){const el=$('authMessage');el.textContent=message;el.classList.toggle('error',isError)}
  function setMode(next){
    mode=next;
@@ -469,7 +467,6 @@ const PICKGO_CONFIG = {
    return user?.user_metadata?.display_name||user?.user_metadata?.full_name||user?.user_metadata?.name||user?.email?.split('@')[0]||'PICKGO 회원';
  }
  function render(user){
-   $('accountGuest').hidden=!!user;$('accountPrivate').hidden=!user;
    const nickname=nicknameFor(user);
    $('topAccount').textContent=user?nickname:'로그인 / 가입';
    $('topAccount').title=user?'마이페이지 열기':'로그인 / 회원가입';
@@ -489,12 +486,12 @@ const PICKGO_CONFIG = {
    if(user&&authDialog.open&&mode!=='recovery')authDialog.close();
  }
  window.PICKGO_AUTH_UI={open,render,recovery:()=>open('recovery')};
- $('accountLogin').addEventListener('click',()=>open('login'));
  $('topAccount').addEventListener('click',()=>{
    const user=bridge()?.getUser();
+   if(!user){open('login');return}
    render(user);
    $('memberProfileMessage').textContent='';
-   if(!memberDialog.open)memberDialog.show();
+   if(!memberDialog.open)memberDialog.showModal();
  });
  document.querySelectorAll('[data-close-auth]').forEach(b=>b.addEventListener('click',()=>authDialog.close()));
  document.querySelectorAll('[data-close-member]').forEach(b=>b.addEventListener('click',()=>memberDialog.close()));
@@ -599,7 +596,7 @@ const PICKGO_CONFIG = {
 <nav class="pwa-tabs" id="pwaTabs" aria-label="PICKGO 앱 하단 메뉴">
  <button type="button" class="pwa-tab active" data-tab="home" aria-label="홈" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span>홈</span></button>
  <button type="button" class="pwa-tab" data-tab="matches" aria-label="경기 매칭"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 8.3c0 5.1-8.5 11.5-8.5 11.5S3.5 13.4 3.5 8.3a4.5 4.5 0 0 1 8.5-2 4.5 4.5 0 0 1 8.5 2Z"/></svg><span>경기 매칭</span></button>
- <button type="button" class="pwa-tab" data-tab="account" aria-label="마이페이지"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2c0-3.2 3-5 8-5s8 1.8 8 5v2"/></svg><span>마이페이지 <span id="notificationBadge" class="notification-badge" hidden>0</span></span></button>
+ <button type="button" class="pwa-tab" data-tab="account" aria-label="마이페이지"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2c0-3.2 3-5 8-5s8 1.8 8 5v2"/></svg><span>마이페이지</span></button>
 </nav>
 <dialog class="pwa-install-dialog" id="pwaInstallDialog" aria-labelledby="installTitle">
  <div class="install-content">
@@ -628,7 +625,6 @@ function showView(view){
 }
 function moveExplore(){showView('home');setTab('home');$('explore').scrollIntoView({behavior:'smooth',block:'start'})}
 function action(tab){
- if(tab!=='account'&&$('memberDialog').open)$('memberDialog').close();
  if(tab==='matches'){showView('matches');setTab('matches');window.scrollTo({top:0,behavior:'instant'});return;}
  showView('home');
  if(tab==='home'||tab==='courts'){
@@ -639,16 +635,15 @@ function action(tab){
   if(typeof state!=='undefined'){state.favoritesOnly=true;render()}
   moveExplore();if(typeof setMobileView==='function')setMobileView('list');return;
  }
- if(tab==='account'){$('topAccount')?.click();showView('account');setTab('account')}
+ if(tab==='account'){$('topAccount')?.click();setTab('account')}
 }
 window.PICKGO_NAVIGATE=action;
 $('memberGoMatches')?.addEventListener('click',()=>{$('memberDialog').close();action('matches');window.PICKGO_MATCHES?.showMine()});
 tabs.forEach(b=>b.addEventListener('click',()=>action(b.dataset.tab)));
-$('topFavorites')?.addEventListener('click',()=>{if($('memberDialog').open)$('memberDialog').close();showView('home');setTab('home');moveExplore()});
-$('topAccount')?.addEventListener('click',()=>{showView('account');setTab('account');window.PICKGO_INBOX?.refresh()});
-$('accountFavorites')?.addEventListener('click',()=>action('favorites'));
+$('topFavorites')?.addEventListener('click',()=>{showView('home');setTab('home');moveExplore()});
+$('topAccount')?.addEventListener('click',()=>{showView('home');setTab('account')});
 for(const dlg of [$('memberDialog'),$('authDialog')])dlg?.addEventListener('close',()=>{
- if(!$('memberDialog')?.open&&!$('authDialog')?.open&&document.querySelector('#pwaTabs [aria-current="page"]')?.dataset.tab==='account'){showView('home');setTab('home')}
+ if(!$('memberDialog')?.open&&!$('authDialog')?.open&&document.querySelector('#pwaTabs [aria-current="page"]')?.dataset.tab==='account')setTab('home');
 });
 for(const link of document.querySelectorAll('.nav a[href="#matches"],.nav a[href="#explore"],.brand')){
  link.addEventListener('click',e=>{e.preventDefault();action(link.getAttribute('href')==='#matches'?'matches':'home')});
@@ -698,5 +693,5 @@ if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostn
 })();
 </script>
 <script src="/venues-db.js"></script>
-<script src="/matches.js"></script><script src="/inbox.js"></script><script src="/site-config.js"></script><script src="/app.js"></script>
+<script src="/matches.js"></script>
 </body></html>
