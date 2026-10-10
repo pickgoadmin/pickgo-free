@@ -244,23 +244,25 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
 </section>
 
 <section class="shell match-section" id="matches" aria-label="경기 매칭"><div class="match-panel">
-<div class="match-heading"><h2>함께 칠 사람 찾기</h2><button type="button" id="matchRefresh">새로고침</button></div>
-<p>구장을 예약했다면 함께할 멤버를 모집하세요. 예약은 시설의 공식 예약처에서 완료해 주세요.</p>
-<details id="matchComposer"><summary>+ 경기 모집하기</summary><form id="matchForm" class="match-form">
+<div class="match-heading"><h2>함께 칠 사람 찾기</h2><button type="button" id="matchComposeOpen" class="match-compose-button" aria-haspopup="dialog">+ 경기 모집하기</button></div>
+<p class="match-intro">함께할 경기를 찾아 참가해 보세요.</p>
+
+<details class="match-browse-filters"><summary>검색 · 필터</summary><div class="match-search-tools"><label class="match-search-label">경기 검색<input id="matchSearch" type="search" maxlength="100" placeholder="구장명, 지역, 모집 안내로 검색" autocomplete="off"></label><label>정렬<select id="matchSort"><option value="time">가까운 경기 시간순</option><option value="seats">남은 자리 많은순</option></select></label></div>
+<div class="match-filters"><label>지역 <select id="matchRegion"><option value="">전국</option></select></label><label>날짜<input id="matchFilterDay" type="date"></label><label>실력<select id="matchFilterSkill"><option value="">모든 실력</option><option>누구나</option><option>입문</option><option>초급</option><option>중급</option><option>상급</option></select></label><label class="check"><input id="matchOpenOnly" type="checkbox"> 모집 중만</label><label class="check"><input type="checkbox" id="matchMine"> 내 경기</label><button type="button" id="matchClearFilters">초기화</button></div>
+</details>
+<div class="match-list-heading"><p class="match-count" id="matchResultCount"></p><button type="button" id="matchRefresh">새로고침</button></div><p id="matchNotice" class="match-notice" role="status" aria-live="polite"></p><div id="matchList" class="match-grid"></div>
+</div></section>
+</main>
+<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v1.3.0 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>외부 링크: 구장 공식 홈페이지 우선 · 미확인 구장은 네이버 지도 한국어 검색</div></div></footer>
+
+<dialog id="matchComposer" class="match-section match-compose-dialog" aria-labelledby="matchComposeTitle"><div class="match-panel"><div class="match-heading"><h2 id="matchComposeTitle">경기 모집하기</h2><button type="button" id="matchComposeClose" aria-label="모집 작성 닫기">×</button></div><p>구장 예약을 완료한 뒤 함께할 멤버를 모집하세요.</p><form id="matchForm" class="match-form">
 <label class="wide">구장<select id="matchVenue" required></select></label>
 <label>날짜<input id="matchDay" type="date" required></label><label>총 인원 (본인 포함)<input id="matchCapacity" type="number" min="2" max="16" value="4" required></label>
 <label>시작<input id="matchStart" type="time" required></label><label>종료<input id="matchEnd" type="time" required></label>
 <label class="wide">실력<select id="matchSkill"><option>누구나</option><option>입문</option><option>초급</option><option>중급</option><option>상급</option></select></label>
 <label class="wide">모집 안내<textarea id="matchNote" maxlength="300" rows="3" placeholder="만날 장소, 준비물 등을 적어 주세요. 공개되는 글이므로 개인 연락처는 쓰지 마세요."></textarea></label>
 <label class="wide check"><input id="matchReserved" type="checkbox" required> 외부 예약처에서 해당 구장·시간 예약을 완료했습니다.</label>
-<p id="matchEditHint" class="wide" hidden>변경 내용은 참가자에게 앱 내 알림으로 안내됩니다. 기기 푸시 알림은 지원하지 않습니다.</p><button class="wide" type="button" id="matchEditCancel" hidden>수정 취소</button><button class="wide" id="matchSubmit" type="submit">모집 등록</button></form></details>
-<div class="match-search-tools"><label class="match-search-label">경기 검색<input id="matchSearch" type="search" maxlength="100" placeholder="구장명, 지역, 모집 안내로 검색" autocomplete="off"></label><label>정렬<select id="matchSort"><option value="time">가까운 경기 시간순</option><option value="seats">남은 자리 많은순</option></select></label></div>
-<div class="match-filters"><label>지역 <select id="matchRegion"><option value="">전국</option></select></label><label>날짜<input id="matchFilterDay" type="date"></label><label>실력<select id="matchFilterSkill"><option value="">모든 실력</option><option>누구나</option><option>입문</option><option>초급</option><option>중급</option><option>상급</option></select></label><label class="check"><input id="matchOpenOnly" type="checkbox"> 모집 중만</label><label class="check"><input type="checkbox" id="matchMine"> 내 경기</label><button type="button" id="matchClearFilters">초기화</button></div>
-<p class="match-count" id="matchResultCount"></p><p id="matchNotice" class="match-notice" role="status" aria-live="polite"></p><div id="matchList" class="match-grid"></div>
-</div></section>
-</main>
-<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v1.3.0 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>외부 링크: 구장 공식 홈페이지 우선 · 미확인 구장은 네이버 지도 한국어 검색</div></div></footer>
-
+<p id="matchEditHint" class="wide" hidden>변경 내용은 참가자에게 앱 내 알림으로 안내됩니다. 기기 푸시 알림은 지원하지 않습니다.</p><button class="wide" type="button" id="matchEditCancel" hidden>수정 취소</button><button class="wide" id="matchSubmit" type="submit">모집 등록</button></form><p id="matchComposeNotice" class="match-notice" role="status" aria-live="polite"></p></div></dialog>
 <dialog id="serviceInfoDialog" class="auth-dialog" aria-labelledby="serviceInfoTitle"><div class="auth-box"><div class="auth-heading"><h2 id="serviceInfoTitle" class="auth-title">PICKGO 이용 안내</h2><button type="button" id="serviceInfoClose" class="auth-close" aria-label="이용 안내 닫기">×</button></div><p>구장은 홈에서 찾고, 예약은 각 시설의 공식 예약처에서 진행합니다. 잔여 시간과 예약 확정 여부는 예약처에서 확인하세요.</p><p>예약한 경기의 동료를 모집하거나 다른 회원의 경기 모집에 참가할 수 있습니다. 참가하면 해당 경기의 회원에게 닉네임이 표시됩니다.</p><p>경기 변경·취소와 참가 현황은 앱 내 알림으로 확인합니다. 기기 푸시·문자 알림은 제공되지 않습니다.</p><p>모집에 문제가 있으면 경기 상세의 신고 기능을 이용하세요. 안내글과 신고 내용에는 개인 연락처를 적지 마세요.</p><div class="service-links"><a id="privacyLink" hidden target="_blank" rel="noopener noreferrer">개인정보처리방침 ↗</a><a id="termsLink" hidden target="_blank" rel="noopener noreferrer">이용약관 ↗</a><a id="supportLink" hidden>운영 문의 ↗</a></div></div></dialog>
 <dialog id="matchDetailDialog" class="auth-dialog" aria-labelledby="matchDetailTitle"><div class="auth-box">
 <div class="auth-heading"><div><div class="auth-eyebrow">PICKGO MATCH</div><h2 class="auth-title" id="matchDetailTitle"></h2></div><button type="button" class="auth-close" id="matchDetailClose" aria-label="경기 상세 닫기">×</button></div>
