@@ -223,7 +223,7 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
 .venue-icon{overflow:hidden}.pickgo-court-thumb{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}.venue-icon .iconlabel{z-index:1}.pickgo-db-status{display:inline-block;font-size:10px;color:#507358;margin-top:5px}.venue-dialog-photo{display:block;width:100%;max-height:290px;object-fit:cover;border-radius:14px;margin:13px 0}.venue-dialog-meta{display:grid;gap:7px;padding:12px;border-radius:12px;background:#f4f8ef;color:#3e5f48;font-size:13px}.venue-dialog-photo[hidden],.venue-dialog-meta[hidden],.pickgo-admin-link[hidden]{display:none!important}.pickgo-admin-link{display:block;padding:12px 15px;border-radius:12px;background:#e8f7d5;color:#215c39;font-weight:750;margin:12px 0;text-align:center}
 </style>
 <link rel="stylesheet" href="/matches.css"><link rel="stylesheet" href="/features.css">
-<link rel="stylesheet" href="/public-guide-v241.css"></head>
+<link rel="stylesheet" href="/public-guide-v242.css"></head>
 <body data-pickgo-view="home">
 <header class="topbar"><div class="shell topin"><a class="brand" href="./" aria-label="PICKGO 홈"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="12" fill="#22382b"/><rect x="11" y="11" width="17" height="24" rx="8" fill="white"/><path d="M19 34v6" stroke="white" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="17" r="8" fill="#c8fb69"/></svg><span>PICK<strong>GO</strong></span></a><nav class="nav" aria-label="주요 메뉴"><a href="#explore">코트 찾기</a><a href="#matches">경기 매칭</a><button type="button" id="topSupport" aria-haspopup="dialog">고객센터</button><button type="button" id="topAccount" class="account-top" aria-haspopup="dialog">로그인 / 회원가입</button><button type="button" id="topNotifications" aria-label="알림" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg><span id="notificationBadge" class="notification-badge" hidden>0</span></button></nav></div></header>
 <p id="appConnectivity" class="app-connectivity" role="status" hidden></p><main>
@@ -319,7 +319,7 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
  </div></dialog>
 <dialog id="venueDialog" aria-labelledby="dialogTitle"><div class="dialoginner"><button type="button" id="closeDialog" class="closemodal" aria-label="닫기">×</button><div class="pill" id="dialogRegion">지역</div><h2 id="dialogTitle"></h2><div class="modaladdr" id="dialogAddress"></div><img id="dialogPhoto" class="venue-dialog-photo" alt="" hidden><div class="venue-dialog-meta" id="dialogMeta" hidden></div><div class="modalrow"><div><b>구장 유형</b> · <span id="dialogType"></span></div><div><b>이용 방법</b> · <span id="dialogBooking"></span></div><div style="margin-top:8px" id="dialogNote"></div></div><div class="modalactions"><a id="dialogLink" class="primarybtn" href="#" target="_blank" rel="noopener noreferrer">공식 홈페이지 / 안내 열기 ↗</a></div><div id="scheduleLinks" class="schedulelinks"></div><p id="dialogBookingHint" class="modalnotice"></p></div></dialog>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="/court-actions-v241.js"></script><script src="/public-scope-v240.js"></script>
+<script src="/court-actions-v242.js"></script><script src="/public-scope-v240.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 "use strict";
@@ -376,16 +376,18 @@ function openDetail(id){
  for(const txt of metadata){const row=document.createElement('div');row.textContent=txt;metaEl.appendChild(row)}
 
  const links=window.PICKGO_COURT_ACTIONS({...v,officialUrl:dest.isOfficial?dest.url:v.officialUrl});
+ $('dialogBooking').textContent=links.method;
  const official=$('dialogLink');official.textContent='공식 홈페이지 / 안내 열기 ↗';
  if(links.official){official.href=links.official;official.removeAttribute('aria-disabled')}else{official.removeAttribute('href');official.setAttribute('aria-disabled','true')}
  official.setAttribute('aria-label',v.name+' 공식 홈페이지 / 안내 열기');
- $('scheduleLinks').replaceChildren();
+ $('scheduleLinks').replaceChildren();$('scheduleLinks').hidden=links.guideOnly;
  for(const [label,url] of [['평일 예약',links.weekday],['주말·공휴일 예약',links.weekend]]){
+  if(!url)continue;
   const link=document.createElement('a');link.textContent=label+' ↗';link.target='_blank';link.rel='noopener noreferrer';
   if(url)link.href=url;else link.setAttribute('aria-disabled','true');
   link.setAttribute('aria-label',v.name+' '+label);$('scheduleLinks').appendChild(link);
  }
- $('dialogBookingHint').textContent=links.guideOnly?'별도 예약 링크가 없는 시설은 공식 이용 안내로 연결됩니다.':'방문 전 요금·이용 조건은 공식 안내에서 확인하세요.';
+ $('dialogBookingHint').textContent=links.hint;
  if(location.protocol==='http:'||location.protocol==='https:')history.replaceState(null,'',location.pathname+location.search+'#venue='+encodeURIComponent(v.id));
  const dlg=$('venueDialog');if(typeof dlg.showModal==='function')dlg.showModal();else dlg.setAttribute('open','');
 }
