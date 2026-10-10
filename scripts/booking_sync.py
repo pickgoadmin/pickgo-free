@@ -145,8 +145,37 @@ def discover(venues):
  return sources
 
 def rpc(base,key,name,args):
- raw,_=request(base+'/rest/v1/rpc/'+name,headers={'apikey':key,'Authorization':'Bearer '+key,'Content-Type':'application/json'},body=json.dumps(args).encode())
- return decode(raw)
+ try:
+  raw,_=request(
+   base+'/rest/v1/rpc/'+name,
+   headers={
+    'apikey':key,
+    'Authorization':'Bearer '+key,
+    'Content-Type':'application/json'
+   },
+   body=json.dumps(args).encode()
+  )
+  return decode(raw)
+ except SyncError as exc:
+  remote=exc.__context__
+  status=getattr(remote,'code',None)
+  db_code=None
+  if isinstance(status,int):
+   try:
+    value=json.loads(remote.read(4096)).get('code')
+    if isinstance(value,str) and re.fullmatch(
+     r'(?:[0-9A-Z]{5}|PGRST[0-9]{3})',value
+    ):
+     db_code=value
+   except Exception:
+    pass
+  print(json.dumps({
+   'stage':'supabase_save',
+   'http_status':status if isinstance(status,int) else None,
+   'db_code':db_code,
+   'error':str(exc)
+  }))
+  raise
 
 def run():
  base=os.environ.get('SUPABASE_URL','').rstrip('/');secret=os.environ.get('SUPABASE_SERVICE_ROLE_KEY','')
