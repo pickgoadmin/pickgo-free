@@ -311,8 +311,9 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
  <div class="profile-meta" id="memberProviders" aria-label="현재 로그인 방식"></div>
  <form class="profile-form" id="memberProfileForm"><label for="memberNicknameEdit">닉네임</label><div class="profile-form-row"><input id="memberNicknameEdit" type="text" maxlength="24" autocomplete="nickname" placeholder="닉네임 (최대 24자)" required><button type="submit" id="memberSaveProfile">저장</button></div><div class="profile-msg" id="memberProfileMessage" role="status" aria-live="polite"></div></form>
  <div id="memberEmailHelp" class="profile-note" role="note"></div>
-<a href="/admin.html" id="adminPanelLink" class="pickgo-admin-link" hidden>Admin: &#44396;&#51109;&#32;&#44288;&#47532; &#8599;</a><div class="profile-actions"><button type="button" id="memberGoMatches" class="primary">내가 만든 / 참가한 경기 ↗</button><button type="button" id="memberLogout">로그아웃</button></div>
+<a href="/admin.html" id="adminPanelLink" class="pickgo-admin-link" hidden>Admin: &#44396;&#51109;&#32;&#44288;&#47532; &#8599;</a><div class="profile-actions"><button type="button" id="memberGoMatches" class="primary">경기매칭으로 이동 ↗</button><button type="button" id="memberLogout">로그아웃</button></div>
  
+<section class="member-games" aria-labelledby="memberGamesTitle"><div class="member-games-heading"><h3 id="memberGamesTitle">내 경기</h3><button type="button" id="memberGamesRefresh">새로고침</button></div><p id="memberGamesStatus" class="account-subnote" role="status" aria-live="polite"></p><h4>내가 모집한 경기 <span id="memberHostedCount">0</span></h4><div id="memberHostedList" class="member-games-list"></div><h4>참가한 경기 <span id="memberJoinedCount">0</span></h4><div id="memberJoinedList" class="member-games-list"></div></section>
  <button type="button" class="court-page-link" data-service-info>서비스 이용 안내</button>
 <details class="member-delete"><summary>회원탈퇴</summary><p>주최한 모집은 취소되고 참가 신청·내 알림·내 신고는 삭제됩니다. 외부 구장 예약은 별도로 취소해야 합니다. 탈퇴 후 복구할 수 없습니다.</p><form id="deleteAccountForm"><label for="deleteAccountConfirm">확인 문구: 탈퇴<input id="deleteAccountConfirm" class="auth-input" autocomplete="off" placeholder="탈퇴를 입력하세요" required></label><button id="deleteAccountSubmit" class="court-page-link" type="submit">회원탈퇴 진행</button></form><p id="deleteAccountStatus" role="status" aria-live="polite"></p></details><p class="auth-disclaimer">구장 예약은 각 시설의 공식 예약처에서 진행하세요. PICKGO에서는 경기 모집과 참가를 관리할 수 있습니다.</p>
  </div></dialog>
@@ -660,7 +661,7 @@ function action(tab){
  if(tab==='account'){$('topAccount')?.click();setTab('account')}
 }
 window.PICKGO_NAVIGATE=action;
-$('memberGoMatches')?.addEventListener('click',()=>{$('memberDialog').close();action('matches');window.PICKGO_MATCHES?.showMine()});
+$('memberGoMatches')?.addEventListener('click',()=>{$('memberDialog').close();action('matches')});
 tabs.forEach(b=>b.addEventListener('click',()=>action(b.dataset.tab)));
 $('topFavorites')?.addEventListener('click',()=>{showView('home');setTab('home');moveExplore()});
 $('topAccount')?.addEventListener('click',()=>{showView('home');setTab('account')});
@@ -715,5 +716,5 @@ if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostn
 })();
 </script>
 <script src="/venues-db.js"></script>
-<script src="/matches.js"></script><script src="/inbox.js"></script><script src="/site-config.js"></script><script src="/app.js"></script><script src="/account.js"></script><script src="/support.js"></script>
+<script src="/matches.js"></script><script src="/inbox.js"></script><script src="/site-config.js"></script><script src="/app.js"></script><script src="/account.js"></script><script src="/support.js"></script><script src="/my-games.js"></script>
 </body></html>

@@ -85,7 +85,7 @@ async function load(){const seq=++sequence,db=bridge()?.getClient(),me=bridge()?
  }catch(e){if(seq!==sequence)return;rows=[];loadError=true;notice(errorMessage(e))}finally{if(seq===sequence){listLoading=false;render()}}
 }
 
-async function act(id,action){if(busy||!login())return;if(action!=='join'&&!window.confirm(action==='cancel'?'이 경기 모집을 취소할까요? 참가자에게 취소 상태가 표시됩니다.':'참가를 취소할까요?'))return;busy=true;render();try{const {error}=await bridge().getClient().rpc('pickgo_match_action',{p_id:id,p_action:action});if(error)throw error;await load();window.PICKGO_INBOX?.refresh()}catch(e){notice(errorMessage(e))}finally{busy=false;render()}}
+async function act(id,action){if(busy||!login())return;if(action!=='join'&&!window.confirm(action==='cancel'?'이 경기 모집을 취소할까요? 참가자에게 취소 상태가 표시됩니다.':'참가를 취소할까요?'))return;busy=true;render();try{const {error}=await bridge().getClient().rpc('pickgo_match_action',{p_id:id,p_action:action});if(error)throw error;await load();window.PICKGO_INBOX?.refresh();window.PICKGO_MY_GAMES?.refreshIfOpen()}catch(e){notice(errorMessage(e))}finally{busy=false;render()}}
 $('matchForm').addEventListener('submit',async e=>{e.preventDefault();if(busy||!login())return;
 const day=$('matchDay').value,start=$('matchStart').value,end=$('matchEnd').value;
 const startIso=day+'T'+start+':00+09:00',endIso=day+'T'+end+':00+09:00';
@@ -96,7 +96,7 @@ busy=true;render();try{
  const args={p_venue_id:$('matchVenue').value,p_starts_at:startIso,p_ends_at:endIso,p_capacity:Number($('matchCapacity').value),p_skill:$('matchSkill').value,p_note:$('matchNote').value,p_reserved:$('matchReserved').checked};
  if(editingId){args.p_id=editingId;args.p_expected={venue_id:editing.venue_id,starts_at:editing.starts_at,ends_at:editing.ends_at,capacity:editing.capacity,skill:editing.skill,note:editing.note}}
  const {error}=await bridge().getClient().rpc(editingId?'pickgo_match_update':'pickgo_match_create',args);if(error)throw error;
- resetEditor();$('matchComposer').close();await load();window.PICKGO_INBOX?.refresh();notice(editingId?'모집을 수정했습니다. 참가자에게 앱 내 알림이 생성됩니다.':'경기 모집이 등록되었습니다. 주최자가 첫 참가자로 포함됩니다.');
+ resetEditor();$('matchComposer').close();await load();window.PICKGO_INBOX?.refresh();window.PICKGO_MY_GAMES?.refreshIfOpen();notice(editingId?'모집을 수정했습니다. 참가자에게 앱 내 알림이 생성됩니다.':'경기 모집이 등록되었습니다. 주최자가 첫 참가자로 포함됩니다.');
 }catch(err){notice(errorMessage(err))}finally{busy=false;render()}});
 
 for(const id of ['matchFilterDay','matchFilterSkill','matchOpenOnly','matchSort'])$(id)?.addEventListener('change',render);
