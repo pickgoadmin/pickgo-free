@@ -254,30 +254,12 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
 <div class="match-filters"><label>지역 <select id="matchRegion"><option value="">전국</option></select></label><label><input type="checkbox" id="matchMine"> 내가 만든 / 참가한 경기</label></div>
 <p id="matchNotice" class="match-notice" role="status" aria-live="polite"></p><div id="matchList" class="match-grid"></div>
 </div></section>
-<section class="shell lab-section" id="labBooking" aria-label="테스트 예약 체험">
- <div class="lab-card">
-  <div class="lab-heading"><div><span class="lab-badge">PICKGO LAB · v0.5.1</span><h2>코트 예약, 먼저 체험해 보세요.</h2><p>전국 실제 구장과는 별개인 <b>가상 테스트 코트</b>입니다.<br>예약·취소 흐름을 연습하고, 이후 제휴 구장 시스템으로 확장합니다.</p></div><div class="lab-info" id="labModeBadge">● 무료 시연 모드<br>현재 브라우저에만 예약 저장</div></div>
-  <div class="lab-grid">
-   <div class="lab-panel">
-    <h3>테스트 코트 예약</h3><p class="lab-help">무료 테스트 · 1시간 단위 · 최대 30일 후까지. 실제 시설 사용권이나 결제는 제공하지 않습니다.</p>
-    <label class="lab-label" for="labDate">이용 날짜</label><input id="labDate" class="lab-date" type="date" autocomplete="off">
-    <div class="lab-label">테스트 코트</div><div class="lab-courts" id="labCourts"><button class="lab-choice on" type="button" data-labcourt="A">테스트 코트 A</button><button class="lab-choice" type="button" data-labcourt="B">테스트 코트 B</button></div>
-    <div class="lab-label">예약 시간 <span style="color:#899b8c;font-weight:500">(09:00~21:00)</span></div><div class="lab-slots" id="labSlots" aria-live="polite"></div>
-    <div class="lab-selected"><span id="labSelected">시간을 선택해 주세요.</span><b>0원 · 시연</b></div>
-    <button class="lab-submit" type="button" id="labBook" disabled>테스트 예약하기 →</button>
-    <div id="labNotice" class="lab-note" role="status">테스트 예약은 실제 구장 예약이 아닙니다. 전국 구장은 위 검색 목록에서 각 시설의 공식 예약처를 확인하세요.</div>
-    <div class="lab-load" id="labBusy" role="status"></div>
-   </div>
-  </div>
- </div>
-</section>
-
 </main>
-<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v1.1.1 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>외부 링크: 구장 공식 홈페이지 우선 · 미확인 구장은 네이버 지도 한국어 검색</div></div></footer>
+<footer class="footer"><div class="shell footerline"><div><strong>PICKGO.</strong>전국 피클볼 구장 탐색 베타 · 실예약/결제 및 잔여시간 조회 미제공.<br>© 2026 PICKGO v1.1.2 · 향후 공식 주소: pickgo.kr (구매·연결 전)</div><div>외부 링크: 구장 공식 홈페이지 우선 · 미확인 구장은 네이버 지도 한국어 검색</div></div></footer>
 
 <dialog id="authDialog" class="auth-dialog" aria-labelledby="authDialogTitle">
  <div class="auth-box">
-  <div class="auth-heading"><div><div class="auth-eyebrow">WELCOME TO PICKGO</div><div class="auth-title" id="authDialogTitle">PICKGO 로그인</div><p class="auth-subtitle">한 번 가입하면 예약·결제 내역을 하나의 계정으로 관리할 수 있도록 준비하고 있습니다.</p></div><button type="button" class="auth-close" data-close-auth aria-label="닫기">×</button></div>
+  <div class="auth-heading"><div><div class="auth-eyebrow">WELCOME TO PICKGO</div><div class="auth-title" id="authDialogTitle">PICKGO 로그인</div><p class="auth-subtitle">로그인하고 함께할 피클볼 멤버를 찾아보세요.</p></div><button type="button" class="auth-close" data-close-auth aria-label="닫기">×</button></div>
   <div class="auth-tabs" id="authTabs"><button type="button" class="on" data-auth-mode="login">로그인</button><button type="button" data-auth-mode="signup">회원가입</button></div>
   <div class="auth-social"><button type="button" id="authGoogle"><span aria-hidden="true">G</span> Google 계정으로 계속하기</button></div>
   <div class="auth-provider-hint" id="authProviderHint">이메일로 회원가입하거나 Google 계정으로 간편하게 로그인하세요.</div>
@@ -300,13 +282,9 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
  <div class="profile-meta" id="memberProviders" aria-label="현재 로그인 방식"></div>
  <form class="profile-form" id="memberProfileForm"><label for="memberNicknameEdit">닉네임</label><div class="profile-form-row"><input id="memberNicknameEdit" type="text" maxlength="24" autocomplete="nickname" placeholder="닉네임 (최대 24자)" required><button type="submit" id="memberSaveProfile">저장</button></div><div class="profile-msg" id="memberProfileMessage" role="status" aria-live="polite"></div></form>
  <div id="memberEmailHelp" class="profile-note" role="note"></div>
- <section class="member-reservations" aria-label="내 테스트 예약"><h3>내 테스트 예약</h3>
-    <div id="labMine" aria-live="polite"><div class="lab-empty">예약 내역이 없습니다.<br>날짜와 시간을 선택해 보세요.</div></div>
-    <div class="lab-mini" id="labDataHelp">테스트 예약 정보입니다. 실제 구장 예약은 아닙니다.</div>
- </section>
- <a href="/admin.html" id="adminPanelLink" class="pickgo-admin-link" hidden>Admin: &#44396;&#51109;&#32;&#44288;&#47532; &#8599;</a><div class="profile-actions"><button type="button" id="memberGoBookings" class="primary">테스트 예약 화면으로 이동 ↗</button><button type="button" id="memberLogout">로그아웃</button></div>
+<a href="/admin.html" id="adminPanelLink" class="pickgo-admin-link" hidden>Admin: &#44396;&#51109;&#32;&#44288;&#47532; &#8599;</a><div class="profile-actions"><button type="button" id="memberLogout">로그아웃</button></div>
  
- <p class="auth-disclaimer">현재는 무료 테스트 예약만 제공합니다. 실제 예약·결제는 불가능하며, 서로 다른 로그인 계정의 예약이 자동으로 병합되지 않습니다.</p>
+ <p class="auth-disclaimer">구장 예약은 각 시설의 공식 예약처에서 진행하세요. PICKGO에서는 경기 모집과 참가를 관리할 수 있습니다.</p>
  </div></dialog>
 <dialog id="venueDialog" aria-labelledby="dialogTitle"><div class="dialoginner"><button type="button" id="closeDialog" class="closemodal" aria-label="닫기">×</button><div class="pill" id="dialogRegion">지역</div><h2 id="dialogTitle"></h2><div class="modaladdr" id="dialogAddress"></div><img id="dialogPhoto" class="venue-dialog-photo" alt="" hidden><div class="venue-dialog-meta" id="dialogMeta" hidden></div><div class="modalrow"><div><b>구장 유형</b> · <span id="dialogType"></span></div><div><b>이용 방법</b> · <span id="dialogBooking"></span></div><div style="margin-top:8px" id="dialogNote"></div></div><div class="modalactions"><a id="dialogMap" class="secondarybtn" href="#" target="_blank" rel="noopener noreferrer">↗ 지도에서 찾기</a><a id="dialogLink" class="primarybtn" href="#" target="_blank" rel="noopener noreferrer">↗ 확인하기</a></div><div id="scheduleLinks" class="schedulelinks"></div><p id="seoulLangHint" class="modalnotice" hidden>서울시 예약페이지가 영어로 표시된다면 해당 사이트의 언어 메뉴에서 <b>KOR</b>를 선택해주세요. PICKGO는 한국어 주소로 연결합니다.</p><div class="shareline"><a class="court-page-link" id="courtPageLink" href="/court.html" aria-label="구장 상세 페이지 열기">상세 페이지 ↗</a><button type="button" id="shareVenue" class="sharebutton">링크 공유 ↗</button><span id="shareNotice" role="status" aria-live="polite"></span></div><div class="modalnotice">공식 홈페이지가 확인된 구장은 해당 사이트로 연결하고, 확인되지 않은 구장은 네이버 지도에서 이름·주소를 검색합니다. 운영 시간과 예약은 시설에 직접 확인하세요. PICKGO는 현재 실제 예약·결제를 처리하지 않습니다.<br><a id="dialogSource" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:underline">구장 위치·정보 검색 ↗</a></div></div></dialog>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -414,57 +392,29 @@ render();buildMap();
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* PICKGO LAB — real venues above remain directory-only.
- * Optional cloud: configure PUBLIC Supabase project URL and PUBLISHABLE/ANON key.
- * NEVER paste a secret/service_role key into this public index.html.
- */
-const PICKGO_LAB_CONFIG = {
+/* Shared authentication client: independent of the removed booking demo. */
+const PICKGO_CONFIG = {
   supabaseUrl: 'https://rgcailerllapibpvrsor.supabase.co',
   supabasePublishableKey: 'sb_publishable_lSJAMObgZLRAaQfJJPv6ag_CLZ6umFg'
 };
 (()=>{'use strict';
-const $=id=>document.getElementById(id);
-const koToday=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-// Browser Date input local ISO YYYY-MM-DD, while SQL also treats day in Korea time.
-const addDays=(str,n)=>{const [y,m,d]=str.split('-').map(Number);const x=new Date(Date.UTC(y,m-1,d+n));return x.toISOString().slice(0,10)};
-const labStore='pickgo_lab_v04_local_only';
-const state={day:koToday(),court:'A',hour:null,occupied:new Set(),mine:[],user:null,db:null,cloud:!!(PICKGO_LAB_CONFIG.supabaseUrl&&PICKGO_LAB_CONFIG.supabasePublishableKey),busy:false};
-const isPast=(day,h)=>day+'T'+String(h).padStart(2,'0')+':00'<=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date()).replace(' ','T');
-const localRead=()=>{try{const x=JSON.parse(localStorage.getItem(labStore)||'[]');return Array.isArray(x)?x:[]}catch{return []}};
-const localWrite=rows=>{try{localStorage.setItem(labStore,JSON.stringify(rows));return true}catch{return false}};
-function note(message,error=false){$('labNotice').textContent=message;$('labNotice').classList.toggle('error',error)}
-function loading(message=''){state.busy=!!message;$('labBusy').textContent=message;renderSlots()}
-function fmt(row){return `${row.slot_date} · 테스트 코트 ${row.court_key} · ${String(row.slot_hour).padStart(2,'0')}:00`}
-function renderMine(){const box=$('labMine');if(!state.mine.length){box.innerHTML='<div class="lab-empty">현재 테스트 예약이 없습니다.<br>날짜와 시간을 선택해 예약해 보세요.</div>';return}
- box.innerHTML='';for(const item of state.mine){const wrap=document.createElement('div');wrap.className='lab-mine-item';const info=document.createElement('div');const title=document.createElement('strong');title.textContent=fmt(item);const meta=document.createElement('small');meta.textContent='테스트 예약 · 결제 없음';info.append(title,meta);const btn=document.createElement('button');btn.type='button';btn.className='lab-cancel';btn.textContent='예약 취소';btn.disabled=isPast(item.slot_date,item.slot_hour);btn.addEventListener('click',()=>cancel(item.id));wrap.append(info,btn);box.appendChild(wrap)} }
-function renderSlots(){const now=koToday();$('labDate').min=now;$('labDate').max=addDays(now,30);$('labDate').value=state.day;document.querySelectorAll('[data-labcourt]').forEach(b=>b.classList.toggle('on',b.dataset.labcourt===state.court));const mineSet=new Set(state.mine.filter(v=>v.status==='confirmed').map(v=>`${v.slot_date}/${v.court_key}/${v.slot_hour}`));$('labSlots').innerHTML='';for(let hour=9;hour<=20;hour++){
- const taken=state.occupied.has(hour);const past=isPast(state.day,hour);const mine=mineSet.has(`${state.day}/${state.court}/${hour}`);const btn=document.createElement('button');btn.type='button';btn.className='lab-slot'+(state.hour===hour?' on':'');btn.disabled=taken||past||state.busy;btn.textContent=String(hour).padStart(2,'0')+':00'+(mine?' ✓':taken?' 마감':'');btn.title=past?'지난 시간':taken?'테스트 예약이 있는 시간대':'테스트 시간 선택';btn.setAttribute('aria-pressed',state.hour===hour?'true':'false');btn.addEventListener('click',()=>{state.hour=hour;renderSlots()});$('labSlots').appendChild(btn)}
- const valid=Number.isInteger(state.hour)&&!state.occupied.has(state.hour)&&!isPast(state.day,state.hour);$('labBook').disabled=!valid||state.busy;$('labSelected').textContent=valid?`${state.day} · ${state.court} 코트 · ${String(state.hour).padStart(2,'0')}:00`:'시간을 선택해 주세요.';
-}
-async function sharedMineQuery(){
-  const shared=await state.db.rpc('pickgo_lab_my_bookings');
-  if(!shared.error)return shared;
-  // v0.4 backend compatibility: use the original owner-only query if v0.7 SQL is not installed.
-  if(shared.error.code==='PGRST202'||shared.error.code==='42883')return await state.db.from('pickgo_lab_bookings').select('id,court_key,slot_date,slot_hour,status').eq('status','confirmed').gte('slot_date',koToday()).order('slot_date',{ascending:true});
-  return shared;
-}
-async function reload(){state.hour=null;if(state.cloud){if(!state.db){renderSlots();return}try{const [{data:occupied,error:err1},{data:mine,error:err2}]=await Promise.all([state.db.rpc('pickgo_lab_occupied',{p_day:state.day,p_court:state.court}),state.user?sharedMineQuery():Promise.resolve({data:[],error:null})]);if(err1)throw err1;if(err2)throw err2;state.occupied=new Set((occupied||[]).map(x=>x.slot_hour));state.mine=mine||[];$('labBusy').textContent='';}catch(e){note('데이터 조회 실패: '+(e.message||'설정을 확인해 주세요.'),true);$('labBusy').textContent='새로고침 후 다시 시도해 주세요.';state.occupied=new Set()} }else{state.mine=localRead().filter(r=>r.status==='confirmed');state.occupied=new Set(state.mine.filter(r=>r.slot_date===state.day&&r.court_key===state.court).map(r=>r.slot_hour))}renderMine();renderSlots()}
-async function book(){if(state.busy||!Number.isInteger(state.hour)||state.occupied.has(state.hour)||isPast(state.day,state.hour))return;const day=state.day,court=state.court,hour=state.hour;if(state.cloud){if(!state.user){note('공유 테스트 예약은 PICKGO 회원 로그인이 필요합니다.',true);window.PICKGO_AUTH_UI?.open('login');return}loading('테스트 예약을 등록하는 중...');try{const {data,error}=await state.db.rpc('pickgo_lab_book',{p_day:day,p_court:court,p_hour:hour});if(error)throw error;note('테스트 예약이 등록되었습니다. 실제 구장 예약은 아닙니다.');await reload();}catch(e){note('예약 실패: '+(e.message||'다른 사용자가 먼저 선택했을 수 있습니다.'),true);await reload()}finally{loading('')}}else{const rows=localRead();if(rows.some(r=>r.status==='confirmed'&&r.slot_date===day&&r.court_key===court&&r.slot_hour===hour)){note('이미 이 기기에 시연 예약이 있습니다.',true);await reload();return}const id=globalThis.crypto&&crypto.randomUUID?crypto.randomUUID():String(Date.now())+'-'+Math.random();rows.push({id,slot_date:day,court_key:court,slot_hour:hour,status:'confirmed'});if(!localWrite(rows)){note('브라우저 저장 공간을 사용할 수 없습니다.',true);return}note('이 기기에 시연 예약을 저장했습니다. 실제 예약은 아닙니다.');await reload()}}
-async function cancel(id){if(!confirm('이 테스트 예약을 취소할까요?'))return;if(state.cloud){loading('취소하는 중...');try{const {data,error}=await state.db.rpc('pickgo_lab_cancel',{p_id:id});if(error)throw error;if(!data)throw Error('예약 취소 권한 또는 취소 가능 시간을 확인해 주세요.');note('테스트 예약을 취소했습니다.');await reload()}catch(e){note('취소 실패: '+(e.message||'다시 시도해 주세요.'),true)}finally{loading('')}}else{const rows=localRead();const item=rows.find(x=>x.id===id);if(item&&isPast(item.slot_date,item.slot_hour)){note('지난 테스트 시간은 취소할 수 없습니다.',true);return}const next=rows.map(r=>r.id===id?{...r,status:'cancelled'}:r);if(!localWrite(next)){note('저장 실패',true);return}note('이 기기의 테스트 예약을 취소했습니다.');await reload()}}
-async function updateUser(){
- if(!state.db)return;
- const {data,error}=await state.db.auth.getUser();
- state.user=error?null:data.user;
- await reload();
- window.PICKGO_AUTH_UI?.render(state.user,state.cloud);
-}
-async function setupCloud(){if(!state.cloud){$('labModeBadge').innerHTML='● 기기 전용 시연<br>다른 기기와 예약 공유 안 됨';window.PICKGO_AUTH_UI?.render(null,false);return}
- $('labModeBadge').innerHTML='● Supabase 공유 테스트<br>실제 구장 예약 불가';$('labDataHelp').textContent='테스트 예약은 Supabase의 무료 DB에 저장되며 다른 로그인 사용자의 중복 예약을 방지합니다. 실제 구장과 연결되어 있지 않습니다.';
- if(!window.supabase?.createClient){note('Supabase 라이브러리를 불러오지 못했습니다. 네트워크를 확인해 주세요.',true);$('labBook').disabled=true;return}
- try{state.db=window.supabase.createClient(PICKGO_LAB_CONFIG.supabaseUrl,PICKGO_LAB_CONFIG.supabasePublishableKey);state.db.auth.onAuthStateChange((event,session)=>{state.user=session?.user||null;setTimeout(()=>{if(event==='PASSWORD_RECOVERY')window.PICKGO_AUTH_UI?.recovery();updateUser()},0)});await updateUser()}catch(e){note('Supabase 초기화 실패: '+e.message,true);state.db=null;$('labBook').disabled=true}}
-$('labDate').addEventListener('change',()=>{const a=$('labDate').value;const min=koToday(),max=addDays(min,30);state.day=a<min?min:a>max?max:a;reload()});$('labCourts').addEventListener('click',e=>{const btn=e.target.closest('[data-labcourt]');if(!btn)return;state.court=btn.dataset.labcourt;reload()});$('labBook').addEventListener('click',book);
-window.PICKGO_AUTH_BRIDGE={getClient:()=>state.db,getUser:()=>state.user,isCloud:()=>state.cloud,refresh:updateUser};
-state.day=koToday();reload();setupCloud();
+ const state={db:null,user:null,cloud:!!(PICKGO_CONFIG.supabaseUrl&&PICKGO_CONFIG.supabasePublishableKey)};
+ async function updateUser(){
+  if(!state.db)return;
+  const {data,error}=await state.db.auth.getUser();
+  state.user=error?null:data.user;
+  window.PICKGO_AUTH_UI?.render(state.user);
+ }
+ window.PICKGO_AUTH_BRIDGE={getClient:()=>state.db,getUser:()=>state.user,isCloud:()=>state.cloud,refresh:updateUser};
+ if(!state.cloud||!window.supabase?.createClient)return;
+ try{
+  state.db=window.supabase.createClient(PICKGO_CONFIG.supabaseUrl,PICKGO_CONFIG.supabasePublishableKey);
+  state.db.auth.onAuthStateChange((event,session)=>{
+   state.user=session?.user||null;
+   setTimeout(()=>{if(event==='PASSWORD_RECOVERY')window.PICKGO_AUTH_UI?.recovery();void updateUser()},0);
+  });
+  void updateUser();
+ }catch(e){state.db=null;console.warn('PICKGO login initialization:',e.message)}
 })();
 </script>
 
@@ -596,7 +546,6 @@ state.day=koToday();reload();setupCloud();
    }catch(err){notice.textContent='저장 실패: '+(err.message||'다시 시도해 주세요.');notice.classList.add('error')}
    finally{save.disabled=false;save.textContent='저장'}
  });
- $('memberGoBookings').addEventListener('click',()=>{memberDialog.close();$('labBooking').scrollIntoView({behavior:'smooth'})});
  $('memberLogout').addEventListener('click',async()=>{
    const db=bridge()?.getClient();if(!db)return;
    const {error}=await db.auth.signOut();if(error){alert('로그아웃 실패: '+error.message);return}
@@ -684,7 +633,6 @@ $('topAccount')?.addEventListener('click',()=>{showView('home');setTab('account'
 for(const dlg of [$('memberDialog'),$('authDialog')])dlg?.addEventListener('close',()=>{
  if(!$('memberDialog')?.open&&!$('authDialog')?.open&&document.querySelector('#pwaTabs [aria-current="page"]')?.dataset.tab==='account')setTab('home');
 });
-$('memberGoBookings')?.addEventListener('click',()=>{showView('home');setTab('home');$('labBooking').scrollIntoView({behavior:'smooth'})});
 for(const link of document.querySelectorAll('.nav a[href="#matches"],.nav a[href="#explore"],.brand')){
  link.addEventListener('click',e=>{e.preventDefault();action(link.getAttribute('href')==='#matches'?'matches':'home')});
 }
