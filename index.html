@@ -225,7 +225,7 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
 <link rel="stylesheet" href="/matches.css"><link rel="stylesheet" href="/features.css">
 </head>
 <body data-pickgo-view="home">
-<header class="topbar"><div class="shell topin"><a class="brand" href="./" aria-label="PICKGO 홈"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="12" fill="#22382b"/><rect x="11" y="11" width="17" height="24" rx="8" fill="white"/><path d="M19 34v6" stroke="white" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="17" r="8" fill="#c8fb69"/></svg><span>PICK<strong>GO</strong></span></a><nav class="nav" aria-label="주요 메뉴"><a href="#explore">코트 찾기</a><a href="#matches">경기 매칭</a><button type="button" id="topAccount" class="account-top" aria-haspopup="dialog">로그인 / 회원가입</button></nav></div></header>
+<header class="topbar"><div class="shell topin"><a class="brand" href="./" aria-label="PICKGO 홈"><svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="12" fill="#22382b"/><rect x="11" y="11" width="17" height="24" rx="8" fill="white"/><path d="M19 34v6" stroke="white" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="17" r="8" fill="#c8fb69"/></svg><span>PICK<strong>GO</strong></span></a><nav class="nav" aria-label="주요 메뉴"><a href="#explore">코트 찾기</a><a href="#matches">경기 매칭</a><button type="button" id="topSupport" aria-haspopup="dialog">고객센터</button><button type="button" id="topAccount" class="account-top" aria-haspopup="dialog">로그인 / 회원가입</button></nav></div></header>
 <p id="appConnectivity" class="app-connectivity" role="status" hidden></p><main>
 <section class="hero shell"><div class="hero-wrap"><div style="position:relative;z-index:1"><div class="eyebrow">YOUR NEXT PICKLEBALL COURT</div><h1>피클볼 코트, 한눈에 찾다.</h1><p class="hero-note">전국의 피클볼 구장과 공식 예약처를 빠르게 찾아보세요.</p></div><div class="court-art" aria-hidden="true"><div class="lines"></div><div class="ball"></div></div></div></section>
 
@@ -263,6 +263,20 @@ body[data-pickgo-view="matches"] main{min-height:calc(100dvh - 170px)}
 <label class="wide">모집 안내<textarea id="matchNote" maxlength="300" rows="3" placeholder="만날 장소, 준비물 등을 적어 주세요. 공개되는 글이므로 개인 연락처는 쓰지 마세요."></textarea></label>
 <label class="wide check"><input id="matchReserved" type="checkbox" required> 외부 예약처에서 해당 구장·시간 예약을 완료했습니다.</label>
 <p id="matchEditHint" class="wide" hidden>변경 내용은 참가자에게 앱 내 알림으로 안내됩니다. 기기 푸시 알림은 지원하지 않습니다.</p><button class="wide" type="button" id="matchEditCancel" hidden>수정 취소</button><button class="wide" id="matchSubmit" type="submit">모집 등록</button></form><p id="matchComposeNotice" class="match-notice" role="status" aria-live="polite"></p></div></dialog>
+<dialog id="supportDialog" class="auth-dialog" aria-labelledby="supportTitle"><div class="auth-box"><div class="auth-heading"><h2 id="supportTitle" class="auth-title">PICKGO 고객센터</h2><button type="button" id="supportClose" class="auth-close" aria-label="고객센터 닫기">×</button></div>
+<p class="support-intro">이용 안내를 확인하거나 문의를 남겨주세요.</p>
+<div class="support-faq"><h3>자주 묻는 질문</h3>
+<details><summary>구장은 어떻게 예약하나요?</summary><p>홈에서 구장을 찾고 상세 화면의 시설 공식 예약처로 이동하세요. 예약·결제·취소는 해당 시설에서 진행합니다.</p></details>
+<details><summary>경기 모집과 참가는 어떻게 하나요?</summary><p>경기매칭 탭에서 모집 글을 확인하고 참가하세요. 구장 예약을 완료했다면 ‘+ 경기 모집하기’로 멤버를 모집할 수 있습니다. 참가 신청 자체는 구장 예약이 아닙니다.</p></details>
+<details><summary>즐겨찾기는 어디에서 보나요?</summary><p>홈의 전체·실내·실외 오른쪽에 있는 즐겨찾기를 누르세요. 즐겨찾기는 현재 기기에 저장되며 다른 기기와 자동으로 동기화되지 않습니다.</p></details>
+<details><summary>로그인이나 알림에 문제가 있어요.</summary><p>웹을 새로고침하거나 설치한 앱을 종료 후 다시 실행하세요. 경기 변경과 취소 알림은 마이페이지의 내 알림에서 확인하며 기기 푸시 알림은 제공하지 않습니다. 문제가 계속되면 아래에 문의를 남겨주세요.</p></details>
+<details><summary>구장 정보가 다르거나 모집에 문제가 있어요.</summary><p>구장 정보 수정은 아래 문의 유형에서 ‘구장 정보 수정’을 선택하고 구장명을 적어주세요. 문제가 있는 경기 모집은 해당 모집 상세 화면의 신고하기를 이용하세요.</p></details>
+</div>
+<section class="support-inquiries"><h3>문의하기</h3><p id="supportLoginHint">로그인 후 문의를 등록하고 답변을 확인할 수 있습니다.</p><button type="button" id="supportLogin" class="court-page-link">로그인하고 문의하기</button>
+<form id="supportForm" class="support-form" hidden><label>문의 유형<select id="supportCategory"><option>이용 문의</option><option>로그인 문제</option><option>구장 정보 수정</option><option>오류 제보</option><option>제휴 문의</option><option>기타</option></select></label><label>제목<input id="supportSubject" required minlength="2" maxlength="100" placeholder="문의 제목을 입력하세요"></label><label>내용<textarea id="supportMessage" required minlength="10" maxlength="2000" rows="5" placeholder="구장명이나 문제가 발생한 화면 등 상황을 적어주세요. 비밀번호·인증번호·결제정보는 적지 마세요."></textarea></label><button type="submit" id="supportSubmit" class="court-page-link">문의 접수</button><p class="support-intro">답변은 이 고객센터의 내 문의에서 확인합니다. 시설 예약 취소는 예약처에 직접 요청해주세요.</p></form>
+<p id="supportStatus" class="app-status" role="status" aria-live="polite"></p>
+<div id="supportHistory" hidden><div class="support-history-heading"><h3>내 문의</h3><button type="button" id="supportRefresh">새로고침</button></div><div id="supportList"></div></div></section>
+</div></dialog>
 <dialog id="serviceInfoDialog" class="auth-dialog" aria-labelledby="serviceInfoTitle"><div class="auth-box"><div class="auth-heading"><h2 id="serviceInfoTitle" class="auth-title">PICKGO 이용 안내</h2><button type="button" id="serviceInfoClose" class="auth-close" aria-label="이용 안내 닫기">×</button></div><p>구장은 홈에서 찾고, 예약은 각 시설의 공식 예약처에서 진행합니다. 잔여 시간과 예약 확정 여부는 예약처에서 확인하세요.</p><p>예약한 경기의 동료를 모집하거나 다른 회원의 경기 모집에 참가할 수 있습니다. 참가하면 해당 경기의 회원에게 닉네임이 표시됩니다.</p><p>경기 변경·취소와 참가 현황은 앱 내 알림으로 확인합니다. 기기 푸시·문자 알림은 제공되지 않습니다.</p><p>모집에 문제가 있으면 경기 상세의 신고 기능을 이용하세요. 안내글과 신고 내용에는 개인 연락처를 적지 마세요.</p><div class="service-links"><a id="privacyLink" hidden target="_blank" rel="noopener noreferrer">개인정보처리방침 ↗</a><a id="termsLink" hidden target="_blank" rel="noopener noreferrer">이용약관 ↗</a><a id="supportLink" hidden>운영 문의 ↗</a></div></div></dialog>
 <dialog id="matchDetailDialog" class="auth-dialog" aria-labelledby="matchDetailTitle"><div class="auth-box">
 <div class="auth-heading"><div><div class="auth-eyebrow">PICKGO MATCH</div><h2 class="auth-title" id="matchDetailTitle"></h2></div><button type="button" class="auth-close" id="matchDetailClose" aria-label="경기 상세 닫기">×</button></div>
@@ -700,5 +714,5 @@ if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostn
 })();
 </script>
 <script src="/venues-db.js"></script>
-<script src="/matches.js"></script><script src="/inbox.js"></script><script src="/site-config.js"></script><script src="/app.js"></script><script src="/account.js"></script>
+<script src="/matches.js"></script><script src="/inbox.js"></script><script src="/site-config.js"></script><script src="/app.js"></script><script src="/account.js"></script><script src="/support.js"></script>
 </body></html>
