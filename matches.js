@@ -53,7 +53,7 @@ function updateDetail(){const dialog=$('matchDetailDialog');if(!dialog)return;co
  $('matchDetailShare').hidden=r.status==='cancelled';$('matchDetailShare').onclick=()=>share(r);
 }
 function bookingOptions(){const select=$('matchBookingState');if(!select)return;const walk=select.querySelector?.('option[value="walk_in"]');if(walk)walk.disabled=!['court-42','court-43'].includes($('matchVenue').value);if(select.value==='walk_in'&&!['court-42','court-43'].includes($('matchVenue').value))select.value='planned';select.disabled=editing?.verification==='provider_verified'}
-function resetEditor(){editing=null;createRequest=null;composerOwner=bridge()?.getUser()?.id;for(const id of ['matchVenue','matchDay','matchStart','matchEnd'])$(id).disabled=false;if($('matchReserved'))$('matchReserved').checked=false;$('matchForm').reset();fillDetails({});if($('matchBookingState')){$('matchBookingState').value='planned';$('matchBookingState').disabled=false}bookingOptions();$('matchSubmit').textContent='모집 등록';$('matchEditCancel').hidden=true;$('matchEditHint').hidden=true;}
+function resetEditor(){editing=null;createRequest=null;composerOwner=bridge()?.getUser()?.id;for(const id of ['matchVenue','matchDay','matchStart','matchEnd'])$(id).disabled=false;if($('matchReserved'))$('matchReserved').checked=false;$('matchForm').reset();$('matchSkill').value='누구나';fillDetails({});if($('matchBookingState')){$('matchBookingState').value='planned';$('matchBookingState').disabled=false}bookingOptions();$('matchSubmit').textContent='모집 등록';$('matchEditCancel').hidden=true;$('matchEditHint').hidden=true;}
 function beginEdit(r){if(busy||!r.is_host||r.status!=='open'||!login())return;
  resetEditor();editing={owner:bridge()?.getUser()?.id,id:r.id,venue_id:r.venue_id,starts_at:r.starts_at,ends_at:r.ends_at,capacity:r.capacity,skill:r.skill,note:r.note,booking_state:r.booking_state||null,verification:r.verification,details:detailsSnapshot(r)};
  const kst=stamp=>new Date(new Date(stamp).getTime()+9*3600000).toISOString();
@@ -139,7 +139,7 @@ if(!day||!/^([01]\d|2[0-3]):00$/.test(start)||!/^([01]\d|2[0-3]):00$/.test(end)|
 const editingId=editing?.id,requestUser=bridge()?.getUser()?.id;
 const bookingState=$('matchBookingState')?.value||'planned';
 if(!COURTS.some(v=>v.id===$('matchVenue').value)||!['booked','planned','walk_in'].includes(bookingState)||(bookingState==='walk_in'&&!['court-42','court-43'].includes($('matchVenue').value))){notice('구장과 코트 이용 상태를 확인하세요.');return}
-if(!$('matchReserved').checked){notice('구장·시간과 코트 이용 상태 확인에 체크해 주세요.');return}
+if(!$('matchReserved').checked){notice('구장·날짜·시간과 모집 내용 확인에 체크해 주세요.');return}
 if(editingId&&Number($('matchCapacity').value)<(rows.find(r=>r.id===editingId)?.attendees||0)){notice('현재 참가 인원보다 정원을 줄일 수 없습니다.');return}
 busy=true;render();try{
  const args={p_venue_id:$('matchVenue').value,p_starts_at:startIso,p_ends_at:endIso,p_capacity:Number($('matchCapacity').value),p_skill:$('matchSkill').value,p_note:$('matchNote').value,p_reserved:$('matchReserved').checked};

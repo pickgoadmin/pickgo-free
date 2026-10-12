@@ -24,3 +24,11 @@ body[data-pickgo-view="account"] main,body[data-pickgo-view="account"]>.footer{d
 .match-schedule-grid>*{min-width:0}.match-form input,.match-form select,.match-form textarea{box-sizing:border-box;min-width:0}
 @media(max-width:600px){.match-schedule-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.match-schedule-grid>label:first-child{grid-column:1/-1}}
 @media(max-width:480px){#matchDetailDialog .match-summary{padding:12px}#matchDetailDialog .match-summary-row{grid-template-columns:98px minmax(0,1fr)!important;gap:8px!important;font-size:13px}#matchDetailDialog .match-summary-other p{font-size:13px}}
+
+/* Date inputs on iPad need their own row and no intrinsic minimum width. */
+#matchComposer .match-schedule-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#matchComposer .match-schedule-grid>label:first-child{grid-column:1/-1}
+#matchComposer .match-schedule-grid label{min-width:0;max-width:100%;overflow:hidden}
+#matchComposer #matchDay{display:block;box-sizing:border-box;width:100%;max-width:100%;min-width:0;height:46px;appearance:none;-webkit-appearance:none}
+#matchComposer #matchDay::-webkit-date-and-time-value{min-width:0;text-align:left}
+#matchComposer .match-form>input[type="hidden"]{display:none!important}
