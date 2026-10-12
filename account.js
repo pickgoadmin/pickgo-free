@@ -15,7 +15,7 @@ $('deleteAccountForm').addEventListener('submit',async event=>{
   if(data?.deleted!==true)throw new Error('탈퇴 결과를 확인하지 못했습니다. 다시 로그인해 계정 상태를 확인해 주세요.');
   status.textContent='회원탈퇴가 완료되었습니다.';
   await db.auth.signOut({scope:'local'});window.PICKGO_AUTH_UI?.render(null);
-  $('memberDialog').close();window.PICKGO_NAVIGATE?.('home');
+  window.PICKGO_NAVIGATE?.('home');
  }catch(error){status.textContent=error.message||'탈퇴를 완료하지 못했습니다.'}
  finally{busy=false;$('deleteAccountSubmit').disabled=false;$('deleteAccountConfirm').value=''}
 });

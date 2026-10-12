@@ -27,30 +27,38 @@ function matchState(r){
  if(new Date(r.starts_at)<=new Date())return '진행 중인 경기';
  const role=r.is_host?'내가 만든 경기':r.is_joined?'참가 중':'';
  const seats=r.attendees>=r.capacity?'모집 마감':Math.max(0,r.capacity-r.attendees)+'자리 남음';
- return role?role+' · '+seats:seats;
+ return role?role+' · '+seats:r.is_waiting?'대기 중 · '+seats:seats;
 }
-function detailState(r){const state=matchState(r);if(!state.includes('자리 남음'))return state;return r.is_host?'내가 만든 경기':r.is_joined?'참가 중':'모집 중'}
+function detailState(r){if(r.is_waiting&&r.status==='open'&&new Date(r.starts_at)>new Date())return '대기 중';const state=matchState(r);if(!state.includes('자리 남음'))return state;return r.is_host?'내가 만든 경기':r.is_joined?'참가 중':'모집 중'}
 function actionDisabled(r){return busy||new Date(r.starts_at)<=new Date()||r.status!=='open'||(!r.is_host&&!r.is_joined&&r.attendees>=r.capacity)}
-function actionText(r){if(pendingAction?.id===r.id)return {join:'참가 신청 중…',leave:'참가 취소 중…',cancel:'모집 취소 중…'}[pendingAction.action];return r.status==='cancelled'?'취소된 모집':r.is_host?'모집 취소':r.is_joined?'참가 취소':r.attendees>=r.capacity?'모집 마감':'참가하기'}
+function actionText(r){if(pendingAction?.id===r.id)return {join:'참가 신청 중…',leave:'참가 취소 중…',cancel:'모집 취소 중…',wait:'대기 신청 중…',unwait:'대기 취소 중…'}[pendingAction.action];return r.status==='cancelled'?'취소된 모집':r.is_host?'모집 취소':r.is_joined?'참가 취소':r.attendees>=r.capacity?'모집 마감':'참가하기'}
 function actionNotice(message,id){notice(message);if(selectedId===id&&$('matchDetailDialog').open)$('matchDetailNotice').textContent=message}
+function detailsSnapshot(r){return {title:r.title||'',fee:r.fee??0,equipment:r.equipment||'',meeting:r.meeting||''}}
+function feeLabel(r){return Number.isInteger(r.fee)?'1인 참가비 '+r.fee.toLocaleString('ko-KR')+'원 · 주최자 입력':'참가비 미등록'}
+function repeatMatch(r){if(busy||!r.is_host||!login())return;resetEditor();venueOptions();$('matchVenue').value=r.venue_id;$('matchCapacity').value=r.capacity;$('matchSkill').value=r.skill;$('matchNote').value=r.note||'';fillDetails(r);$('matchDay').value='';$('matchStart').value='';$('matchEnd').value='';$('matchBookingState').value='planned';bookingOptions();$('matchDetailDialog').close();$('matchComposeTitle').textContent='같은 조건으로 다시 모집';$('matchComposer').showModal();notice('새 날짜·시간과 코트 이용 상태를 확인하세요. 이전 예약 상태와 참가자 명단은 복사되지 않습니다.')}
+function fillDetails(r){for(const [id,key] of [['matchTitle','title'],['matchFee','fee'],['matchEquipment','equipment'],['matchMeeting','meeting']])if($(id))$(id).value=key==='fee'?(r[key]??0):(r[key]||'');if($('matchExtraFields'))$('matchExtraFields').open=!!(r.fee||r.equipment||r.meeting)}
 function updateDetail(){const dialog=$('matchDetailDialog');if(!dialog)return;const r=rows.find(x=>x.id===selectedId);if(!r){if(dialog.open)dialog.close();return}
- $('matchDetailTitle').textContent=r.venue_name;
+ $('matchDetailTitle').textContent=r.title||r.venue_name;
  $('matchDetailTime').textContent=time(r.starts_at)+' ~ '+new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(r.ends_at));
  $('matchDetailMeta').textContent=r.skill+' · '+r.attendees+'/'+r.capacity+'명 (주최자 포함)';
  if($('matchUseState'))$('matchUseState').textContent=planLabel(r)+' · 경기 참가는 구장 예약이 아닙니다.';
  $('matchDetailNote').textContent=r.note||'별도 모집 안내가 없습니다.';
+ const extras=$('matchDetailExtras');if(extras){extras.replaceChildren();if(r.title)extras.append(element('p','구장 · '+r.venue_name));extras.append(element('p',feeLabel(r)));if(r.equipment)extras.append(element('p','준비물 · '+r.equipment));if(r.meeting)extras.append(element('p','만날 장소 · '+r.meeting))}
+ const wait=$('matchDetailWait');if(wait){wait.hidden=r.is_host||r.is_joined||(!r.is_waiting&&(r.status!=='open'||new Date(r.starts_at)<=new Date()||r.attendees<r.capacity));wait.disabled=busy;wait.textContent=pendingAction?.id===r.id&&['wait','unwait'].includes(pendingAction.action)?'처리 중…':r.is_waiting?'대기 취소':'대기 신청';wait.onclick=()=>act(r.id,r.is_waiting?'unwait':'wait')}
+ const hint=$('matchWaitHint');if(hint){hint.hidden=!(r.is_waiting||(!r.is_host&&!r.is_joined&&r.status==='open'&&new Date(r.starts_at)>new Date()&&r.attendees>=r.capacity));hint.textContent='대기 '+(r.waiting_count||0)+'명 · 빈자리 알림을 받은 뒤 직접 참가하세요. 자동 참가나 자리 확보가 아니며 먼저 신청한 회원에게 배정됩니다.'}
+ const repeat=$('matchDetailRepeat');if(repeat){repeat.hidden=!r.is_host;repeat.disabled=busy;repeat.onclick=()=>repeatMatch(r)}
  $('matchDetailState').textContent=detailState(r);
  const edit=$('matchDetailEdit');if(edit){edit.hidden=!r.is_host||r.status!=='open'||new Date(r.starts_at)<=new Date();edit.disabled=busy;edit.onclick=()=>beginEdit(r)}
  const btn=$('matchDetailAction');btn.textContent=actionText(r);btn.disabled=actionDisabled(r);btn.onclick=()=>act(r.id,r.is_host?'cancel':r.is_joined?'leave':'join');
  $('matchDetailShare').hidden=r.status==='cancelled';$('matchDetailShare').onclick=()=>share(r);
 }
 function bookingOptions(){const select=$('matchBookingState');if(!select)return;const walk=select.querySelector?.('option[value="walk_in"]');if(walk)walk.disabled=!['court-42','court-43'].includes($('matchVenue').value);if(select.value==='walk_in'&&!['court-42','court-43'].includes($('matchVenue').value))select.value='planned';select.disabled=editing?.verification==='provider_verified'}
-function resetEditor(){editing=null;createRequest=null;composerOwner=bridge()?.getUser()?.id;for(const id of ['matchVenue','matchDay','matchStart','matchEnd'])$(id).disabled=false;if($('matchReserved'))$('matchReserved').checked=false;$('matchForm').reset();if($('matchBookingState')){$('matchBookingState').value='planned';$('matchBookingState').disabled=false}bookingOptions();$('matchSubmit').textContent='모집 등록';$('matchEditCancel').hidden=true;$('matchEditHint').hidden=true;}
+function resetEditor(){editing=null;createRequest=null;composerOwner=bridge()?.getUser()?.id;for(const id of ['matchVenue','matchDay','matchStart','matchEnd'])$(id).disabled=false;if($('matchReserved'))$('matchReserved').checked=false;$('matchForm').reset();fillDetails({});if($('matchBookingState')){$('matchBookingState').value='planned';$('matchBookingState').disabled=false}bookingOptions();$('matchSubmit').textContent='모집 등록';$('matchEditCancel').hidden=true;$('matchEditHint').hidden=true;}
 function beginEdit(r){if(busy||!r.is_host||r.status!=='open'||!login())return;
- resetEditor();editing={owner:bridge()?.getUser()?.id,id:r.id,venue_id:r.venue_id,starts_at:r.starts_at,ends_at:r.ends_at,capacity:r.capacity,skill:r.skill,note:r.note,booking_state:r.booking_state||null,verification:r.verification};
+ resetEditor();editing={owner:bridge()?.getUser()?.id,id:r.id,venue_id:r.venue_id,starts_at:r.starts_at,ends_at:r.ends_at,capacity:r.capacity,skill:r.skill,note:r.note,booking_state:r.booking_state||null,verification:r.verification,details:detailsSnapshot(r)};
  const kst=stamp=>new Date(new Date(stamp).getTime()+9*3600000).toISOString();
  const start=kst(r.starts_at),end=kst(r.ends_at);
- venueOptions();$('matchVenue').value=r.venue_id;$('matchDay').value=start.slice(0,10);$('matchStart').value=start.slice(11,16);$('matchEnd').value=end.slice(11,16);$('matchCapacity').value=r.capacity;$('matchSkill').value=r.skill;$('matchNote').value=r.note;
+ venueOptions();$('matchVenue').value=r.venue_id;$('matchDay').value=start.slice(0,10);$('matchStart').value=start.slice(11,16);$('matchEnd').value=end.slice(11,16);$('matchCapacity').value=r.capacity;$('matchSkill').value=r.skill;$('matchNote').value=r.note;fillDetails(r);
  if($('matchBookingState'))$('matchBookingState').value=r.booking_state||'planned';bookingOptions();$('matchReserved').checked=false;$('matchSubmit').textContent='수정 저장';$('matchEditCancel').hidden=false;$('matchEditHint').hidden=false;
  $('matchDetailDialog').close();if($('matchComposeTitle'))$('matchComposeTitle').textContent='모집 수정';$('matchComposer').showModal();notice(start.slice(14,16)!=='00'||end.slice(14,16)!=='00'?'기존 모집은 분 단위 시간입니다. 수정하려면 시작·종료를 시간 단위로 다시 선택하세요.':'모집 수정 중입니다. 변경한 구장·시간의 이용 조건을 확인하세요. 예약 상태도 이 화면에서 변경할 수 있습니다.');
 }
@@ -61,7 +69,10 @@ $('matchDetailDialog')?.addEventListener('click',e=>{if(e.target===$('matchDetai
 $('matchDetailDialog')?.addEventListener('close',()=>{$('matchDetailNotice').textContent='';selectedId=null;clearRoster();$('matchReportForm')?.reset();if($('matchReportNotice'))$('matchReportNotice').textContent='';const u=new URL(location.href);if(u.searchParams.has('match')){u.searchParams.delete('match');history.replaceState(null,'',u)}});
 function composeForSlot(slot){if(busy||!slot||!Number.isFinite(+new Date(slot.starts_at))||!Number.isFinite(+new Date(slot.ends_at))||!COURTS.some(v=>v.id===slot.venue_id)||new Date(slot.starts_at)<=new Date()||new Date(slot.ends_at)<=new Date(slot.starts_at)||new Date(slot.ends_at)-new Date(slot.starts_at)>8*3600000||!login())return false;const kst=value=>new Date(new Date(value).getTime()+9*3600000).toISOString();const start=kst(slot.starts_at),end=kst(slot.ends_at);if(start.slice(0,10)!==end.slice(0,10))return false;if(start.slice(14,16)!=='00'||end.slice(14,16)!=='00'){notice('모집 시간은 10:00, 11:00처럼 시간 단위로 선택하세요.');return false}resetEditor();venueOptions();$('matchVenue').value=slot.venue_id;$('matchDay').value=start.slice(0,10);$('matchStart').value=start.slice(11,16);$('matchEnd').value=end.slice(11,16);bookingOptions();$('matchReserved').checked=false;if($('matchComposeTitle'))$('matchComposeTitle').textContent='경기 모집하기';window.PICKGO_NAVIGATE?.('matches');$('matchComposer').showModal();notice('선택한 구장·시간을 입력했습니다. 코트 이용 상태와 모집 인원을 확인하고 등록하세요.');return true}
 function planLabel(row){if(row.verification==='provider_verified')return '예약 완료 · 시스템 확인';return {booked:'예약 완료 · 본인 확인',planned:'예약 예정 · 코트 확보 미확정',walk_in:'예약 없이 이용 · 현장 상황에 따름'}[row.booking_state]||'예약 상태 미등록'}
-async function attachPlanInfo(list,db){try{const ids=list.map(r=>r.id).filter(validId);if(!ids.length)return list;const {data,error}=await db.rpc('pickgo_match_use_info',{p_ids:ids});if(error||!Array.isArray(data))return list;const map=new Map(data.map(r=>[r.match_id,r]));return list.map(r=>({...r,...map.get(r.id)}))}catch{return list}}
+async function attachPlanInfo(list,db){const ids=list.map(r=>r.id).filter(validId);if(!ids.length)return list;
+ const results=await Promise.allSettled([db.rpc('pickgo_match_use_info',{p_ids:ids}),db.rpc('pickgo_match_extras',{p_ids:ids})]);
+ let merged=list;for(const result of results){if(result.status!=='fulfilled'||result.value.error||!Array.isArray(result.value.data))continue;const map=new Map(result.value.data.map(r=>[r.match_id,r]));merged=merged.map(r=>({...r,...map.get(r.id)}))}return merged;
+}
 window.PICKGO_MATCHES={composeForSlot,open:resolveDetail,refresh:load,showMine:()=>{$('matchRegion').value='';$('matchMine').checked=true;clearFilters(false);render();void load()}};
 const notice=(msg)=>{$('matchNotice').textContent=msg;if($('matchComposer').open&&$('matchComposeNotice'))$('matchComposeNotice').textContent=msg};
 const element=(tag,text,cls)=>{const e=document.createElement(tag);e.textContent=text;if(cls)e.className=cls;return e};
@@ -74,11 +85,11 @@ const searchText=value=>String(value||'').normalize('NFKC').toLocaleLowerCase('k
 const availableSeats=r=>r.status==='open'&&new Date(r.starts_at)>new Date()?Math.max(0,r.capacity-r.attendees):0;
 function render(){const box=$('matchList');box.replaceChildren();box.setAttribute?.('aria-busy',String(listLoading));
 const query=searchText(filterValue('matchSearch'));
-const filtered=rows.filter(r=>(!query||query.split(' ').every(term=>searchText([r.venue_name,r.region,r.note].join(' ')).includes(term)))&&(!filterValue('matchRegion')||r.region===filterValue('matchRegion'))&&(!isChecked('matchMine')||r.is_host||r.is_joined)&&(!filterValue('matchFilterDay')||new Date(new Date(r.starts_at).getTime()+9*3600000).toISOString().slice(0,10)===filterValue('matchFilterDay'))&&(!filterValue('matchFilterSkill')||r.skill===filterValue('matchFilterSkill'))&&(!isChecked('matchOpenOnly')||(availableSeats(r)>0))).sort((a,b)=>(filterValue('matchSort')==='seats'?availableSeats(b)-availableSeats(a):0)||new Date(a.starts_at)-new Date(b.starts_at)||String(a.id).localeCompare(String(b.id)));
+const filtered=rows.filter(r=>new Date(r.starts_at)>new Date()&&(!query||query.split(' ').every(term=>searchText([r.venue_name,r.region,r.title,r.note,r.equipment,r.meeting].join(' ')).includes(term)))&&(!filterValue('matchRegion')||r.region===filterValue('matchRegion'))&&(!isChecked('matchMine')||r.is_host||r.is_joined||r.is_waiting)&&(!filterValue('matchFilterDay')||new Date(new Date(r.starts_at).getTime()+9*3600000).toISOString().slice(0,10)===filterValue('matchFilterDay'))&&(!filterValue('matchFilterSkill')||r.skill===filterValue('matchFilterSkill'))&&(!isChecked('matchOpenOnly')||(availableSeats(r)>0))).sort((a,b)=>(filterValue('matchSort')==='seats'?availableSeats(b)-availableSeats(a):0)||new Date(a.starts_at)-new Date(b.starts_at)||String(a.id).localeCompare(String(b.id)));
 if($('matchResultCount'))$('matchResultCount').textContent=listLoading?'불러오는 중…':filtered.length+'개의 경기';
 if(!filtered.length)box.append(element('p',listLoading?'경기 모집을 불러오는 중입니다.':loadError?'경기를 불러오지 못했습니다. 새로고침으로 다시 시도하세요.':isChecked('matchMine')&&!bridge()?.getUser()?'로그인하면 내가 만든 경기와 참가한 경기를 확인할 수 있어요.':'조건에 맞는 경기가 없습니다. 필터를 바꾸거나 새 경기를 모집해 보세요.','match-empty'));
-for(const r of filtered){const card=element('article','','match-card');const closed=r.status==='cancelled'||r.attendees>=r.capacity||new Date(r.starts_at)<=new Date();card.append(element('span',matchState(r),'match-status-pill'+(closed?' closed':'')),element('strong',r.venue_name),element('p',time(r.starts_at)+' ~ '+new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(r.ends_at))),element('p',r.skill+' · '+r.attendees+'/'+r.capacity+'명 (주최자 포함)'));
-card.append(element('p',planLabel(r),'match-use-status'));
+for(const r of filtered){const card=element('article','','match-card');const closed=r.status==='cancelled'||r.attendees>=r.capacity||new Date(r.starts_at)<=new Date();card.append(element('span',matchState(r),'match-status-pill'+(closed?' closed':'')),element('strong',r.title||r.venue_name),element('p',time(r.starts_at)+' ~ '+new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(r.ends_at))),element('p',r.skill+' · '+r.attendees+'/'+r.capacity+'명 (주최자 포함)'));
+if(r.title)card.append(element('p',r.venue_name,'match-venue-subtitle'));card.append(element('p',planLabel(r),'match-use-status'),element('p',feeLabel(r)));
 if(r.note)card.append(element('p',r.note));if(r.status==='cancelled'){card.append(element('span','모집 취소됨'));}else{const b=element('button',actionText(r));b.type='button';b.disabled=actionDisabled(r);b.addEventListener('click',()=>act(r.id,r.is_host?'cancel':r.is_joined?'leave':'join'));card.append(b)}const details=element('button','상세보기 · 공유');details.type='button';details.className='match-secondary';details.addEventListener('click',()=>openDetail(r.id));card.append(details);box.append(card)}
 $('matchSubmit').disabled=busy;$('matchRefresh').disabled=listLoading;updateDetail();
 }
@@ -103,19 +114,19 @@ async function load(){const seq=++sequence,db=bridge()?.getClient(),me=bridge()?
 async function act(id,action){
  if(busy||!login())return;
  const requestUser=bridge()?.getUser()?.id;
- if(action!=='join'&&!window.confirm(action==='cancel'?'이 경기 모집을 취소할까요? 참가자에게 취소 상태가 표시됩니다.':'참가를 취소할까요?'))return;
- busy=true;pendingAction={id,action};actionNotice({join:'참가 신청 중…',leave:'참가 취소 중…',cancel:'모집 취소 중…'}[action],id);render();
+ if(['leave','cancel','unwait'].includes(action)&&!window.confirm(action==='cancel'?'이 경기 모집을 취소할까요? 참가·대기 회원에게 취소 상태가 표시됩니다.':action==='unwait'?'대기 신청을 취소할까요?':'참가를 취소할까요?'))return;
+ busy=true;pendingAction={id,action};actionNotice({join:'참가 신청 중…',leave:'참가 취소 중…',cancel:'모집 취소 중…',wait:'대기 신청 중…',unwait:'대기 취소 중…'}[action],id);render();
  try{
-  const {error}=await bridge().getClient().rpc('pickgo_match_action',{p_id:id,p_action:action});
+  const {error}=await bridge().getClient().rpc(['wait','unwait'].includes(action)?'pickgo_match_wait_action':'pickgo_match_action',{p_id:id,p_action:action});
   if(requestUser!==bridge()?.getUser()?.id)return;
   if(error)throw error;
   const refreshed=await load();if(requestUser!==bridge()?.getUser()?.id)return;
   window.PICKGO_INBOX?.refresh();window.PICKGO_MY_GAMES?.refreshIfOpen();
-  const message={join:'참가 신청이 완료되었습니다. 마이페이지의 참가한 경기에서 확인하세요.',leave:'참가를 취소했습니다.',cancel:'경기 모집을 취소했습니다.'}[action];
+  const message={join:'참가 신청이 완료되었습니다. 마이페이지의 참가한 경기에서 확인하세요.',leave:'참가를 취소했습니다.',cancel:'경기 모집을 취소했습니다.',wait:'대기 신청을 등록했습니다. 빈자리 알림 후 직접 참가하세요.',unwait:'대기 신청을 취소했습니다.'}[action];
   actionNotice(message+(refreshed?'':' 최신 인원은 새로고침 후 확인하세요.'),id);
  }catch(e){
   if(requestUser!==bridge()?.getUser()?.id)return;
-  void window.PICKGO_DIAGNOSTICS?.report('match_'+action,e,requestUser);
+  void window.PICKGO_DIAGNOSTICS?.report('match_'+({wait:'join',unwait:'leave'}[action]||action),e,requestUser);
   // Reload server counts after a rejected last-seat request, then retain its explanation.
   await load();if(requestUser!==bridge()?.getUser()?.id)return;
   actionNotice(errorMessage(e),id);
@@ -134,8 +145,11 @@ busy=true;render();try{
  const args={p_venue_id:$('matchVenue').value,p_starts_at:startIso,p_ends_at:endIso,p_capacity:Number($('matchCapacity').value),p_skill:$('matchSkill').value,p_note:$('matchNote').value,p_reserved:$('matchReserved').checked};
  if(editingId){args.p_id=editingId;args.p_expected={venue_id:editing.venue_id,starts_at:editing.starts_at,ends_at:editing.ends_at,capacity:editing.capacity,skill:editing.skill,note:editing.note}}
  args.p_booking_state=bookingState;delete args.p_reserved;
+ const fee=Number($('matchFee')?.value??0);if(!Number.isInteger(fee)||fee<0||fee>1000000)throw Error('참가비는 0~1,000,000원의 정수로 입력하세요.');
+ args.p_title=($('matchTitle')?.value||'').trim();args.p_fee=fee;args.p_equipment=($('matchEquipment')?.value||'').trim();args.p_meeting=($('matchMeeting')?.value||'').trim();
+ if(editingId)args.p_expected_details=editing.details;
  if(editingId){args.p_expected_booking_state=editing.booking_state}else{const payload=JSON.stringify(args);if(!createRequest||createRequest.payload!==payload)createRequest={payload,id:crypto.randomUUID()};args.p_request_id=createRequest.id}
- const {error}=await bridge().getClient().rpc(editingId?'pickgo_match_update_simple':'pickgo_match_create_simple',args);if(error)throw error;if(requestUser!==bridge()?.getUser()?.id)return;
+ const {error}=await bridge().getClient().rpc(editingId?'pickgo_match_update_v280':'pickgo_match_create_v280',args);if(error)throw error;if(requestUser!==bridge()?.getUser()?.id)return;
  resetEditor();$('matchComposer').close();await load();window.PICKGO_INBOX?.refresh();window.PICKGO_MY_GAMES?.refreshIfOpen();notice(editingId?'모집을 수정했습니다. 참가자에게 앱 내 알림이 생성됩니다.':'경기 모집이 등록되었습니다. 주최자가 첫 참가자로 포함됩니다.');
 }catch(err){if(requestUser!==bridge()?.getUser()?.id)return;void window.PICKGO_DIAGNOSTICS?.report(editingId?'match_update':'match_create',err,requestUser);notice(errorMessage(err))}finally{busy=false;render()}});
 
