@@ -36,18 +36,18 @@ function actionNotice(message,id){notice(message);if(selectedId===id&&$('matchDe
 function detailsSnapshot(r){return {title:r.title||'',fee:r.fee??0,equipment:r.equipment||'',meeting:r.meeting||''}}
 function feeLabel(r){return Number.isInteger(r.fee)?'1인 참가비 '+r.fee.toLocaleString('ko-KR')+'원 · 주최자 입력':'참가비 미등록'}
 function repeatMatch(r){if(busy||!r.is_host||!login())return;resetEditor();venueOptions();$('matchVenue').value=r.venue_id;$('matchCapacity').value=r.capacity;$('matchSkill').value=r.skill;$('matchNote').value=r.note||'';fillDetails(r);$('matchDay').value='';$('matchStart').value='';$('matchEnd').value='';$('matchBookingState').value='planned';bookingOptions();$('matchDetailDialog').close();$('matchComposeTitle').textContent='같은 조건으로 다시 모집';$('matchComposer').showModal();notice('새 날짜·시간과 코트 이용 상태를 확인하세요. 이전 예약 상태와 참가자 명단은 복사되지 않습니다.')}
-function fillDetails(r){for(const [id,key] of [['matchTitle','title'],['matchFee','fee'],['matchEquipment','equipment'],['matchMeeting','meeting']])if($(id))$(id).value=key==='fee'?(r[key]??0):(r[key]||'');if($('matchExtraFields'))$('matchExtraFields').open=!!(r.fee||r.equipment||r.meeting)}
+function fillDetails(r){for(const [id,key] of [['matchTitle','title'],['matchFee','fee'],['matchEquipment','equipment'],['matchMeeting','meeting']])if($(id))$(id).value=key==='fee'?(r[key]??0):(r[key]||'');if($('matchExtraFields'))$('matchExtraFields').open=!!(r.title||r.equipment||r.meeting||r.note)}
 function updateDetail(){const dialog=$('matchDetailDialog');if(!dialog)return;const r=rows.find(x=>x.id===selectedId);if(!r){if(dialog.open)dialog.close();return}
  $('matchDetailTitle').textContent=r.title||r.venue_name;
  $('matchDetailTime').textContent=time(r.starts_at)+' ~ '+new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(r.ends_at));
- $('matchDetailMeta').textContent=r.attendees+' / '+r.capacity+'명 (주최자 포함)';if($('matchDetailPlace'))$('matchDetailPlace').textContent=r.venue_name;if($('matchDetailSkill'))$('matchDetailSkill').textContent=r.skill;
- if($('matchUseState'))$('matchUseState').textContent=planLabel(r);
- $('matchDetailNote').textContent=r.note||'';if($('matchDetailNoteSection'))$('matchDetailNoteSection').hidden=!r.note?.trim();
- const extras=$('matchDetailExtras');if(extras){extras.replaceChildren();const addFact=(label,value)=>{const row=element('div','','match-fact-row');row.append(element('dt',label),element('dd',value));extras.append(row)};addFact('참가비',Number.isInteger(r.fee)?r.fee.toLocaleString('ko-KR')+'원 / 1인 · 주최자 입력':'미등록');if(r.equipment)addFact('준비물',r.equipment);if(r.meeting)addFact('만날 장소',r.meeting)}
+ $('matchDetailMeta').textContent=r.attendees+' / '+r.capacity+'명 (주최자 포함)';$('matchDetailPlace').textContent=r.venue_name;
+ $('matchDetailFee').textContent=Number.isInteger(r.fee)?r.fee.toLocaleString('ko-KR')+'원 / 1인 · 주최자 입력':'미등록';
+ $('matchDetailSkill').textContent='실력: '+r.skill;$('matchUseState').textContent='예약 상태: '+planLabel(r);
+ for(const [id,label,value] of [['matchDetailEquipment','준비물',r.equipment],['matchDetailMeeting','만날 장소',r.meeting],['matchDetailNote','모집 안내',r.note]]){const node=$(id);node.hidden=!value?.trim();node.textContent=value?label+': '+value:''}
  const wait=$('matchDetailWait');if(wait){wait.hidden=r.is_host||r.is_joined||(!r.is_waiting&&(r.status!=='open'||new Date(r.starts_at)<=new Date()||r.attendees<r.capacity));wait.disabled=busy;wait.textContent=pendingAction?.id===r.id&&['wait','unwait'].includes(pendingAction.action)?'처리 중…':r.is_waiting?'대기 취소':'대기 신청';wait.onclick=()=>act(r.id,r.is_waiting?'unwait':'wait')}
  const hint=$('matchWaitHint');if(hint){hint.hidden=!(r.is_waiting||(!r.is_host&&!r.is_joined&&r.status==='open'&&new Date(r.starts_at)>new Date()&&r.attendees>=r.capacity));hint.textContent='대기 '+(r.waiting_count||0)+'명 · 빈자리 알림을 받은 뒤 직접 참가하세요. 자동 참가나 자리 확보가 아니며 먼저 신청한 회원에게 배정됩니다.'}
  const repeat=$('matchDetailRepeat');if(repeat){repeat.hidden=!r.is_host;repeat.disabled=busy;repeat.onclick=()=>repeatMatch(r)}
- $('matchDetailState').textContent=detailState(r);
+ $('matchDetailState').textContent='모집 상태: '+detailState(r);
  const edit=$('matchDetailEdit');if(edit){edit.hidden=!r.is_host||r.status!=='open'||new Date(r.starts_at)<=new Date();edit.disabled=busy;edit.onclick=()=>beginEdit(r)}
  const btn=$('matchDetailAction');btn.textContent=actionText(r);btn.disabled=actionDisabled(r);btn.onclick=()=>act(r.id,r.is_host?'cancel':r.is_joined?'leave':'join');
  $('matchDetailShare').hidden=r.status==='cancelled';$('matchDetailShare').onclick=()=>share(r);

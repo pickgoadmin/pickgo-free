@@ -11,14 +11,16 @@ body[data-pickgo-view="account"] main,body[data-pickgo-view="account"]>.footer{d
 #matchDetailWait{background:#f5faf1;color:#245239}.member-page .profile-card{max-width:none}
 @media(max-width:600px){.member-page-box{padding:18px}#memberDialog.member-page{width:calc(100% - 24px);margin-top:18px}.member-page .profile-form-row{flex-wrap:wrap}.member-page .profile-form-row input{min-width:0}}
 
-#matchDetailDialog .match-detail-facts{margin:18px 0;padding:18px;background:#f7fbf4;border:1px solid #e0ebdc;border-radius:14px}
-#matchDetailDialog .match-fact-row{display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px;padding:7px 0;font-size:14px;line-height:1.65}
-#matchDetailDialog .match-fact-row dt{font-weight:750;color:#587160}
-#matchDetailDialog .match-fact-row dt::after{content:" :"}
-#matchDetailDialog .match-fact-row dd{margin:0;color:#22382b;overflow-wrap:anywhere;white-space:pre-wrap}
-#matchDetailDialog .match-detail-state{display:inline-block;margin:16px 0 0;padding:6px 12px;background:#e6f7d6;border-radius:999px;font-size:13px}
-#matchDetailDialog .match-detail-note-section{margin:18px 0}
-#matchDetailDialog .match-detail-note-section[hidden]{display:none!important}
-#matchDetailDialog .match-detail-note-section h3{font-size:14px;margin:0 0 8px}
-#matchDetailDialog .match-detail-note-section p{margin:0;font-size:14px}
-@media(max-width:480px){#matchDetailDialog .match-detail-facts{padding:12px}#matchDetailDialog .match-fact-row{grid-template-columns:72px minmax(0,1fr);gap:8px;font-size:13px}}
+
+#matchDetailDialog .match-summary{margin:18px 0;padding:16px 18px;background:#f7fbf4;border:1px solid #e0ebdc;border-radius:14px}
+#matchDetailDialog .match-summary-row{font-size:14px;line-height:1.7;color:#22382b}
+#matchDetailDialog .match-summary-row>strong{font-weight:750;color:#587160;white-space:nowrap}
+#matchDetailDialog .match-summary-row>div{white-space:pre-wrap}
+#matchDetailDialog .match-summary-other p{font-size:14px;line-height:1.7;color:#22382b;margin:0 0 7px;white-space:pre-wrap}
+#matchDetailDialog .match-summary [hidden]{display:none!important}
+.match-schedule-fields{border:0;padding:0;margin:0;min-width:0}
+.match-schedule-fields legend{font-size:13px;color:#365943;margin-bottom:8px;font-weight:750}
+.match-schedule-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:12px}
+.match-schedule-grid>*{min-width:0}.match-form input,.match-form select,.match-form textarea{box-sizing:border-box;min-width:0}
+@media(max-width:600px){.match-schedule-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.match-schedule-grid>label:first-child{grid-column:1/-1}}
+@media(max-width:480px){#matchDetailDialog .match-summary{padding:12px}#matchDetailDialog .match-summary-row{grid-template-columns:98px minmax(0,1fr)!important;gap:8px!important;font-size:13px}#matchDetailDialog .match-summary-other p{font-size:13px}}
