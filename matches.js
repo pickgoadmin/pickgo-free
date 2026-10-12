@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const root=document.getElementById('matches'); if(!root)return;
 const $=id=>document.getElementById(id),bridge=()=>window.PICKGO_AUTH_BRIDGE;
-let rows=[],busy=false,sequence=0,selectedId=null,deepLinkHandled=false,editing=null,rosterSequence=0,listLoading=false,loadError=false,reportBusy=false,createRequest=null,composerOwner=null;
+let rows=[],busy=false,sequence=0,selectedId=null,deepLinkHandled=false,editing=null,rosterSequence=0,listLoading=false,loadError=false,reportBusy=false,createRequest=null,composerOwner=null,pendingAction=null;
 const requestedMatch=new URLSearchParams(location.search).get('match');
 const validId=id=>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id||'');
 function shareUrl(id){const u=new URL(location.pathname,location.origin);u.searchParams.set('tab','matches');u.searchParams.set('match',id);return u.href}
@@ -23,16 +23,28 @@ async function loadMembers(){const id=selectedId,r=rows.find(x=>x.id===id),me=br
  }catch(e){if(seq!==rosterSequence||id!==selectedId||me!==bridge()?.getUser()?.id)return;void window.PICKGO_DIAGNOSTICS?.report('match_members',e,me);info.textContent=['PGRST202','42883'].includes(e.code)?'참가자 명단을 준비 중입니다. 잠시 후 다시 확인하세요.':e.code==='42501'?'이 경기의 주최자와 참가자만 명단을 볼 수 있습니다.':'명단을 불러오지 못했습니다. 다시 시도해 주세요.'}
 }
 $('matchMembersRefresh')?.addEventListener('click',()=>void loadMembers());
+function matchState(r){
+ if(r.status==='cancelled')return '취소된 모집';
+ if(new Date(r.ends_at)<=new Date())return '종료된 경기';
+ if(new Date(r.starts_at)<=new Date())return '진행 중인 경기';
+ const role=r.is_host?'내가 만든 경기':r.is_joined?'참가 중':'';
+ const seats=r.attendees>=r.capacity?'모집 마감':Math.max(0,r.capacity-r.attendees)+'자리 남음';
+ return role?role+' · '+seats:seats;
+}
+function actionDisabled(r){return busy||new Date(r.starts_at)<=new Date()||r.status!=='open'||(!r.is_host&&!r.is_joined&&r.attendees>=r.capacity)}
+function actionText(r){if(pendingAction?.id===r.id)return {join:'참가 신청 중…',leave:'참가 취소 중…',cancel:'모집 취소 중…'}[pendingAction.action];return r.status==='cancelled'?'취소된 모집':r.is_host?'모집 취소':r.is_joined?'참가 취소':r.attendees>=r.capacity?'모집 마감':'참가하기'}
+function actionNotice(message,id){notice(message);if(selectedId===id&&$('matchDetailDialog').open)$('matchDetailNotice').textContent=message}
+$('matchDetailMyGames')?.addEventListener('click',()=>{if(busy)return;$('matchDetailDialog').close();window.PICKGO_NAVIGATE?.('account')});
 function updateDetail(){const dialog=$('matchDetailDialog');if(!dialog)return;const r=rows.find(x=>x.id===selectedId);if(!r){if(dialog.open)dialog.close();return}
  $('matchDetailTitle').textContent=r.venue_name;
  $('matchDetailTime').textContent=time(r.starts_at)+' ~ '+new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(r.ends_at));
  $('matchDetailMeta').textContent=r.skill+' · '+r.attendees+'/'+r.capacity+'명 (주최자 포함)';
  if($('matchUseState'))$('matchUseState').textContent=planLabel(r)+' · 경기 참가는 구장 예약이 아닙니다.';
  $('matchDetailNote').textContent=r.note||'별도 모집 안내가 없습니다.';
- $('matchDetailState').textContent=new Date(r.starts_at)<=new Date()?'지난 경기':r.status==='cancelled'?'취소된 모집':r.is_host?'내가 만든 경기':r.is_joined?'참가 중':r.attendees>=r.capacity?'모집 마감':'참가자를 모집하고 있어요';
+ $('matchDetailState').textContent=matchState(r);const mine=$('matchDetailMyGames');if(mine){mine.hidden=!(r.is_host||r.is_joined);mine.disabled=busy}
  $('matchDetailVenue').href='/court.html?id='+encodeURIComponent(r.venue_id);
  const edit=$('matchDetailEdit');if(edit){edit.hidden=!r.is_host||r.status!=='open'||new Date(r.starts_at)<=new Date();edit.disabled=busy;edit.onclick=()=>beginEdit(r)}
- const btn=$('matchDetailAction');btn.textContent=r.is_host?'모집 취소':r.is_joined?'참가 취소':r.attendees>=r.capacity?'모집 마감':'참가하기';btn.disabled=busy||new Date(r.starts_at)<=new Date()||r.status==='cancelled'||(!r.is_joined&&r.attendees>=r.capacity);btn.onclick=()=>act(r.id,r.is_host?'cancel':r.is_joined?'leave':'join');
+ const btn=$('matchDetailAction');btn.textContent=actionText(r);btn.disabled=actionDisabled(r);btn.onclick=()=>act(r.id,r.is_host?'cancel':r.is_joined?'leave':'join');
  $('matchDetailShare').hidden=r.status==='cancelled';$('matchDetailShare').onclick=()=>share(r);
 }
 function bookingOptions(){const select=$('matchBookingState');if(!select)return;const walk=select.querySelector?.('option[value="walk_in"]');if(walk)walk.disabled=!['court-42','court-43'].includes($('matchVenue').value);if(select.value==='walk_in'&&!['court-42','court-43'].includes($('matchVenue').value))select.value='planned';select.disabled=editing?.verification==='provider_verified'}
@@ -68,9 +80,9 @@ const query=searchText(filterValue('matchSearch'));
 const filtered=rows.filter(r=>(!query||query.split(' ').every(term=>searchText([r.venue_name,r.region,r.note].join(' ')).includes(term)))&&(!filterValue('matchRegion')||r.region===filterValue('matchRegion'))&&(!isChecked('matchMine')||r.is_host||r.is_joined)&&(!filterValue('matchFilterDay')||new Date(new Date(r.starts_at).getTime()+9*3600000).toISOString().slice(0,10)===filterValue('matchFilterDay'))&&(!filterValue('matchFilterSkill')||r.skill===filterValue('matchFilterSkill'))&&(!isChecked('matchOpenOnly')||(availableSeats(r)>0))).sort((a,b)=>(filterValue('matchSort')==='seats'?availableSeats(b)-availableSeats(a):0)||new Date(a.starts_at)-new Date(b.starts_at)||String(a.id).localeCompare(String(b.id)));
 if($('matchResultCount'))$('matchResultCount').textContent=listLoading?'불러오는 중…':filtered.length+'개의 경기';
 if(!filtered.length)box.append(element('p',listLoading?'경기 모집을 불러오는 중입니다.':loadError?'경기를 불러오지 못했습니다. 새로고침으로 다시 시도하세요.':isChecked('matchMine')&&!bridge()?.getUser()?'로그인하면 내가 만든 경기와 참가한 경기를 확인할 수 있어요.':'조건에 맞는 경기가 없습니다. 필터를 바꾸거나 새 경기를 모집해 보세요.','match-empty'));
-for(const r of filtered){const card=element('article','','match-card');const closed=r.status==='cancelled'||r.attendees>=r.capacity||new Date(r.starts_at)<=new Date();card.append(element('span',r.status==='cancelled'?'취소됨':new Date(r.starts_at)<=new Date()?'지난 경기':r.is_host?'내가 만든 경기':r.is_joined?'참가 중':closed?'모집 마감':(r.capacity-r.attendees)+'자리 남음','match-status-pill'+(closed?' closed':'')),element('strong',r.venue_name),element('p',time(r.starts_at)+' ~ '+new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(r.ends_at))),element('p',r.skill+' · '+r.attendees+'/'+r.capacity+'명 (주최자 포함)'));
+for(const r of filtered){const card=element('article','','match-card');const closed=r.status==='cancelled'||r.attendees>=r.capacity||new Date(r.starts_at)<=new Date();card.append(element('span',matchState(r),'match-status-pill'+(closed?' closed':'')),element('strong',r.venue_name),element('p',time(r.starts_at)+' ~ '+new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(r.ends_at))),element('p',r.skill+' · '+r.attendees+'/'+r.capacity+'명 (주최자 포함)'));
 card.append(element('p',planLabel(r),'match-use-status'));
-if(r.note)card.append(element('p',r.note));if(r.status==='cancelled'){card.append(element('span','모집 취소됨'));}else{const b=element('button',r.is_host?'모집 취소':r.is_joined?'참가 취소':r.attendees>=r.capacity?'모집 마감':'참가하기');b.type='button';b.disabled=busy||new Date(r.starts_at)<=new Date()||(!r.is_joined&&r.attendees>=r.capacity);b.addEventListener('click',()=>act(r.id,r.is_host?'cancel':r.is_joined?'leave':'join'));card.append(b)}const details=element('button','상세보기 · 공유');details.type='button';details.className='match-secondary';details.addEventListener('click',()=>openDetail(r.id));card.append(details);box.append(card)}
+if(r.note)card.append(element('p',r.note));if(r.status==='cancelled'){card.append(element('span','모집 취소됨'));}else{const b=element('button',actionText(r));b.type='button';b.disabled=actionDisabled(r);b.addEventListener('click',()=>act(r.id,r.is_host?'cancel':r.is_joined?'leave':'join'));card.append(b)}const details=element('button','상세보기 · 공유');details.type='button';details.className='match-secondary';details.addEventListener('click',()=>openDetail(r.id));card.append(details);box.append(card)}
 $('matchSubmit').disabled=busy;$('matchRefresh').disabled=listLoading;updateDetail();
 }
 async function resolveDetail(id){if(!validId(id)){notice('올바르지 않은 경기 링크입니다.');return}
@@ -87,11 +99,31 @@ function errorMessage(e){if(['PGRST202','42883','42P01'].includes(e?.code))retur
 async function load(){const seq=++sequence,db=bridge()?.getClient(),me=bridge()?.getUser()?.id;
  if(!db){loadError=true;notice('서버에 연결하지 못했습니다. 새로고침하세요.');render();return}
  listLoading=true;loadError=false;render();try{const result=await db.rpc('pickgo_match_list');if(seq!==sequence||me!==bridge()?.getUser()?.id)return;if(result.error)throw result.error;const enriched=await attachPlanInfo((result.data||[]).filter(row=>window.PICKGO_PUBLIC_SCOPE?.allows(row.venue_id)),db);if(seq!==sequence||me!==bridge()?.getUser()?.id)return;rows=enriched;notice('경기 시간은 한국시간입니다. 참가 신청은 구장 예약이 아닙니다.');listLoading=false;render();if(selectedId)void loadMembers();
- if(!deepLinkHandled&&validId(requestedMatch)){deepLinkHandled=true;await resolveDetail(requestedMatch)}
- }catch(e){if(seq!==sequence)return;void window.PICKGO_DIAGNOSTICS?.report('match_list',e,me);rows=[];loadError=true;notice(errorMessage(e))}finally{if(seq===sequence){listLoading=false;render()}}
+ if(!deepLinkHandled&&validId(requestedMatch)){deepLinkHandled=true;await resolveDetail(requestedMatch)}return true;
+ }catch(e){if(seq!==sequence)return;void window.PICKGO_DIAGNOSTICS?.report('match_list',e,me);rows=[];loadError=true;notice(errorMessage(e));return false;}finally{if(seq===sequence){listLoading=false;render()}}
 }
 
-async function act(id,action){if(busy||!login())return;const requestUser=bridge()?.getUser()?.id;if(action!=='join'&&!window.confirm(action==='cancel'?'이 경기 모집을 취소할까요? 참가자에게 취소 상태가 표시됩니다.':'참가를 취소할까요?'))return;busy=true;render();try{const {error}=await bridge().getClient().rpc('pickgo_match_action',{p_id:id,p_action:action});if(error)throw error;await load();window.PICKGO_INBOX?.refresh();window.PICKGO_MY_GAMES?.refreshIfOpen()}catch(e){void window.PICKGO_DIAGNOSTICS?.report('match_'+action,e,requestUser);notice(errorMessage(e))}finally{busy=false;render()}}
+async function act(id,action){
+ if(busy||!login())return;
+ const requestUser=bridge()?.getUser()?.id;
+ if(action!=='join'&&!window.confirm(action==='cancel'?'이 경기 모집을 취소할까요? 참가자에게 취소 상태가 표시됩니다.':'참가를 취소할까요?'))return;
+ busy=true;pendingAction={id,action};actionNotice({join:'참가 신청 중…',leave:'참가 취소 중…',cancel:'모집 취소 중…'}[action],id);render();
+ try{
+  const {error}=await bridge().getClient().rpc('pickgo_match_action',{p_id:id,p_action:action});
+  if(requestUser!==bridge()?.getUser()?.id)return;
+  if(error)throw error;
+  const refreshed=await load();if(requestUser!==bridge()?.getUser()?.id)return;
+  window.PICKGO_INBOX?.refresh();window.PICKGO_MY_GAMES?.refreshIfOpen();
+  const message={join:'참가 신청이 완료되었습니다. 마이페이지의 참가한 경기에서 확인하세요.',leave:'참가를 취소했습니다.',cancel:'경기 모집을 취소했습니다.'}[action];
+  actionNotice(message+(refreshed?'':' 최신 인원은 새로고침 후 확인하세요.'),id);
+ }catch(e){
+  if(requestUser!==bridge()?.getUser()?.id)return;
+  void window.PICKGO_DIAGNOSTICS?.report('match_'+action,e,requestUser);
+  // Reload server counts after a rejected last-seat request, then retain its explanation.
+  await load();if(requestUser!==bridge()?.getUser()?.id)return;
+  actionNotice(errorMessage(e),id);
+ }finally{pendingAction=null;busy=false;render()}
+}
 $('matchForm').addEventListener('submit',async e=>{e.preventDefault();if(busy||!login())return;
 const day=$('matchDay').value,start=$('matchStart').value,end=$('matchEnd').value;
 const startIso=day+'T'+start+':00+09:00',endIso=day+'T'+end+':00+09:00';
