@@ -1,0 +1,67 @@
+body[data-pickgo-view="account"] main,body[data-pickgo-view="account"]>.footer{display:none!important}
+.member-page[hidden],.member-page [hidden]{display:none!important}
+#memberDialog.member-page{margin:26px auto 110px;max-height:none;overflow:visible;width:min(1180px,calc(100% - 36px));color:#22382b}
+.member-page-box{background:#fff;border:1px solid #dce8d9;border-radius:20px;padding:24px}
+.member-game-tabs{display:flex;gap:10px;margin:16px 0;flex-wrap:wrap}
+.member-game-tabs button,.member-page .member-games-heading button{padding:10px 16px;min-height:44px;border:1px solid #dce8d9;border-radius:10px;background:#fff;color:#245239;font:inherit;cursor:pointer}
+.member-game-tabs button[aria-pressed="true"]{background:#e6f7d6;font-weight:800}
+.member-game-tabs button:disabled{opacity:.5}
+.match-extra-fields summary{cursor:pointer}.match-detail-note p{margin:8px 0}
+.match-card .match-venue-subtitle{font-size:13px;color:#587160}
+#matchDetailWait{background:#f5faf1;color:#245239}.member-page .profile-card{max-width:none}
+@media(max-width:600px){.member-page-box{padding:18px}#memberDialog.member-page{width:calc(100% - 24px);margin-top:18px}.member-page .profile-form-row{flex-wrap:wrap}.member-page .profile-form-row input{min-width:0}}
+
+
+#matchDetailDialog .match-summary{margin:18px 0;padding:16px 18px;background:#f7fbf4;border:1px solid #e0ebdc;border-radius:14px}
+#matchDetailDialog .match-summary-row{font-size:14px;line-height:1.7;color:#22382b}
+#matchDetailDialog .match-summary-row>strong{font-weight:750;color:#587160;white-space:nowrap}
+#matchDetailDialog .match-summary-row>div{white-space:pre-wrap}
+#matchDetailDialog .match-summary-other p{font-size:14px;line-height:1.7;color:#22382b;margin:0 0 7px;white-space:pre-wrap}
+#matchDetailDialog .match-summary [hidden]{display:none!important}
+.match-schedule-fields{border:0;padding:0;margin:0;min-width:0}
+.match-schedule-fields legend{font-size:13px;color:#365943;margin-bottom:8px;font-weight:750}
+.match-schedule-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:12px}
+.match-schedule-grid>*{min-width:0}.match-form input,.match-form select,.match-form textarea{box-sizing:border-box;min-width:0}
+@media(max-width:600px){.match-schedule-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.match-schedule-grid>label:first-child{grid-column:1/-1}}
+@media(max-width:480px){#matchDetailDialog .match-summary{padding:12px}#matchDetailDialog .match-summary-row{grid-template-columns:98px minmax(0,1fr)!important;gap:8px!important;font-size:13px}#matchDetailDialog .match-summary-other p{font-size:13px}}
+
+/* Date inputs on iPad need their own row and no intrinsic minimum width. */
+#matchComposer .match-schedule-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#matchComposer .match-schedule-grid>label:first-child{grid-column:1/-1}
+#matchComposer .match-schedule-grid label{min-width:0;max-width:100%;overflow:hidden}
+#matchComposer #matchDay{display:block;box-sizing:border-box;width:100%;max-width:100%;min-width:0;height:46px;appearance:none;-webkit-appearance:none}
+#matchComposer #matchDay::-webkit-date-and-time-value{min-width:0;text-align:left}
+#matchComposer .match-form>input[type="hidden"]{display:none!important}
+
+/* Compact details, with the recruitment badge directly below the title. */
+#matchDetailDialog .auth-heading{margin-bottom:8px}
+#matchDetailDialog .match-status-compact{display:inline-block;margin:4px 0 10px;padding:4px 10px;border-radius:999px;background:#e6f7d6;color:#245239;font-size:12px;line-height:1.4;font-weight:750}
+#matchDetailDialog .match-summary{margin:0 0 14px;padding:12px 16px;border-radius:12px}
+#matchDetailDialog .match-summary-row{line-height:1.5;font-size:13px}
+#matchDetailDialog .match-summary-other p{line-height:1.5;font-size:13px;margin:0 0 4px}
+#matchDetailDialog .match-summary-other p:last-child{margin-bottom:0}
+#matchDetailDialog .match-roster{margin-top:14px;padding-top:12px}
+#matchDetailDialog .match-roster h3{font-size:15px;margin:0 0 7px}
+#matchDetailDialog #matchMembersNotice{margin:5px 0 10px;line-height:1.5}
+#matchDetailDialog .match-roster ul{margin:0;gap:6px}
+#matchDetailDialog .match-roster li{padding:8px 11px;font-size:14px}
+#matchDetailDialog .profile-actions{gap:8px}
+@media(max-width:480px){#matchDetailDialog .match-summary{padding:10px 12px}}
+
+/* Keep the recruitment status at the far right of each card heading. */
+.match-card>.match-status-pill{float:right;max-width:48%;margin:0 0 8px 12px;white-space:normal;text-align:right}
+.match-card>strong{display:block;min-width:0;overflow-wrap:anywhere}
+.match-card>p:first-of-type{clear:both;padding-top:4px}
+
+/* Aligned browse filters, including native iPad date controls. */
+#matches .match-search-tools{display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,200px);align-items:start;gap:12px;margin:14px 0}
+#matches .match-search-tools>label,#matches .match-filters>label:not(.check){display:grid;gap:6px;min-width:0;font-size:12px;line-height:1.4}
+#matches .match-search-tools input,#matches .match-search-tools select,#matches .match-filters select,#matches #matchFilterDay{box-sizing:border-box;width:100%;max-width:100%;min-width:0;height:44px;min-height:44px}
+#matches .match-filters{display:grid;grid-template-columns:minmax(120px,160px) minmax(160px,210px) auto auto auto;align-items:end;justify-content:start;gap:12px;margin:14px 0 6px}
+#matches #matchFilterDay{appearance:none;-webkit-appearance:none;display:block;overflow:hidden}
+#matches #matchFilterDay::-webkit-date-and-time-value{min-width:0;text-align:left}
+#matches .match-filters>.check{display:flex;align-items:center;gap:7px;min-height:44px;margin:0;white-space:nowrap}
+#matches .match-filters>.check input{width:18px;height:18px;margin:0;flex-shrink:0}
+#matches #matchClearFilters{height:44px;min-height:44px;box-sizing:border-box;align-self:end;padding:8px 14px}
+@media(max-width:700px){#matches .match-filters{grid-template-columns:repeat(2,minmax(0,1fr))}#matches #matchClearFilters{justify-self:start}}
+@media(max-width:420px){#matches .match-search-tools{grid-template-columns:minmax(0,1fr)}}
