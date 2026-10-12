@@ -13,8 +13,7 @@ async function share(r){const url=shareUrl(r.id);try{
 }catch(e){if(e.name!=='AbortError')$('matchDetailNotice').textContent='공유에 실패했습니다. 다시 시도하세요.'}}
 function clearRoster(){rosterSequence++;$('matchMembersList')?.replaceChildren();}
 async function loadMembers(){const id=selectedId,r=rows.find(x=>x.id===id),me=bridge()?.getUser()?.id,db=bridge()?.getClient();clearRoster();const seq=rosterSequence;
- const info=$('matchMembersNotice'),refresh=$('matchMembersRefresh');if(!info||!refresh)return;
- refresh.hidden=!me||!(r?.is_host||r?.is_joined);
+ const info=$('matchMembersNotice');if(!info)return;
  if(!r||!me||!(r.is_host||r.is_joined)){info.textContent='참가 후 닉네임 명단을 확인할 수 있습니다.';return}
  info.textContent='참가자 명단을 불러오는 중…';
  try{const {data,error}=await db.rpc('pickgo_match_members',{p_id:id});if(seq!==rosterSequence||id!==selectedId||me!==bridge()?.getUser()?.id)return;if(error)throw error;
@@ -22,7 +21,6 @@ async function loadMembers(){const id=selectedId,r=rows.find(x=>x.id===id),me=br
  info.textContent=(data||[]).length+'명 · 닉네임은 이 경기의 주최자와 참가자에게 표시됩니다.';
  }catch(e){if(seq!==rosterSequence||id!==selectedId||me!==bridge()?.getUser()?.id)return;void window.PICKGO_DIAGNOSTICS?.report('match_members',e,me);info.textContent=['PGRST202','42883'].includes(e.code)?'참가자 명단을 준비 중입니다. 잠시 후 다시 확인하세요.':e.code==='42501'?'이 경기의 주최자와 참가자만 명단을 볼 수 있습니다.':'명단을 불러오지 못했습니다. 다시 시도해 주세요.'}
 }
-$('matchMembersRefresh')?.addEventListener('click',()=>void loadMembers());
 function matchState(r){
  if(r.status==='cancelled')return '취소된 모집';
  if(new Date(r.ends_at)<=new Date())return '종료된 경기';
@@ -31,18 +29,17 @@ function matchState(r){
  const seats=r.attendees>=r.capacity?'모집 마감':Math.max(0,r.capacity-r.attendees)+'자리 남음';
  return role?role+' · '+seats:seats;
 }
+function detailState(r){const state=matchState(r);if(!state.includes('자리 남음'))return state;return r.is_host?'내가 만든 경기':r.is_joined?'참가 중':'모집 중'}
 function actionDisabled(r){return busy||new Date(r.starts_at)<=new Date()||r.status!=='open'||(!r.is_host&&!r.is_joined&&r.attendees>=r.capacity)}
 function actionText(r){if(pendingAction?.id===r.id)return {join:'참가 신청 중…',leave:'참가 취소 중…',cancel:'모집 취소 중…'}[pendingAction.action];return r.status==='cancelled'?'취소된 모집':r.is_host?'모집 취소':r.is_joined?'참가 취소':r.attendees>=r.capacity?'모집 마감':'참가하기'}
 function actionNotice(message,id){notice(message);if(selectedId===id&&$('matchDetailDialog').open)$('matchDetailNotice').textContent=message}
-$('matchDetailMyGames')?.addEventListener('click',()=>{if(busy)return;$('matchDetailDialog').close();window.PICKGO_NAVIGATE?.('account')});
 function updateDetail(){const dialog=$('matchDetailDialog');if(!dialog)return;const r=rows.find(x=>x.id===selectedId);if(!r){if(dialog.open)dialog.close();return}
  $('matchDetailTitle').textContent=r.venue_name;
  $('matchDetailTime').textContent=time(r.starts_at)+' ~ '+new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(r.ends_at));
  $('matchDetailMeta').textContent=r.skill+' · '+r.attendees+'/'+r.capacity+'명 (주최자 포함)';
  if($('matchUseState'))$('matchUseState').textContent=planLabel(r)+' · 경기 참가는 구장 예약이 아닙니다.';
  $('matchDetailNote').textContent=r.note||'별도 모집 안내가 없습니다.';
- $('matchDetailState').textContent=matchState(r);const mine=$('matchDetailMyGames');if(mine){mine.hidden=!(r.is_host||r.is_joined);mine.disabled=busy}
- $('matchDetailVenue').href='/court.html?id='+encodeURIComponent(r.venue_id);
+ $('matchDetailState').textContent=detailState(r);
  const edit=$('matchDetailEdit');if(edit){edit.hidden=!r.is_host||r.status!=='open'||new Date(r.starts_at)<=new Date();edit.disabled=busy;edit.onclick=()=>beginEdit(r)}
  const btn=$('matchDetailAction');btn.textContent=actionText(r);btn.disabled=actionDisabled(r);btn.onclick=()=>act(r.id,r.is_host?'cancel':r.is_joined?'leave':'join');
  $('matchDetailShare').hidden=r.status==='cancelled';$('matchDetailShare').onclick=()=>share(r);
