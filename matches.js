@@ -40,10 +40,10 @@ function fillDetails(r){for(const [id,key] of [['matchTitle','title'],['matchFee
 function updateDetail(){const dialog=$('matchDetailDialog');if(!dialog)return;const r=rows.find(x=>x.id===selectedId);if(!r){if(dialog.open)dialog.close();return}
  $('matchDetailTitle').textContent=r.title||r.venue_name;
  $('matchDetailTime').textContent=time(r.starts_at)+' ~ '+new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(r.ends_at));
- $('matchDetailMeta').textContent=r.skill+' · '+r.attendees+'/'+r.capacity+'명 (주최자 포함)';
- if($('matchUseState'))$('matchUseState').textContent=planLabel(r)+' · 경기 참가는 구장 예약이 아닙니다.';
- $('matchDetailNote').textContent=r.note||'별도 모집 안내가 없습니다.';
- const extras=$('matchDetailExtras');if(extras){extras.replaceChildren();if(r.title)extras.append(element('p','구장 · '+r.venue_name));extras.append(element('p',feeLabel(r)));if(r.equipment)extras.append(element('p','준비물 · '+r.equipment));if(r.meeting)extras.append(element('p','만날 장소 · '+r.meeting))}
+ $('matchDetailMeta').textContent=r.attendees+' / '+r.capacity+'명 (주최자 포함)';if($('matchDetailPlace'))$('matchDetailPlace').textContent=r.venue_name;if($('matchDetailSkill'))$('matchDetailSkill').textContent=r.skill;
+ if($('matchUseState'))$('matchUseState').textContent=planLabel(r);
+ $('matchDetailNote').textContent=r.note||'';if($('matchDetailNoteSection'))$('matchDetailNoteSection').hidden=!r.note?.trim();
+ const extras=$('matchDetailExtras');if(extras){extras.replaceChildren();const addFact=(label,value)=>{const row=element('div','','match-fact-row');row.append(element('dt',label),element('dd',value));extras.append(row)};addFact('참가비',Number.isInteger(r.fee)?r.fee.toLocaleString('ko-KR')+'원 / 1인 · 주최자 입력':'미등록');if(r.equipment)addFact('준비물',r.equipment);if(r.meeting)addFact('만날 장소',r.meeting)}
  const wait=$('matchDetailWait');if(wait){wait.hidden=r.is_host||r.is_joined||(!r.is_waiting&&(r.status!=='open'||new Date(r.starts_at)<=new Date()||r.attendees<r.capacity));wait.disabled=busy;wait.textContent=pendingAction?.id===r.id&&['wait','unwait'].includes(pendingAction.action)?'처리 중…':r.is_waiting?'대기 취소':'대기 신청';wait.onclick=()=>act(r.id,r.is_waiting?'unwait':'wait')}
  const hint=$('matchWaitHint');if(hint){hint.hidden=!(r.is_waiting||(!r.is_host&&!r.is_joined&&r.status==='open'&&new Date(r.starts_at)>new Date()&&r.attendees>=r.capacity));hint.textContent='대기 '+(r.waiting_count||0)+'명 · 빈자리 알림을 받은 뒤 직접 참가하세요. 자동 참가나 자리 확보가 아니며 먼저 신청한 회원에게 배정됩니다.'}
  const repeat=$('matchDetailRepeat');if(repeat){repeat.hidden=!r.is_host;repeat.disabled=busy;repeat.onclick=()=>repeatMatch(r)}
