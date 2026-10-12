@@ -65,3 +65,9 @@ body[data-pickgo-view="account"] main,body[data-pickgo-view="account"]>.footer{d
 #matches #matchClearFilters{height:44px;min-height:44px;box-sizing:border-box;align-self:end;padding:8px 14px}
 @media(max-width:700px){#matches .match-filters{grid-template-columns:repeat(2,minmax(0,1fr))}#matches #matchClearFilters{justify-self:start}}
 @media(max-width:420px){#matches .match-search-tools{grid-template-columns:minmax(0,1fr)}}
+
+.match-card .match-card-fact{display:grid;grid-template-columns:84px minmax(0,1fr);gap:8px;white-space:normal;line-height:1.55;margin:8px 0}
+.match-card-fact-label{font-weight:700;color:#587160;white-space:nowrap}.match-card-fact-value{overflow-wrap:anywhere}
+.match-card .match-card-other{font-size:12px;line-height:1.55}
+#matchDetailDialog .match-summary-row[hidden]{display:none!important}
+@media(max-width:480px){#matchDetailDialog .match-summary-row{grid-template-columns:90px minmax(0,1fr)!important;gap:8px!important}}

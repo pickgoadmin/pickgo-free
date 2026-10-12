@@ -1,6 +1,6 @@
 /* PICKGO PWA offline shell. Never cache Supabase/API traffic or third-party maps. */
-const CACHE = 'pickgo-pwa-v2.8.6';
-const CORE = ['/', '/index.html', '/court.html', '/site-config.js', '/app.js', '/features.css', '/account-v284.js', '/support.js', '/my-games-v284.js', '/inbox.js', '/matches-v286.js', '/diagnostics-v286.js', '/availability.js', '/booking-sync.js', '/availability.css', '/matches.css', '/match-v286.css', '/public-scope-v240.js', '/venues-db-v240.js', '/court-db-v250.js', '/court-actions-v242.js', '/court-info-v250.js', '/public-guide-v250.css', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/maskable-icon.png'];
+const CACHE = 'pickgo-pwa-v2.8.7';
+const CORE = ['/', '/index.html', '/court.html', '/site-config.js', '/app.js', '/features.css', '/account-v284.js', '/support.js', '/my-games-v284.js', '/inbox.js', '/matches-v287.js', '/diagnostics-v287.js', '/availability.js', '/booking-sync.js', '/availability.css', '/matches.css', '/match-v287.css', '/public-scope-v240.js', '/venues-db-v240.js', '/court-db-v250.js', '/court-actions-v242.js', '/court-info-v250.js', '/public-guide-v250.css', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/maskable-icon.png'];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)));
  self.skipWaiting();
