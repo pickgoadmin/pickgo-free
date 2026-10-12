@@ -32,3 +32,23 @@ body[data-pickgo-view="account"] main,body[data-pickgo-view="account"]>.footer{d
 #matchComposer #matchDay{display:block;box-sizing:border-box;width:100%;max-width:100%;min-width:0;height:46px;appearance:none;-webkit-appearance:none}
 #matchComposer #matchDay::-webkit-date-and-time-value{min-width:0;text-align:left}
 #matchComposer .match-form>input[type="hidden"]{display:none!important}
+
+/* Compact details, with the recruitment badge directly below the title. */
+#matchDetailDialog .auth-heading{margin-bottom:8px}
+#matchDetailDialog .match-status-compact{display:inline-block;margin:4px 0 10px;padding:4px 10px;border-radius:999px;background:#e6f7d6;color:#245239;font-size:12px;line-height:1.4;font-weight:750}
+#matchDetailDialog .match-summary{margin:0 0 14px;padding:12px 16px;border-radius:12px}
+#matchDetailDialog .match-summary-row{line-height:1.5;font-size:13px}
+#matchDetailDialog .match-summary-other p{line-height:1.5;font-size:13px;margin:0 0 4px}
+#matchDetailDialog .match-summary-other p:last-child{margin-bottom:0}
+#matchDetailDialog .match-roster{margin-top:14px;padding-top:12px}
+#matchDetailDialog .match-roster h3{font-size:15px;margin:0 0 7px}
+#matchDetailDialog #matchMembersNotice{margin:5px 0 10px;line-height:1.5}
+#matchDetailDialog .match-roster ul{margin:0;gap:6px}
+#matchDetailDialog .match-roster li{padding:8px 11px;font-size:14px}
+#matchDetailDialog .profile-actions{gap:8px}
+@media(max-width:480px){#matchDetailDialog .match-summary{padding:10px 12px}}
+
+/* Keep the recruitment status at the far right of each card heading. */
+.match-card>.match-status-pill{float:right;max-width:48%;margin:0 0 8px 12px;white-space:normal;text-align:right}
+.match-card>strong{display:block;min-width:0;overflow-wrap:anywhere}
+.match-card>p:first-of-type{clear:both;padding-top:4px}

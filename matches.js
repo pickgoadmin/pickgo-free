@@ -14,7 +14,7 @@ async function share(r){const url=shareUrl(r.id);try{
 function clearRoster(){rosterSequence++;$('matchMembersList')?.replaceChildren();}
 async function loadMembers(){const id=selectedId,r=rows.find(x=>x.id===id),me=bridge()?.getUser()?.id,db=bridge()?.getClient();clearRoster();const seq=rosterSequence;
  const info=$('matchMembersNotice');if(!info)return;
- if(!r||!me||!(r.is_host||r.is_joined)){info.textContent='참가 후 닉네임 명단을 확인할 수 있습니다.';return}
+ if(!r||!me||!(r.is_host||r.is_joined)){info.textContent='참가 후 명단을 확인할 수 있으며, 닉네임은 주최자와 참가자에게 표시됩니다.';return}
  info.textContent='참가자 명단을 불러오는 중…';
  try{const {data,error}=await db.rpc('pickgo_match_members',{p_id:id});if(seq!==rosterSequence||id!==selectedId||me!==bridge()?.getUser()?.id)return;if(error)throw error;
  const list=$('matchMembersList');for(const member of data||[]){const li=element('li',member.display_name||'PICKGO 회원');if(member.is_host)li.append(element('span','주최자','match-host-badge'));list.append(li)}
@@ -47,7 +47,7 @@ function updateDetail(){const dialog=$('matchDetailDialog');if(!dialog)return;co
  const wait=$('matchDetailWait');if(wait){wait.hidden=r.is_host||r.is_joined||(!r.is_waiting&&(r.status!=='open'||new Date(r.starts_at)<=new Date()||r.attendees<r.capacity));wait.disabled=busy;wait.textContent=pendingAction?.id===r.id&&['wait','unwait'].includes(pendingAction.action)?'처리 중…':r.is_waiting?'대기 취소':'대기 신청';wait.onclick=()=>act(r.id,r.is_waiting?'unwait':'wait')}
  const hint=$('matchWaitHint');if(hint){hint.hidden=!(r.is_waiting||(!r.is_host&&!r.is_joined&&r.status==='open'&&new Date(r.starts_at)>new Date()&&r.attendees>=r.capacity));hint.textContent='대기 '+(r.waiting_count||0)+'명 · 빈자리 알림을 받은 뒤 직접 참가하세요. 자동 참가나 자리 확보가 아니며 먼저 신청한 회원에게 배정됩니다.'}
  const repeat=$('matchDetailRepeat');if(repeat){repeat.hidden=!r.is_host;repeat.disabled=busy;repeat.onclick=()=>repeatMatch(r)}
- $('matchDetailState').textContent='모집 상태: '+detailState(r);
+ $('matchDetailState').textContent=detailState(r);
  const edit=$('matchDetailEdit');if(edit){edit.hidden=!r.is_host||r.status!=='open'||new Date(r.starts_at)<=new Date();edit.disabled=busy;edit.onclick=()=>beginEdit(r)}
  const btn=$('matchDetailAction');btn.textContent=actionText(r);btn.disabled=actionDisabled(r);btn.onclick=()=>act(r.id,r.is_host?'cancel':r.is_joined?'leave':'join');
  $('matchDetailShare').hidden=r.status==='cancelled';$('matchDetailShare').onclick=()=>share(r);
